@@ -1,0 +1,21 @@
+# ======================
+# Python / Django
+# ======================
+__pycache__/
+*.py[cod]
+*.mo
+*.pot
+.env
+venv/
+media/
+staticfiles/
+
+# ======================
+# Other
+# ======================
+.vscode/
+/my_docs/
+
+# ======================
+# Frontend - CHECK /frontend/.gitignore
+# ======================

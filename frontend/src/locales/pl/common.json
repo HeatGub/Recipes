@@ -1,0 +1,18 @@
+{
+  "header": {
+    "title": "Mistrz Przepisów",
+    "change_lang": "Zmień język"
+  },
+  "sidebar": {
+    "dashboard": "Daszbord",
+    "settings": "Ustawienia",
+    "recipes": "Przepisy"
+  },
+  "errors": {
+    "AUTH.INVALID_CREDENTIALS": "Nieprawidłowy email lub hasło",
+    "AUTH.ACCOUNT_DISABLED": "Twoje konto jest zablokowane",
+    "VALIDATION.REQUIRED": "Email i hasło są wymagane"
+  },
+  "add_recipe": "Dodaj przepis",
+  "shopping_list": "Lista zakupów"
+}

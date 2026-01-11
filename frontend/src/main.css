@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+/* Light theme variables */
+:root {
+  --bg-primary: #ffffff;      /* main page background */
+  --bg-secondary: #f3f4f6;    /* section/background highlight */
+  --bg-opposite: #1f2937; /* dark bg */
+  --text-primary: #111827;    /* dark gray text */
+  --text-secondary: #4b5563;  /* lighter gray text */
+  --text-opposite: #f9fafb;
+  --accent-primary: #2408c4;  /* blue for buttons or headings */
+  --accent-secondary: #095e41; /* green for buttons or highlights */
+}
+
+/* Dark theme variables */
+.dark {
+  --bg-primary: #1f2937;      /* dark background */
+  --bg-secondary: #374151;    /* secondary dark background */
+  --bg-opposite: #ffffff; /* light bg */
+  --text-primary: #f9fafb;    /* light text */
+  --text-secondary: #d1d5db;  /* secondary light text */
+  --text-opposite: #111827;
+  --accent-primary: #8ec1ff;  /* lighter blue for dark mode */
+  --accent-secondary: #13f1a0; /* lighter green for dark mode */
+}
+
+/* ####################################### */
+/* CHANGE COLORS TO RGB FOR TAILWIND */
+/* ####################################### */
+/* ####################################### */
+/* CHANGE COLORS TO RGB FOR TAILWIND */
+/* ####################################### */
+/* ####################################### */
+/* CHANGE COLORS TO RGB FOR TAILWIND */
+/* ####################################### */
+
+/* no cascade on theme change */
+.no-theme-transition *,
+.no-theme-transition *::before,
+.no-theme-transition *::after {
+  transition: none !important;
+}
+
+html,
+body {
+  background-color: rgb(var(--bg-primary));
+  color: rgb(var(--text-primary));
+}

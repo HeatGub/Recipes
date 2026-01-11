@@ -1,0 +1,18 @@
+{
+  "header": {
+    "title": "Recipes Master",
+    "change_lang": "Change Language"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "recipes": "Recipes"
+  },
+  "errors": {
+    "AUTH.INVALID_CREDENTIALS": "Invalid email or password",
+    "AUTH.ACCOUNT_DISABLED": "Your account is disabled",
+    "VALIDATION.REQUIRED": "Email and password are required"
+  },
+  "add_recipe": "Add recipe",
+  "shopping_list": "Shopping list"
+}
