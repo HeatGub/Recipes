@@ -8,6 +8,19 @@
     "settings": "Settings",
     "recipes": "Recipes"
   },
+  "account": {
+    "login": "Login",
+    "logged_in_as": "Logged in as",
+    "logout": "Logout",
+    "register": "Register",
+    "username": "Username",
+    "email": "Email",
+    "email_optional" : "Email (optional)",
+    "username_or_email": "Username or Email",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "create_account": "Create Account"
+  },
   "errors": {
     "AUTH.INVALID_CREDENTIALS": "Invalid email or password",
     "AUTH.ACCOUNT_DISABLED": "Your account is disabled",

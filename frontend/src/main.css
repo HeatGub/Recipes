@@ -2,11 +2,11 @@
 
 /* Light theme variables */
 :root {
-  --bg-primary: #ffffff;      /* main page background */
-  --bg-secondary: #f3f4f6;    /* section/background highlight */
+  --bg-primary: #cfcfcf;      /* main page background */
+  --bg-secondary: #b1aeae;    /* section/background highlight */
   --bg-opposite: #1f2937; /* dark bg */
   --text-primary: #111827;    /* dark gray text */
-  --text-secondary: #4b5563;  /* lighter gray text */
+  --text-secondary: #36393d;  /* lighter gray text */
   --text-opposite: #f9fafb;
   --accent-primary: #2408c4;  /* blue for buttons or headings */
   --accent-secondary: #095e41; /* green for buttons or highlights */

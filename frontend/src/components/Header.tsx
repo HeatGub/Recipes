@@ -1,11 +1,12 @@
 import { ThemeToggle } from "./ThemeToggle"
 import { LangSwitcher } from "./LangSwitcher"
+import { LoginAvatarMenu } from "./LoginMenu"
 import { useTranslation } from "react-i18next"
 
 export function Header({ sidebarOpen, onToggleSidebar }: { sidebarOpen: boolean; onToggleSidebar: () => void }) {
   const { t } = useTranslation()
   return (
-    <header className="flex h-14 items-center justify-between border-b px-4">
+    <header className="flex h-12 items-center justify-between border-b px-4">
       <button
         onClick={onToggleSidebar}
         className="rounded p-2 hover:bg-(--bg-secondary)"
@@ -19,6 +20,7 @@ export function Header({ sidebarOpen, onToggleSidebar }: { sidebarOpen: boolean;
       <div className="flex gap-4">
         <LangSwitcher />
         <ThemeToggle />
+        <LoginAvatarMenu />
       </div>
     </header>
   )

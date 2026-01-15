@@ -8,6 +8,20 @@
     "settings": "Ustawienia",
     "recipes": "Przepisy"
   },
+    "account": {
+    "login": "Logowanie",
+    "logged_in_as": "Zalogowany jako",
+    "logout": "Wyloguj",
+    "register": "Rejestracja",
+    "username": "Nazwa Użytkownika",
+    "email": "Email",
+    "email_optional" : "Email (opcjonalnie)",
+    "username_or_email": "Nazwa Użytkownika lub Email",
+    "password": "Hasło",
+    "confirm_password": "Potwierdź hasło",
+    "create_account": "Stwórz Konto",
+    "confirm_logout": "Potwierdź Wylogowanie"
+  },
   "errors": {
     "AUTH.INVALID_CREDENTIALS": "Nieprawidłowy email lub hasło",
     "AUTH.ACCOUNT_DISABLED": "Twoje konto jest zablokowane",
