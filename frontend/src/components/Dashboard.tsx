@@ -1,4 +1,5 @@
 import { ThemeToggle } from "@/components/ThemeToggle"
+import { AuthTest } from "@/components/AuthTest"
 import clsx from "clsx"
 
 export function Dashboard() {
@@ -25,8 +26,9 @@ export function Dashboard() {
         <span className="hidden sm:inline lg:hidden">Tablet view</span>
         <span className="hidden lg:inline">Desktop view</span>
       </div>
-
       <ThemeToggle />
+      <AuthTest />
+      
     </div>
   )
 }
