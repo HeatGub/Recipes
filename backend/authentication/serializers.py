@@ -14,20 +14,20 @@ class EmailOrUsernameTokenObtainPairSerializer(TokenObtainPairSerializer):
         password = attrs.get("password")
 
         if not identifier or not password:
-            raise AuthenticationFailed("Missing credentials")
+            raise AuthenticationFailed(code="MISSING_FIELD") # code is not catched in PROD custom_exception_handler
 
         try:
             validate_email(identifier)
             user = User.objects.get(email__iexact=identifier)
-        except ValidationError:
+        except (ValidationError, User.DoesNotExist):
             user = User.objects.filter(username__iexact=identifier).first()
             if not user:
-                raise AuthenticationFailed("Invalid credentials")
+                raise AuthenticationFailed(code="USER_NOT_FOUND") 
 
         if not user.check_password(password):
-            raise AuthenticationFailed("Invalid credentials")
+            raise AuthenticationFailed(code="WRONG_PASSWORD")
         if not user.is_active:
-            raise AuthenticationFailed("User inactive")
+            raise AuthenticationFailed(code="USER_INACTIVE")
 
         token = self.get_token(user)
         return {
