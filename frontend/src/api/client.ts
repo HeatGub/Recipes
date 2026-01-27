@@ -56,7 +56,7 @@ api.interceptors.response.use(
         isRefreshing = true
         // Call the same refresh URL as before
         const res = await api.post("/auth/token/refresh/")
-        setAccessToken(res.data.data.access)
+        setAccessToken(res.data.payload.access_token)
         isRefreshing = false
       }
 

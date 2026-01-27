@@ -11,7 +11,6 @@ from rest_framework.permissions import AllowAny
 from rest_framework import status
 from config.responses import api_response
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.exceptions import APIException, ErrorDetail
 
 
 class CookieTokenRefreshView(TokenRefreshView):
@@ -42,7 +41,7 @@ class CookieTokenRefreshView(TokenRefreshView):
         response.data = api_response(
             success=True,
             code="AUTH_TOKEN_REFRESHED",
-            data=response.data,
+            payload=response.data,
         ).data
 
         return response
@@ -76,7 +75,7 @@ class LoginView(TokenObtainPairView):
         response.data = api_response(
             success=True,
             code="AUTH_LOGIN_SUCCESS",
-            data=data,
+            payload=data,
         ).data
 
         return super().finalize_response(request, response, *args, **kwargs)

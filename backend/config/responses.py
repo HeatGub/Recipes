@@ -5,7 +5,7 @@ def api_response(
     *,
     success: bool,
     code: str, # GLOBAL LEVEL ERROR
-    data=None,
+    payload=None,
     errors=None, # FIELD LEVEL
     message=None,
     meta=None,
@@ -16,7 +16,7 @@ def api_response(
             "success": success,
             "code": code,
             "message": message,
-            "data": {} if data is None else data,
+            "payload": {} if payload is None else payload,
             "errors": {} if errors is None else errors,
             "meta": {} if meta is None else meta,
         },

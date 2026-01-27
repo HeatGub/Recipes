@@ -5,9 +5,9 @@ export const authInit = async () => {
 
   try {
     const res = await api.post("/auth/token/refresh/")
-    const access = res.data.data.access
+    const access_token = res.data.payload.access_token
 
-    setAccessToken(access)
+    setAccessToken(access_token)
     console.log("[AUTH] Access token restored")
     return true
 
@@ -25,7 +25,7 @@ export const login = async (identifier: string, password: string) => {
 
   const res = await api.post("/auth/login/", { identifier, password })
 
-  setAccessToken(res.data.data.access)
+  setAccessToken(res.data.payload.access_token)
   console.log("[AUTH] Login success → access token stored")
 }
 

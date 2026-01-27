@@ -32,5 +32,6 @@ class EmailOrUsernameTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = self.get_token(user)
         return {
             "refresh": str(token),
-            "access": str(token.access_token),
+            "access_token": str(token.access_token),
+            "username": user.username,
         }
