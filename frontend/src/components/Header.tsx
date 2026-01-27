@@ -1,6 +1,6 @@
 import { ThemeToggle } from "./ThemeToggle"
 import { LangSwitcher } from "./LangSwitcher"
-import { LoginAvatarMenu } from "./LoginMenu"
+import { LoginAvatarMenu } from "./auth/LoginAvatarMenu"
 import { useTranslation } from "react-i18next"
 
 export function Header({ sidebarOpen, onToggleSidebar }: { sidebarOpen: boolean; onToggleSidebar: () => void }) {

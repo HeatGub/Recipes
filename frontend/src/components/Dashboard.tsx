@@ -1,5 +1,5 @@
 import { ThemeToggle } from "@/components/ThemeToggle"
-import { AuthTest } from "@/components/AuthTest"
+import { AuthTest } from "@/components/auth/AuthTest"
 import clsx from "clsx"
 
 export function Dashboard() {

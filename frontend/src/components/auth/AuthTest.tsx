@@ -1,5 +1,5 @@
-import { useAuth } from "../auth/useAuth"
-import { api } from "../api/client"
+import { useAuth } from "../../auth/useAuth"
+import { api } from "../../api/client"
 
 export function AuthTest() {
   const {
