@@ -20,12 +20,15 @@ class CookieTokenRefreshView(TokenRefreshView):
         refresh = request.COOKIES.get("refresh_token")
 
         if not refresh:
-            raise AuthenticationFailed(code="AUTH_NO_REFRESH_COOKIE")
+            raise AuthenticationFailed(code="REFRESH_TOKEN_MISSING")
 
         serializer = self.get_serializer(data={"refresh": refresh})
         serializer.is_valid(raise_exception=True)
 
         response = Response(serializer.validated_data, status=status.HTTP_200_OK)
+
+        if "access" in response.data:
+            response.data["access_token"] = response.data.pop("access")
 
         new_refresh = response.data.pop("refresh", None)
         if new_refresh:

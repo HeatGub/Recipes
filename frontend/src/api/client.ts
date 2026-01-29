@@ -1,11 +1,24 @@
 import axios, { AxiosError } from "axios"
+import type { AxiosRequestConfig, AxiosResponse } from "axios"
+
+type ApiResponse<TPayload = any> = {
+  success: boolean
+  code: string
+  message?: string | null
+  payload: TPayload
+  errors?: Record<string, any>
+  meta?: Record<string, any>
+}
+
+interface RetryAxiosRequestConfig extends AxiosRequestConfig {
+  _retry?: boolean
+}
 
 // Memory storage for access token
 let accessToken: string | null = null
 // Lock to prevent multiple simultaneous refresh requests
-let isRefreshing = false
+let refreshTokenPromise: Promise<string> | null = null
 
-// Setter for access token
 export const setAccessToken = (token: string | null) => {
   accessToken = token
 }
@@ -14,6 +27,12 @@ export const setAccessToken = (token: string | null) => {
 export const api = axios.create({
   baseURL: "http://localhost:8000/api/v1/",
   withCredentials: true, // send HttpOnly cookies (refresh token)
+})
+
+// Dedicated axios instance for token refresh to avoid recursion
+const refreshTokenApi = axios.create({
+  baseURL: "http://localhost:8000/api/v1/",
+  withCredentials: true,
 })
 
 // Add access token to outgoing requests
@@ -25,49 +44,66 @@ api.interceptors.request.use((config) => {
 })
 
 // Handle responses globally
-api.interceptors.response.use(
-  (res) => res, // pass data
+api.interceptors.response.use(handleResponseSuccess, handleResponseError)
 
-  async (error: AxiosError) => {
-    // ON ERROR
-    const originalRequest = error.config
+function handleResponseSuccess(response: AxiosResponse) {
+  console.log("✅", response.data)
+  return response
+}
 
-    // Only handle 401 errors
-    if (!originalRequest || error.response?.status !== 401) {
-      return Promise.reject(error)
-    }
+async function handleResponseError(error: AxiosError): Promise<any> {
+  const originalRequest = error.config as RetryAxiosRequestConfig
 
-    // 🚨 1. Do not retry refresh endpoint to avoid infinite loops
-    if (originalRequest.url?.includes("/auth/token/refresh/")) {
-      setAccessToken(null)
-      return Promise.reject(error)
-    }
+  const data = error.response?.data as ApiResponse<any> | undefined
 
-    // 🚨 2. Prevent infinite retry loop for the same request
-    if ((originalRequest as any)._retry) {
-      setAccessToken(null)
-      return Promise.reject(error)
-    }
-    ;(originalRequest as any)._retry = true
-
-    try {
-      // 🚨 3. Prevent parallel refresh storms
-      if (!isRefreshing) {
-        isRefreshing = true
-        // Call the same refresh URL as before
-        const res = await api.post("/auth/token/refresh/")
-        setAccessToken(res.data.payload.access_token)
-        isRefreshing = false
-      }
-
-      // Attach the new access token and retry original request
-      originalRequest.headers.Authorization = `Bearer ${accessToken}`
-      return api(originalRequest)
-    } catch (refreshError) {
-      // Failed to refresh → clear token and propagate error
-      isRefreshing = false
-      setAccessToken(null)
-      return Promise.reject(refreshError)
-    }
+  // Only handle 401 errors with valid response data
+  if (!originalRequest || error.response?.status !== 401) {
+    return Promise.reject(error.response?.data)
   }
-)
+
+  const code = data?.code
+  const shouldRefresh = code === "GENERIC_TOKEN_ERROR"
+
+  // Not eligible for refresh  → propagate backend errors
+  if (originalRequest.url?.includes("/auth/token/refresh/") || !shouldRefresh) {
+    console.log("❌", error.response.data)
+    return Promise.reject(error.response?.data)
+  }
+
+  // Prevent multiple retries of the same request
+  if (originalRequest._retry) {
+    setAccessToken(null)
+    return Promise.reject(error.response?.data)
+  }
+  originalRequest._retry = true
+
+  try {
+    // 🔐 Start refresh if not already running
+    if (!refreshTokenPromise) {
+      refreshTokenPromise = refreshTokenApi
+        .post("/auth/token/refresh/")
+        .then((res) => {
+          const data = res.data as ApiResponse<{ access_token: string }>
+          const token = data?.payload?.access_token
+          if (!token) throw new Error("No access token returned from refresh")
+          setAccessToken(token)
+          return token
+        })
+        .finally(() => {
+          refreshTokenPromise = null
+        })
+    }
+
+    // Wait for refresh to complete
+    const newToken = await refreshTokenPromise
+
+    // Retry original request with new token
+    originalRequest.headers = originalRequest.headers ?? {}
+    originalRequest.headers.Authorization = `Bearer ${newToken}`
+    return api(originalRequest)
+  } catch (refreshError) {
+    refreshTokenPromise = null
+    setAccessToken(null)
+    return Promise.reject(refreshError)
+  }
+}

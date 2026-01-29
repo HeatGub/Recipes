@@ -42,7 +42,7 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         type="text"
         value={formData.identifier}
         onChange={handleChange}
-        required
+        // required
         className="w-full rounded border bg-(--bg-secondary) px-2 py-1 text-(--text-primary)"
       />
 
@@ -52,7 +52,7 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         type="password"
         value={formData.password}
         onChange={handleChange}
-        required
+        // required
         className="w-full rounded border bg-(--bg-secondary) px-2 py-1 text-(--text-primary)"
       />
 
