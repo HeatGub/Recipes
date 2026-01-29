@@ -11,6 +11,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework import status
 from config.responses import api_response
 from rest_framework.exceptions import AuthenticationFailed
+from config.response_codes import EC, SC
 
 
 class CookieTokenRefreshView(TokenRefreshView):
@@ -20,7 +21,7 @@ class CookieTokenRefreshView(TokenRefreshView):
         refresh = request.COOKIES.get("refresh_token")
 
         if not refresh:
-            raise AuthenticationFailed(code="REFRESH_TOKEN_MISSING")
+            raise AuthenticationFailed(code=EC.Token.REFRESH_TOKEN_MISSING)
 
         serializer = self.get_serializer(data={"refresh": refresh})
         serializer.is_valid(raise_exception=True)
@@ -43,7 +44,7 @@ class CookieTokenRefreshView(TokenRefreshView):
 
         response.data = api_response(
             success=True,
-            code="AUTH_TOKEN_REFRESHED",
+            code=SC.Auth.TOKEN_REFRESHED,
             payload=response.data,
         ).data
 
@@ -77,7 +78,7 @@ class LoginView(TokenObtainPairView):
 
         response.data = api_response(
             success=True,
-            code="AUTH_LOGIN_SUCCESS",
+            code=SC.Auth.LOGIN_SUCCESS,
             payload=data,
         ).data
 
@@ -98,7 +99,7 @@ class LogoutView(APIView):
 
         response = api_response(
             success=True,
-            code="AUTH_LOGOUT_SUCCESS",
+            code=SC.Auth.LOGOUT_SUCCESS,
         )
         response.delete_cookie("refresh_token")
 
