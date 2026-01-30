@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next"
 import { useAuth } from "../../auth/useAuth"
 import { LoginForm } from "./LoginForm"
 import { RegisterForm } from "./RegisterForm"
-
+import clsx from "clsx"
 
 export function LoginAvatarMenu() {
   const { login, logout, user } = useAuth()
@@ -23,32 +23,44 @@ export function LoginAvatarMenu() {
 
   const { t } = useTranslation()
 
+  const panelStyles: Record<"login" | "register" | "logout", { selected: string; hover: string }> = {
+    login: {
+      selected: "rounded-l-full bg-(--accent-primary) text-(--text-inverted)",
+      hover: "rounded-l-full hover:bg-(--accent-primary) hover:text-(--text-inverted)",
+    },
+    register: {
+      selected: "pr-11 rounded-r-full bg-(--accent-secondary) text-(--text-inverted)",
+      hover: "pr-11 rounded-r-full hover:bg-(--accent-secondary) hover:text-(--text-inverted)",
+    },
+    logout: {
+      selected: "pr-11 rounded-full bg-(--bg-warning) text-(--text-inverted)",
+      hover: "pr-11 rounded-full hover:bg-(--bg-warning) hover:text-(--text-inverted)",
+    },
+  }
+
+  const getButtonClasses = (panel: "login" | "register" | "logout") =>
+    clsx(
+      "flex-1 pl-3 pr-2 py-2 text-center transition",
+      openPanel === panel ? panelStyles[panel].selected : panelStyles[panel].hover
+    )
+
   return (
     <div className="relative right-1 inline-flex items-center">
       <div className="flex overflow-hidden rounded-full border-2">
-
         {!isLoggedIn && (
           <>
-            <button
-              className="flex-1 rounded-l-full px-3 py-2 text-center transition hover:bg-(--accent-primary) hover:text-(--text-inverted)"
-              onClick={() => togglePanel("login")}
-            >
+            <button className={getButtonClasses("login")} onClick={() => togglePanel("login")}>
               {t("account.login")}
             </button>
-            <button
-              className="flex-1 rounded-r-full px-3 py-2 pr-12 text-center transition hover:bg-(--accent-secondary) hover:text-(--text-inverted)"
-              onClick={() => togglePanel("register")}
-            >
+
+            <button className={getButtonClasses("register")} onClick={() => togglePanel("register")}>
               {t("account.register")}
             </button>
           </>
         )}
 
         {isLoggedIn && (
-          <button
-            className="flex-1 rounded-full px-3 py-2 pr-12 text-center transition hover:bg-(--bg-inverted) hover:text-(--text-inverted)"
-            onClick={() => togglePanel("logout")}
-          >
+          <button className={getButtonClasses("logout")} onClick={() => togglePanel("logout")}>
             {t("account.logout")}
           </button>
         )}
@@ -86,7 +98,10 @@ export function LoginAvatarMenu() {
               <p>
                 {t("account.logged_in_as")} <strong>{user?.username}</strong>
               </p>
-              <button onClick={handleLogout} className="w-full rounded bg-(--bg-warning) px-2 py-1 text-(--text-inverted)">
+              <button
+                onClick={handleLogout}
+                className="w-full rounded bg-(--bg-warning) px-2 py-1 text-(--text-inverted)"
+              >
                 {t("account.logout")}
               </button>
             </div>
