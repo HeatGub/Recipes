@@ -2,26 +2,42 @@
 
 /* Light theme variables */
 :root {
-  --bg-primary: #cfcfcf;      /* main page background */
-  --bg-secondary: #b1aeae;    /* section/background highlight */
-  --bg-opposite: #1f2937; /* dark bg */
-  --text-primary: #111827;    /* dark gray text */
-  --text-secondary: #36393d;  /* lighter gray text */
-  --text-opposite: #f9fafb;
-  --accent-primary: #2408c4;  /* blue for buttons or headings */
-  --accent-secondary: #095e41; /* green for buttons or highlights */
+  --bg-primary: #c8c6c6;
+  --bg-secondary: #b1aeae;
+  --bg-inverted: #1f2937;
+  --bg-warning: #ecab13;
+  --text-primary: #111827;
+  --text-secondary: #36393d;
+  --text-inverted: #f9fafb;
+  --text-muted: #111827a4;
+  --text-success: #09740b;
+  --text-warning: #dac20c;
+  --text-error: #d81c13;
+  --accent-primary: #05797b;
+  --accent-secondary: #0f772c;
+  --accent-soft: #146e50c1;
+  --border-default: #5e5e5e;
+  --border-muted: #3a3a3aa9;
 }
 
 /* Dark theme variables */
 .dark {
-  --bg-primary: #1f2937;      /* dark background */
-  --bg-secondary: #374151;    /* secondary dark background */
-  --bg-opposite: #ffffff; /* light bg */
-  --text-primary: #f9fafb;    /* light text */
-  --text-secondary: #d1d5db;  /* secondary light text */
-  --text-opposite: #111827;
-  --accent-primary: #8ec1ff;  /* lighter blue for dark mode */
-  --accent-secondary: #13f1a0; /* lighter green for dark mode */
+  --bg-primary: #222428;
+  --bg-secondary: #374151;
+  --bg-inverted: #a5c0d5;
+  --bg-warning: #ecab13;
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-inverted: #111827;
+  --text-muted: #111827a4;
+  --text-success: #10a913;
+  --text-warning: #f2d708;
+  --text-error: #c02017;
+  --accent-primary: #8ec1ff;
+  --accent-secondary: #13f1a0;
+  --accent-soft: #146e50c1;
+  --border-default: #949494;
+  --border-muted: #3a3a3aa9;
 }
 
 /* no cascade on theme change */
@@ -31,10 +47,20 @@
   transition: none !important;
 }
 
+/* default values */
 html,
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
+}
+
+*, ::before, ::after {
+  border-color: var(--border-default);
+}
+
+::selection {
+  background: var(--accent-primary);
+  color: var(--text-inverted);
 }
 
 /* input fields autofilled color fix */

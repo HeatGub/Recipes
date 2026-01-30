@@ -26,16 +26,17 @@ export function LoginAvatarMenu() {
   return (
     <div className="relative right-1 inline-flex items-center">
       <div className="flex overflow-hidden rounded-full border-2">
+
         {!isLoggedIn && (
           <>
             <button
-              className="flex-1 rounded-l-full px-3 py-2 text-center transition hover:bg-(--accent-primary) hover:text-(--text-opposite)"
+              className="flex-1 rounded-l-full px-3 py-2 text-center transition hover:bg-(--accent-primary) hover:text-(--text-inverted)"
               onClick={() => togglePanel("login")}
             >
               {t("account.login")}
             </button>
             <button
-              className="flex-1 rounded-r-full px-3 py-2 pr-12 text-center transition hover:bg-(--accent-secondary) hover:text-(--text-opposite)"
+              className="flex-1 rounded-r-full px-3 py-2 pr-12 text-center transition hover:bg-(--accent-secondary) hover:text-(--text-inverted)"
               onClick={() => togglePanel("register")}
             >
               {t("account.register")}
@@ -45,7 +46,7 @@ export function LoginAvatarMenu() {
 
         {isLoggedIn && (
           <button
-            className="flex-1 rounded-full px-3 py-2 pr-12 text-center transition hover:bg-red-600 hover:text-white"
+            className="flex-1 rounded-full px-3 py-2 pr-12 text-center transition hover:bg-(--bg-inverted) hover:text-(--text-inverted)"
             onClick={() => togglePanel("logout")}
           >
             {t("account.logout")}
@@ -53,13 +54,13 @@ export function LoginAvatarMenu() {
         )}
       </div>
 
-      <div className="absolute right-px z-10 flex h-10 w-10 items-center justify-center rounded-full bg-(--accent-primary) text-lg font-semibold text-(--text-opposite)">
+      <div className="absolute right-px z-10 flex h-10 w-10 items-center justify-center rounded-full bg-(--accent-primary) text-lg font-semibold text-(--text-inverted)">
         {avatarLetter}
       </div>
 
       {/* Dropdown panels */}
       {openPanel && (
-        <div className="absolute top-full right-0 mt-2 max-w-90 min-w-60 rounded-xl border bg-(--bg-primary) p-4 text-(--text-primary) shadow-lg">
+        <div className="absolute top-full right-0 mt-2 max-w-90 min-w-60 rounded-xl border p-4 shadow-lg">
           {openPanel === "login" && (
             <LoginForm
               onSubmit={async ({ identifier, password }) => {
@@ -85,7 +86,7 @@ export function LoginAvatarMenu() {
               <p>
                 {t("account.logged_in_as")} <strong>{user?.username}</strong>
               </p>
-              <button onClick={handleLogout} className="w-full rounded bg-red-600 px-2 py-1 text-white">
+              <button onClick={handleLogout} className="w-full rounded bg-(--bg-warning) px-2 py-1 text-(--text-inverted)">
                 {t("account.logout")}
               </button>
             </div>

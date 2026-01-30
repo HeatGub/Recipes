@@ -62,7 +62,7 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         value={formData.identifier}
         onChange={handleChange}
         // required
-        className="w-full rounded border bg-(--bg-secondary) px-2 py-1 text-(--text-primary)"
+        className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
       />
 
       {t("account.password")}
@@ -72,10 +72,10 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         value={formData.password}
         onChange={handleChange}
         // required
-        className="w-full rounded border bg-(--bg-secondary) px-2 py-1 text-(--text-primary)"
+        className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
       />
 
-      <button type="submit" className="mt-2 w-full rounded bg-(--accent-primary) px-2 py-1 text-(--text-opposite)">
+      <button type="submit" className="mt-2 w-full rounded bg-(--accent-primary) px-2 py-1 text-(--text-inverted)">
         {t("account.login")}
       </button>
     </form>

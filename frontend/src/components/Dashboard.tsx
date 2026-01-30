@@ -9,7 +9,6 @@ export function Dashboard() {
       className={clsx(
         "flex min-h-screen flex-col items-center justify-center",
         "gap-4 sm:gap-6 lg:gap-10",
-        "bg-(--bg-primary) text-(--text-primary)",
         "transition-colors"
       )}
     >
@@ -28,7 +27,6 @@ export function Dashboard() {
       </div>
       <ThemeToggle />
       <AuthTest />
-      
     </div>
   )
 }

@@ -23,10 +23,10 @@ const toggleTheme = () => {
         onClick={toggleTheme}
         className={clsx(
           "rounded px-4 py-2",
-          "bg-(--bg-secondary) text-(--text-primary)",
+          "bg-(--bg-secondary)",
           "transition-colors duration-300",
-          "hover:[background-color:var(--bg-opposite)]",
-          "hover:[color:var(--text-opposite)]"
+          "hover:bg-(--bg-inverted)",
+          "hover:text-(--text-inverted)"
         )}
       >
         {isDark ? "Light" : "Dark"}

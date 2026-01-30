@@ -47,7 +47,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         required
         value={formData.username}
         onChange={handleChange}
-        className="w-full rounded border bg-(--bg-secondary) px-2 py-1 text-(--text-primary)"
+        className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
       />
 
       {t("account.email_optional")}
@@ -56,7 +56,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         type="email"
         value={formData.email}
         onChange={handleChange}
-        className="w-full rounded border bg-(--bg-secondary) px-2 py-1 text-(--text-primary)"
+        className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
       />
 
       {t("account.password")}
@@ -66,7 +66,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         required
         value={formData.password}
         onChange={handleChange}
-        className="w-full rounded border bg-(--bg-secondary) px-2 py-1 text-(--text-primary)"
+        className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
       />
 
       {t("account.confirm_password")}
@@ -76,12 +76,12 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         required
         value={formData.confirmPassword}
         onChange={handleChange}
-        className="w-full rounded border bg-(--bg-secondary) px-2 py-1 text-(--text-primary)"
+        className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
       />
 
       <button
         type="submit"
-        className="mt-2 w-full rounded bg-(--accent-secondary) px-2 py-1 text-(--text-opposite)"
+        className="mt-2 w-full rounded bg-(--accent-secondary) px-2 py-1 text-(--text-inverted)"
       >
         {t("account.create_account")}
       </button>

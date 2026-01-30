@@ -11,7 +11,7 @@ export const LangSwitcher = () => {
   return (
     <button
       onClick={toggleLang}
-      className="px-2 py-1 border rounded bg-(--bg-secondary) text-(--text-primary)"
+      className="px-2 py-1 border rounded bg-(--bg-secondary)"
     >
       {i18n.language === "pl" ? "EN" : "PL"}
     </button>

@@ -6,7 +6,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-(--bg-primary) text-(--text-primary)">
+    <div className="min-h-screen">
       <div className="flex h-screen overflow-hidden">
         {/* Mobile overlay */}
         {sidebarOpen && (
@@ -20,7 +20,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
         {/* Desktop sidebar */}
         <aside
-          className={`hidden flex-col border-r bg-(--bg-primary) transition-all duration-300 md:flex ${sidebarOpen ? "w-64" : "w-0 overflow-hidden"} `}
+          className={`hidden flex-col border-r bg-(--bg-primary) transition-[width] duration-200 ease-in-out md:flex ${sidebarOpen ? "w-64" : "w-0 overflow-hidden"} `}
         >
           {sidebarOpen && <Sidebar />}
         </aside>
