@@ -104,3 +104,19 @@ class LogoutView(APIView):
         response.delete_cookie("refresh_token")
 
         return response
+
+
+class MeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return api_response(
+            success=True,
+            code=SC.Auth.GENERIC,
+            payload={"user": {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email
+            }}
+        )

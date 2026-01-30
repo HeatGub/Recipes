@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
 import type { ReactNode } from "react"
 import { AuthContext } from "./AuthContext"
-import type { AuthContextType } from "./AuthContext"
+import type { AuthContextType, User } from "./AuthContext"
 import * as authApi from "../api/auth"
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [authInitFinished, setAuthInitFinished] = useState(false)
   const [authInProgress, setAuthInProgress] = useState(false)
@@ -13,22 +14,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const initAuth = async () => {
       try {
-        const success = await authApi.authInit()
-        setIsAuthenticated(success)
+        const newAccessToken = await authApi.authInit()
+        if (newAccessToken) {
+          // fetch user after refresh
+          const me = await authApi.me()
+          setUser(me.payload.user)
+          setIsAuthenticated(true)
+        } else {
+          setIsAuthenticated(false)
+          setUser(null)
+        }
       } catch {
         setIsAuthenticated(false)
+        setUser(null)
       } finally {
         setAuthInitFinished(true)
       }
     }
+
     initAuth()
   }, [])
 
   const login = async (identifier: string, password: string) => {
     setAuthInProgress(true)
     try {
-      await authApi.login(identifier, password)
+      const res = await authApi.login(identifier, password)
       setIsAuthenticated(true)
+      setUser(res.payload.user)
     } finally {
       setAuthInProgress(false)
     }
@@ -39,12 +51,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await authApi.logout()
       setIsAuthenticated(false)
+      setUser(null)
     } finally {
       setAuthInProgress(false)
     }
   }
 
   const value: AuthContextType = {
+    user,
     isAuthenticated,
     authInitFinished,
     authInProgress,

@@ -4,26 +4,20 @@ import { useAuth } from "../../auth/useAuth"
 import { LoginForm } from "./LoginForm"
 import { RegisterForm } from "./RegisterForm"
 
-interface User {
-  name: string
-}
 
 export function LoginAvatarMenu() {
-  const [user, setUser] = useState<User | null>(null)
+  const { login, logout, user } = useAuth()
+
   const [openPanel, setOpenPanel] = useState<"login" | "register" | "logout" | null>(null)
 
   const isLoggedIn = Boolean(user)
-  const avatarLetter = isLoggedIn ? user?.name.charAt(0).toUpperCase() : "?"
+  const avatarLetter = isLoggedIn ? user?.username.charAt(0).toUpperCase() : "?"
 
   const togglePanel = (panel: typeof openPanel) => setOpenPanel((prev) => (prev === panel ? null : panel))
   const closePanel = () => setOpenPanel(null)
 
-  // const { isAuthenticated, authInitFinished, authInProgress, login, logout } = useAuth()
-  const { login, logout } = useAuth()
-
   const handleLogout = () => {
     logout()
-    setUser(null)
     closePanel()
   }
 
@@ -70,7 +64,6 @@ export function LoginAvatarMenu() {
             <LoginForm
               onSubmit={async ({ identifier, password }) => {
                 await login(identifier, password)
-                setUser({ name: identifier }) // later from API
                 closePanel()
               }}
             />
@@ -90,7 +83,7 @@ export function LoginAvatarMenu() {
           {openPanel === "logout" && (
             <div className="space-y-3">
               <p>
-                {t("account.logged_in_as")} <strong>{user?.name}</strong>
+                {t("account.logged_in_as")} <strong>{user?.username}</strong>
               </p>
               <button onClick={handleLogout} className="w-full rounded bg-red-600 px-2 py-1 text-white">
                 {t("account.logout")}

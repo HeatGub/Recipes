@@ -82,6 +82,7 @@ class SC(): # not necessary, but let's keep response codes tidy
         - `Auth`
     """
     class Auth(StrEnum):
+        GENERIC = "AUTH.GENERIC_SUCCESS"
         TOKEN_REFRESHED = "AUTH.TOKEN_REFRESHED"
         LOGIN_SUCCESS = "AUTH.LOGIN_SUCCESS"
         LOGOUT_SUCCESS = "AUTH.LOGOUT_SUCCESS"

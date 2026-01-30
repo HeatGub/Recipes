@@ -1,6 +1,12 @@
 import { createContext } from "react"
 
+export type User = {
+  id: number
+  username: string
+}
+
 export type AuthContextType = {
+  user: User | null
   isAuthenticated: boolean
   authInitFinished: boolean
   authInProgress: boolean
