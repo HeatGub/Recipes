@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
+import SyncLoader from "react-spinners/SyncLoader"
 
 interface LoginFormData {
   identifier: string
@@ -12,6 +13,8 @@ interface LoginFormProps {
 
 export function LoginForm({ onSubmit }: LoginFormProps) {
   const { t } = useTranslation()
+
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const [formData, setFormData] = useState<LoginFormData>({
     identifier: "",
@@ -29,11 +32,27 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    await onSubmit(formData)
+    setIsLoading(true)
+    try {
+      await onSubmit(formData)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2 text-sm">
+    <form
+      onSubmit={handleSubmit}
+      className={`relative space-y-2 text-sm transition ${
+        isLoading ? "pointer-events-none opacity-70 blur-[1px]" : ""
+      }`}
+    >
+      {isLoading && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center">
+          <SyncLoader size={8} color="var(--accent-primary)" />
+        </div>
+      )}
+
       <h3 className="text-base font-semibold">{t("account.login")}</h3>
 
       {t("account.username_or_email")}
@@ -56,10 +75,7 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         className="w-full rounded border bg-(--bg-secondary) px-2 py-1 text-(--text-primary)"
       />
 
-      <button
-        type="submit"
-        className="mt-2 w-full rounded bg-(--accent-primary) px-2 py-1 text-(--text-opposite)"
-      >
+      <button type="submit" className="mt-2 w-full rounded bg-(--accent-primary) px-2 py-1 text-(--text-opposite)">
         {t("account.login")}
       </button>
     </form>

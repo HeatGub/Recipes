@@ -24,16 +24,6 @@
   --accent-secondary: #13f1a0; /* lighter green for dark mode */
 }
 
-/* ####################################### */
-/* CHANGE COLORS TO RGB FOR TAILWIND */
-/* ####################################### */
-/* ####################################### */
-/* CHANGE COLORS TO RGB FOR TAILWIND */
-/* ####################################### */
-/* ####################################### */
-/* CHANGE COLORS TO RGB FOR TAILWIND */
-/* ####################################### */
-
 /* no cascade on theme change */
 .no-theme-transition *,
 .no-theme-transition *::before,
@@ -43,6 +33,17 @@
 
 html,
 body {
-  background-color: rgb(var(--bg-primary));
-  color: rgb(var(--text-primary));
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* input fields autofilled color fix */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: var(--text-primary);
+  box-shadow: 0 0 0px 1000px var(--bg-secondary) inset;
+  transition: background-color 9999s ease-in-out 0s;
 }
