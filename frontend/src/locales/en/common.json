@@ -15,7 +15,7 @@
     "register": "Register",
     "username": "Username",
     "email": "Email",
-    "email_optional" : "Email (optional)",
+    "email_optional": "Email (optional)",
     "username_or_email": "Username or Email",
     "password": "Password",
     "confirm_password": "Confirm Password",
@@ -26,6 +26,12 @@
     "AUTH.ACCOUNT_DISABLED": "Your account is disabled",
     "VALIDATION.REQUIRED": "Email and password are required"
   },
-  "add_recipe": "Add recipe",
-  "shopping_list": "Shopping list"
+  "forms": {
+    "errors": {
+      "required": "This field is required",
+      "invalid_email": "Invalid email address",
+      "password_too_short": "Password must be at least {min} characters",
+      "password_mismatch": "Passwords do not match"
+    }
+  }
 }

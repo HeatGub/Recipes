@@ -8,25 +8,30 @@
     "settings": "Ustawienia",
     "recipes": "Przepisy"
   },
-    "account": {
+  "account": {
     "login": "Logowanie",
     "logged_in_as": "Zalogowany jako",
     "logout": "Wyloguj",
     "register": "Rejestracja",
     "username": "Nazwa Użytkownika",
     "email": "Email",
-    "email_optional" : "Email (opcjonalnie)",
+    "email_optional": "Email (opcjonalnie)",
     "username_or_email": "Nazwa Użytkownika lub Email",
     "password": "Hasło",
     "confirm_password": "Potwierdź hasło",
-    "create_account": "Stwórz Konto",
-    "confirm_logout": "Potwierdź Wylogowanie"
+    "create_account": "Stwórz Konto"
   },
   "errors": {
     "AUTH.INVALID_CREDENTIALS": "Nieprawidłowy email lub hasło",
     "AUTH.ACCOUNT_DISABLED": "Twoje konto jest zablokowane",
     "VALIDATION.REQUIRED": "Email i hasło są wymagane"
   },
-  "add_recipe": "Dodaj przepis",
-  "shopping_list": "Lista zakupów"
+  "forms": {
+    "errors": {
+      "required": "To pole jest wymagane",
+      "invalid_email": "Nieprawidłowy adres e-mail",
+      "password_too_short": "Hasło musi mieć co najmniej {min} znaków",
+      "password_mismatch": "Hasła nie są takie same"
+    }
+  }
 }
