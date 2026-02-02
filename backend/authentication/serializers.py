@@ -1,42 +1,58 @@
+from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.exceptions import AuthenticationFailed
 from django.core.validators import validate_email
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError as DjangoValidationError
+from rest_framework_simplejwt.tokens import RefreshToken
 from config.response_codes import EC
+from rest_framework.exceptions import ValidationError
 
 User = get_user_model()
 
-class EmailOrUsernameTokenObtainPairSerializer(TokenObtainPairSerializer):
-    username_field = "identifier"
+
+class LoginSerializer(serializers.Serializer):
+
+    identifier = serializers.CharField(required=False, allow_blank=True)
+    password = serializers.CharField(required=False, allow_blank=True)
 
     def validate(self, attrs):
+
         identifier = attrs.get("identifier")
         password = attrs.get("password")
 
-        if not identifier or not password:
-            raise AuthenticationFailed(code=EC.AuthFailed.MISSING_FIELD)
+        errors = {}
+
+        if not identifier:
+            errors["identifier"] = [EC.Validation.BLANK]
+
+        if not password:
+            errors["password"] = [EC.Validation.BLANK]
+
+        if errors:
+            raise ValidationError(errors)
 
         try:
             validate_email(identifier)
             user = User.objects.get(email__iexact=identifier)
-        except (ValidationError, User.DoesNotExist):
+        except (DjangoValidationError, User.DoesNotExist):
             user = User.objects.filter(username__iexact=identifier).first()
             if not user:
-                raise AuthenticationFailed(code=EC.AuthFailed.USER_NOT_FOUND) 
+                raise AuthenticationFailed(code=EC.AuthFailed.USER_NOT_FOUND)
 
         if not user.check_password(password):
             raise AuthenticationFailed(code=EC.AuthFailed.WRONG_PASSWORD)
+
         if not user.is_active:
             raise AuthenticationFailed(code=EC.AuthFailed.ACCOUNT_DISABLED)
 
-        token = self.get_token(user)
+        refresh = RefreshToken.for_user(user)
+
         return {
-            "refresh": str(token),
-            "access_token": str(token.access_token),
+            "refresh": str(refresh),
+            "access_token": str(refresh.access_token),
             "user": {
                 "id": user.id,
                 "username": user.username,
-                "email": user.email
-            }
+                "email": user.email,
+            },
         }

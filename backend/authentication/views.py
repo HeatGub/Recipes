@@ -2,7 +2,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from .serializers import EmailOrUsernameTokenObtainPairSerializer
+from .serializers import LoginSerializer
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -51,38 +51,33 @@ class CookieTokenRefreshView(TokenRefreshView):
         return response
 
 
-class LoginView(TokenObtainPairView):
-    serializer_class = EmailOrUsernameTokenObtainPairSerializer
+class LoginView(APIView):
     permission_classes = [AllowAny]
 
-    def finalize_response(self, request, response, *args, **kwargs):
-        """
-        - Put refresh token into HttpOnly cookie
-        - Return standardized JSON with access token
-        """
-        if response.status_code != status.HTTP_200_OK:
-            return super().finalize_response(request, response, *args, **kwargs)
+    def post(self, request):
+        serializer = LoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-        data = response.data
-        refresh_token = data.pop("refresh", None)
+        data = serializer.validated_data
+        refresh_token = data.pop("refresh")
 
-        if refresh_token:
-            response.set_cookie(
-                key="refresh_token",
-                value=refresh_token,
-                httponly=True,
-                secure=False,  # DEBUG - True in prod
-                samesite="Lax",
-                path="/",
-            )
-
-        response.data = api_response(
+        response = api_response(
             success=True,
             code=SC.Auth.LOGIN_SUCCESS,
             payload=data,
-        ).data
+        )
 
-        return super().finalize_response(request, response, *args, **kwargs)
+        response.set_cookie(
+            key="refresh_token",
+            value=refresh_token,
+            httponly=True,
+            secure=False,
+            samesite="Lax",
+            path="/",
+        )
+
+        return response
+
 
 
 class LogoutView(APIView):
