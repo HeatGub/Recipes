@@ -15,6 +15,7 @@ staticfiles/
 # ======================
 .vscode/
 /my_docs/
+*.log
 
 # ======================
 # Frontend - CHECK /frontend/.gitignore

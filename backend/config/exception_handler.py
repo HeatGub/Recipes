@@ -14,6 +14,7 @@ from rest_framework.exceptions import (
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from .responses import api_response
 from .response_codes import ECNS, EC
+from .logger_setup import log_exception
 
 
 def extract_error_details(detail: Any, *, namespace: ECNS, fallback_code: StrEnum | str,) -> dict[str, list[str]]:
@@ -68,7 +69,6 @@ def custom_exception_handler(exc: Exception, context: dict):
 
     try:
         raw_detail = getattr(exc, "detail", None)
-
         # ---- TOKEN ----
         if isinstance(exc, (InvalidToken, TokenError)):
             return api_response(
@@ -157,6 +157,7 @@ def custom_exception_handler(exc: Exception, context: dict):
         response = exception_handler(exc, context)
         if response is not None:
             code = f"{ECNS.API_ERROR}.{EC.ApiError.GENERIC}"
+            log_exception(exc, context)
             return api_response(
                 success=False,
                 code=code,
@@ -167,6 +168,7 @@ def custom_exception_handler(exc: Exception, context: dict):
     # ---- SERVER ERROR ----
     except Exception as handler_exc:
         code = f"{ECNS.SERVER}.{EC.ServerError.GENERIC}"
+        log_exception(handler_exc, context)
         return api_response(
             success=False,
             code=code,
