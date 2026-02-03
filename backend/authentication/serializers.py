@@ -12,8 +12,8 @@ User = get_user_model()
 
 class LoginSerializer(serializers.Serializer):
 
-    identifier = serializers.CharField(required=False, allow_blank=True)
-    password = serializers.CharField(required=False, allow_blank=True)
+    identifier = serializers.CharField(required=False, allow_blank=True) # bypass DRF validator to return custom codes
+    password = serializers.CharField(required=False, allow_blank=True, write_only=True)
 
     def validate(self, attrs):
 
@@ -37,10 +37,10 @@ class LoginSerializer(serializers.Serializer):
         except (DjangoValidationError, User.DoesNotExist):
             user = User.objects.filter(username__iexact=identifier).first()
             if not user:
-                raise AuthenticationFailed({"_error": [EC.AuthFailed.USER_NOT_FOUND]})
+                raise AuthenticationFailed({"_error": [EC.AuthFailed.INVALID_CREDENTIALS]})
 
         if not user.check_password(password):
-            raise AuthenticationFailed({"_error": [EC.AuthFailed.WRONG_PASSWORD]})
+            raise AuthenticationFailed({"_error": [EC.AuthFailed.INVALID_CREDENTIALS]})
 
         if not user.is_active:
             raise AuthenticationFailed({"_error": [EC.AuthFailed.ACCOUNT_DISABLED]})

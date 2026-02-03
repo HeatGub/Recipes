@@ -1,7 +1,7 @@
 from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
     TokenRefreshView,
 )
+from rest_framework_simplejwt.exceptions import TokenError
 from .serializers import LoginSerializer
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
@@ -12,7 +12,10 @@ from rest_framework import status
 from config.responses import api_response
 from rest_framework.exceptions import AuthenticationFailed
 from config.response_codes import EC, SC
+from django.conf import settings
 
+
+cookie = settings.AUTH_COOKIE
 
 class CookieTokenRefreshView(TokenRefreshView):
     permission_classes = [AllowAny]
@@ -34,12 +37,13 @@ class CookieTokenRefreshView(TokenRefreshView):
         new_refresh = response.data.pop("refresh", None)
         if new_refresh:
             response.set_cookie(
-                key="refresh_token",
+                key=cookie["NAME"],
                 value=new_refresh,
-                httponly=True,
-                secure=False,   # DEBUG 🔴 - False on localhost
-                samesite="Lax",
-                path="/",
+                httponly=cookie["HTTP_ONLY"],
+                secure=cookie["SECURE"],
+                samesite=cookie["SAMESITE"],
+                domain=cookie["DOMAIN"],
+                path=cookie["PATH"],
             )
 
         response.data = api_response(
@@ -68,12 +72,13 @@ class LoginView(APIView):
         )
 
         response.set_cookie(
-            key="refresh_token",
+            key=cookie["NAME"],
             value=refresh_token,
-            httponly=True,
-            secure=False,
-            samesite="Lax",
-            path="/",
+            httponly=cookie["HTTP_ONLY"],
+            secure=cookie["SECURE"],
+            samesite=cookie["SAMESITE"],
+            domain=cookie["DOMAIN"],
+            path=cookie["PATH"],
         )
 
         return response
@@ -81,16 +86,15 @@ class LoginView(APIView):
 
 
 class LogoutView(APIView):
-    permission_classes = [IsAuthenticated] # DEBUG
-
     def post(self, request):
         refresh_token = request.COOKIES.get("refresh_token")
 
         if refresh_token:
             try:
                 RefreshToken(refresh_token).blacklist()
-            except Exception as exc:
-                raise exc
+            except TokenError:
+                # token already expired/invalid → ignore
+                pass
 
         response = api_response(
             success=True,

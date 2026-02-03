@@ -34,6 +34,17 @@ class ECNS(StrEnum):
 class EC():
     """
     Error Codes
+
+    Available Classes:
+        - `Token`
+        - `AuthFailed`
+        - `NotAuth`
+        - `Validation`
+        - `Forbidden`
+        - `NotFound`
+        - `RateLimited`
+        - `ApiError`
+        - `ServerError`
     """
 
     class Token(StrEnum):
@@ -41,12 +52,8 @@ class EC():
 
     class AuthFailed(StrEnum):
         GENERIC = "GENERIC_ERROR"
-        MISSING_FIELD = "MISSING_FIELD"
-        USER_NOT_FOUND = "USER_NOT_FOUND"
-        WRONG_PASSWORD = "WRONG_PASSWORD"
         INVALID_CREDENTIALS = "INVALID_CREDENTIALS"
         ACCOUNT_DISABLED = "ACCOUNT_DISABLED"
-        TOKEN_EXPIRED = "TOKEN_EXPIRED"
         REFRESH_TOKEN_MISSING = "REFRESH_TOKEN_MISSING"
 
     class NotAuth(StrEnum):

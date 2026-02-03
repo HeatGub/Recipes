@@ -20,14 +20,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / ".env")
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
+def env_bool(name, default="False"):
+    return os.getenv(name, default).lower() == "true"
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = env_bool("DEBUG")
+
+AUTH_COOKIE = {
+    "NAME": "refresh_token",
+    "SECURE": env_bool("COOKIE_SECURE"),
+    "HTTP_ONLY": True,
+    "SAMESITE": os.getenv("COOKIE_SAMESITE", "Lax"),
+    "DOMAIN": os.getenv("COOKIE_DOMAIN") or None,
+    "PATH": "/",
+}
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG")
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
@@ -60,7 +69,7 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=15),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'AUTH_HEADER_TYPES': ('Bearer',),
