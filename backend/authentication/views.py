@@ -21,7 +21,7 @@ class CookieTokenRefreshView(TokenRefreshView):
         refresh = request.COOKIES.get("refresh_token")
 
         if not refresh:
-            raise AuthenticationFailed(code=EC.AuthFailed.REFRESH_TOKEN_MISSING)
+            raise AuthenticationFailed(detail={"_error": [EC.AuthFailed.REFRESH_TOKEN_MISSING]})
 
         serializer = self.get_serializer(data={"refresh": refresh})
         serializer.is_valid(raise_exception=True)

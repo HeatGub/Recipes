@@ -37,13 +37,13 @@ class LoginSerializer(serializers.Serializer):
         except (DjangoValidationError, User.DoesNotExist):
             user = User.objects.filter(username__iexact=identifier).first()
             if not user:
-                raise AuthenticationFailed(code=EC.AuthFailed.USER_NOT_FOUND)
+                raise AuthenticationFailed({"_error": [EC.AuthFailed.USER_NOT_FOUND]})
 
         if not user.check_password(password):
-            raise AuthenticationFailed(code=EC.AuthFailed.WRONG_PASSWORD)
+            raise AuthenticationFailed({"_error": [EC.AuthFailed.WRONG_PASSWORD]})
 
         if not user.is_active:
-            raise AuthenticationFailed(code=EC.AuthFailed.ACCOUNT_DISABLED)
+            raise AuthenticationFailed({"_error": [EC.AuthFailed.ACCOUNT_DISABLED]})
 
         refresh = RefreshToken.for_user(user)
 

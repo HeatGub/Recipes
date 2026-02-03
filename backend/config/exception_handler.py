@@ -1,6 +1,5 @@
 from typing import Any
 from enum import StrEnum
-import traceback
 from rest_framework.views import exception_handler
 from rest_framework import status
 from rest_framework.exceptions import (
@@ -17,180 +16,160 @@ from .responses import api_response
 from .response_codes import ECNS, EC
 
 
-def extract_error_details(detail: Any) -> dict[str, list[str]]:
-    """
-    Normalize DRF exception detail into {field: [ERROR_CODE, ...]}
-    """
+def extract_error_details(detail: Any, *, namespace: ECNS, fallback_code: StrEnum | str,) -> dict[str, list[str]]:
 
-    if detail is None:
-        return {"_error": ["ERROR_DETAIL_UNAVAILABLE"]}
+    def coerce(value) -> str:
+        if not value:
+            return f"{namespace}.{fallback_code}"
 
-    # Helper to normalize a single code
-    def normalize_code(code):
-        if isinstance(code, ErrorDetail):
-            code = code.code or str(code)
-        return str(code).upper().replace(" ", "_")
+        if isinstance(value, ErrorDetail):
+            value = str(value)
 
-    # Field-level dict
+        value = str(value)
+
+        if value.startswith(f"{namespace}."):
+            return value
+
+        return f"{namespace}.{value}"
+
     if isinstance(detail, dict):
-        errors = {}
+        out = {}
         for field, items in detail.items():
             if not isinstance(items, (list, tuple)):
                 items = [items]
-            codes = [normalize_code(item) for item in items]
-            errors[field] = codes
-        return errors
+            out[field] = [coerce(item) for item in items]
+        return out
 
-    # List of errors (non-field/global)
+    # fallbacks, should not reach those below as I'll always pass a dict on raise
     if isinstance(detail, (list, tuple)):
-        codes = [normalize_code(item) for item in detail]
-        return {"_error": codes}
+        return {"_error": [coerce(item) for item in detail]}
 
-    # Single ErrorDetail
-    return {"_error": [normalize_code(detail)]}
+    return {"_error": [coerce(detail)]}
 
 
-def get_error_code(exc: Exception, namespace: ECNS, fallback_code: StrEnum | str): 
+def get_error_code(*, errors: dict[str, list[str]] | None, namespace: ECNS, fallback_code: StrEnum | str) -> str:
     """
-    Resolve the public-facing API error code for a raised exception.
+    Resolve global API error code.
 
-    Attempts to extract a DRF `ErrorDetail.code` value from the exception's
-    `detail` attribute and combine it with the provided namespace to form
-    a namespaced error identifier (e.g. `VALIDATION.REQUIRED`).
-
-    If no usable error code can be extracted, the given `fallback_code`
-    is used instead.
-
-    Resolution order:
-        1. Single `ErrorDetail` instance
-        2. First item in a list/tuple of errors
-        3. First item in a field-error mapping
-        4. Fallback code
-
-    Args:
-        exc: The raised exception instance.
-        namespace: Error code namespace (e.g. `ECNS.VALIDATION`).
-        fallback_code: Default error code used when extraction fails.
-
-    Returns:
-    
-        A fully-qualified error code string in the form:
-        `<NAMESPACE>.<ERROR_CODE>`.
+    Priority:
+        1) first EC code in errors
+        2) namespace + fallback_code
     """
-    def add_namespace_and_normalize(code: str) -> str:
-        code_str = str(code).upper().replace(" ", "_")
-        return f"{namespace}.{code_str}"
 
-    detail = getattr(exc, "detail", None)
+    if errors:
+        for codes in errors.values():
+            if codes:
+                return codes[0]
 
-    if isinstance(detail, ErrorDetail):
-        return add_namespace_and_normalize(detail.code if detail.code else fallback_code)
-
-    if isinstance(detail, dict):
-        # take first error code
-        for v in detail.values():
-            if isinstance(v, (list, tuple)) and v:
-                item = v[0]
-                if isinstance(item, ErrorDetail):
-                    return add_namespace_and_normalize(item.code if item.code else fallback_code)
-
-    if isinstance(detail, list) and detail:
-        item = detail[0]
-        if isinstance(item, ErrorDetail):
-            return add_namespace_and_normalize(item.code if item.code else fallback_code)
-
-    return add_namespace_and_normalize(fallback_code)
+    return f"{namespace}.{fallback_code}"
 
 
 def custom_exception_handler(exc: Exception, context: dict):
-    """
-    Global exception handler that:
-    - Always returns api_response
-    - Extracts DRF error codes automatically
-    """
+
     try:
-        # ---- TOKEN (expired / invalid / blacklisted) ----
+        raw_detail = getattr(exc, "detail", None)
+
+        # ---- TOKEN ----
         if isinstance(exc, (InvalidToken, TokenError)):
             return api_response(
-                success = False,
-                code = get_error_code(exc, ECNS.TOKEN, EC.Token.GENERIC),
-                # errors={"_error": ["TOKEN_INVALID"]},
-                errors = extract_error_details(getattr(exc, "detail", exc)), # debug
-                http_status = status.HTTP_401_UNAUTHORIZED,
+                success=False,
+                code=f"{ECNS.TOKEN}.{EC.Token.GENERIC}",
+                http_status=status.HTTP_401_UNAUTHORIZED,
             )
-        
+
         # ---- AUTH FAILED ----
         if isinstance(exc, AuthenticationFailed):
+            errors = extract_error_details(
+                detail=raw_detail,
+                namespace=ECNS.AUTH_FAILED,
+                fallback_code=EC.AuthFailed.GENERIC,
+            )
             return api_response(
                 success=False,
-                code = get_error_code(exc, ECNS.AUTH_FAILED, EC.AuthFailed.GENERIC),
-                errors = extract_error_details(getattr(exc, "detail", exc)), # debug only?
-                http_status = status.HTTP_401_UNAUTHORIZED,
+                code=get_error_code(
+                    errors=errors,
+                    namespace=ECNS.AUTH_FAILED,
+                    fallback_code=EC.AuthFailed.GENERIC,
+                ),
+                errors=errors,
+                http_status=status.HTTP_401_UNAUTHORIZED,
             )
 
         # ---- NOT AUTHENTICATED ----
         if isinstance(exc, NotAuthenticated):
+            code = f"{ECNS.NOT_AUTH}.{EC.NotAuth.GENERIC}"
             return api_response(
-                success = False,
-                code = get_error_code(exc, ECNS.NOT_AUTH, EC.NotAuth.GENERIC),
-                http_status = status.HTTP_401_UNAUTHORIZED,
+                success=False,
+                code=code,
+                errors={"_error": [code]},
+                http_status=status.HTTP_401_UNAUTHORIZED,
             )
 
         # ---- VALIDATION ----
         if isinstance(exc, ValidationError):
+            errors = extract_error_details(
+                detail=raw_detail,
+                namespace=ECNS.VALIDATION,
+                fallback_code=EC.Validation.GENERIC,
+            )
             return api_response(
-                success = False,
-                code = get_error_code(exc, ECNS.VALIDATION, EC.Validation.GENERIC),
-                errors = extract_error_details(getattr(exc, "detail", exc)),
-                http_status = status.HTTP_422_UNPROCESSABLE_ENTITY,
+                success=False,
+                code=get_error_code(
+                    errors=errors,
+                    namespace=ECNS.VALIDATION,
+                    fallback_code=EC.Validation.GENERIC,
+                ),
+                errors=errors,
+                http_status=status.HTTP_422_UNPROCESSABLE_ENTITY,
             )
 
         # ---- PERMISSION ----
         if isinstance(exc, PermissionDenied):
+            code = f"{ECNS.FORBIDDEN}.{EC.Forbidden.GENERIC}"
             return api_response(
-                success = False,
-                code = get_error_code(exc, ECNS.FORBIDDEN, EC.Forbidden.GENERIC),
-                # errors = {"_error": ["FORBIDDEN"]},
-                errors = extract_error_details(getattr(exc, "detail", exc)), # debug
-                http_status = status.HTTP_403_FORBIDDEN,
+                success=False,
+                code=code,
+                errors={"_error": [code]},
+                http_status=status.HTTP_403_FORBIDDEN,
             )
 
         # ---- NOT FOUND ----
         if isinstance(exc, NotFound):
+            code = f"{ECNS.NOT_FOUND}.{EC.NotFound.GENERIC}"
             return api_response(
-                success = False,
-                code = get_error_code(exc, ECNS.NOT_FOUND, EC.NotFound.GENERIC),
-                errors = {"_error": ["NOT_FOUND"]},
-                http_status = status.HTTP_404_NOT_FOUND,
+                success=False,
+                code=code,
+                errors={"_error": [code]},
+                http_status=status.HTTP_404_NOT_FOUND,
             )
 
-        # ---- THROTTLING ----
+        # ---- THROTTLED ----
         if isinstance(exc, Throttled):
+            code = f"{ECNS.RATE_LIMITED}.{EC.RateLimited.GENERIC}"
             return api_response(
-                success = False,
-                code = get_error_code(exc, ECNS.RATE_LIMITED, EC.RateLimited.GENERIC),
-                errors = {"_error": ["RATE_LIMITED"]},
-                http_status = status.HTTP_429_TOO_MANY_REQUESTS,
+                success=False,
+                code=code,
+                errors={"_error": [code]},
+                http_status=status.HTTP_429_TOO_MANY_REQUESTS,
             )
 
-        # ---- Let DRF handle other exceptions (e.g., MethodNotAllowed, ParseError) ----
+        # ---- FALLBACK TO DRF (not explicitly handled ones) ----
         response = exception_handler(exc, context)
         if response is not None:
+            code = f"{ECNS.API_ERROR}.{EC.ApiError.GENERIC}"
             return api_response(
-                success = False,
-                code = get_error_code(exc, ECNS.API_ERROR, EC.ApiError.GENERIC),
-                # errors={"_error": ["API_ERROR"]},
-                errors = extract_error_details(getattr(response, "data", response)), # DEBUG ONLY
-                http_status = getattr(response, "status_code", status.HTTP_400_BAD_REQUEST),
+                success=False,
+                code=code,
+                errors={"_error": [code]},
+                http_status=getattr(response, "status_code", status.HTTP_400_BAD_REQUEST),
             )
-        
+
+    # ---- SERVER ERROR ----
     except Exception as handler_exc:
-        # ---- Unhandled exceptions ----
-        print(f"\nSERVER_ERROR:\n{handler_exc}\nTRACEBACK:\n\n") # DEBUG ONLY
-        traceback.print_exc()  # prints full stack trace to console
+        code = f"{ECNS.SERVER}.{EC.ServerError.GENERIC}"
         return api_response(
-            success = False,
-            code = get_error_code(exc, ECNS.SERVER, EC.ServerError.GENERIC),
-            errors = {"_error": ["INTERNAL_SERVER_ERROR"]},
-            http_status = status.HTTP_500_INTERNAL_SERVER_ERROR,
+            success=False,
+            code=code,
+            errors={"_error": [code]},
+            http_status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
