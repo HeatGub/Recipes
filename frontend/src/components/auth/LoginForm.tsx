@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import SyncLoader from "react-spinners/SyncLoader"
+import { useState } from "react"
 
 export type LoginFormData = z.infer<typeof loginSchema>
 
@@ -11,8 +12,8 @@ interface LoginFormProps {
 }
 
 export const loginSchema = z.object({
-  identifier: z.string().min(1, { message: "forms.errors.required" }),
-  password: z.string().min(1, { message: "forms.errors.required" }),
+  identifier: z.string().min(1, { message: "VALIDATION.BLANK" }),
+  password: z.string().min(1, { message: "VALIDATION.BLANK" }),
 })
 
 export function LoginForm({ onSubmit }: LoginFormProps) {
@@ -20,13 +21,39 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   })
 
+  const [globalError, setGlobalError] = useState<string | null>(null)
+
   const handleFormSubmit = async (data: LoginFormData) => {
-    await onSubmit(data)
+    setGlobalError(null)
+    try {
+      await onSubmit(data)
+    } catch (err: unknown) {
+      // Type guard to check if err has the expected DRF error shape
+      if (typeof err === "object" && err !== null && "errors" in err && typeof (err as any).errors === "object") {
+        const apiErrors = (err as { errors: Record<string, string[]> }).errors
+
+        for (const [field, messages] of Object.entries(apiErrors)) {
+          if (!Array.isArray(messages)) continue
+
+          if (field === "_error") {
+            setGlobalError(messages[0])
+          } else if (messages.length > 0) {
+            setError(field as keyof LoginFormData, {
+              type: "server",
+              message: messages[0],
+            })
+          }
+        }
+      } else {
+        console.error("LOGIN FORM - unexpected error:", err)
+      }
+    }
   }
 
   return (
@@ -46,7 +73,7 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
 
       <label>{t("account.username_or_email")}</label>
       <input {...register("identifier")} type="text" className="w-full rounded border bg-(--bg-secondary) px-2 py-1" />
-      {errors.identifier?.message && <p className="text-xs text-(--text-error)">{t(errors.identifier.message)}</p>}
+      {errors.identifier?.message && <p className="text-xs text-(--text-error)">{t(`errors.${errors.identifier.message}`)}</p>}
 
       <label>{t("account.password")}</label>
       <input
@@ -54,11 +81,13 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         type="password"
         className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
       />
-      {errors.password?.message && <p className="text-xs text-(--text-error)">{t(errors.password.message)}</p>}
-
+      {errors.password?.message && <p className="text-xs text-(--text-error)">{t(`errors.${errors.password.message}`)}</p>}
+      
       <button type="submit" className="mt-2 w-full rounded bg-(--accent-primary) px-2 py-1 text-(--text-inverted)">
-        {t("account.login")}
+        {t("account.log_in")}
       </button>
+      
+      {globalError && <p className="mt-1 text-center text-s text-(--text-warning)">{t(`errors.${globalError}`)}</p>}
     </form>
   )
 }

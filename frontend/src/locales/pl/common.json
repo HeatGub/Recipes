@@ -10,6 +10,7 @@
   },
   "account": {
     "login": "Logowanie",
+    "log_in": "Zaloguj",
     "logged_in_as": "Zalogowany jako",
     "logout": "Wyloguj",
     "register": "Rejestracja",
@@ -22,16 +23,13 @@
     "create_account": "Stwórz Konto"
   },
   "errors": {
-    "AUTH.INVALID_CREDENTIALS": "Nieprawidłowy email lub hasło",
-    "AUTH.ACCOUNT_DISABLED": "Twoje konto jest zablokowane",
-    "VALIDATION.REQUIRED": "Email i hasło są wymagane"
-  },
-  "forms": {
-    "errors": {
-      "required": "To pole jest wymagane",
-      "invalid_email": "Nieprawidłowy adres e-mail",
-      "password_too_short": "Hasło musi mieć co najmniej {min} znaków",
-      "password_mismatch": "Hasła nie są takie same"
+    "VALIDATION": {
+      "BLANK": "To pole nie może być puste",
+      "REQUIRED": "To pole jest wymagane"
+    },
+    "AUTH_FAILED": {
+      "INVALID_CREDENTIALS": "Nieprawidłowe dane logowania",
+      "ACCOUNT_DISABLED": "To konto jest zablokowane"
     }
   }
 }

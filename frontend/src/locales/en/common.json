@@ -10,6 +10,7 @@
   },
   "account": {
     "login": "Login",
+    "log_in": "Log in",
     "logged_in_as": "Logged in as",
     "logout": "Logout",
     "register": "Register",
@@ -22,16 +23,13 @@
     "create_account": "Create Account"
   },
   "errors": {
-    "AUTH.INVALID_CREDENTIALS": "Invalid email or password",
-    "AUTH.ACCOUNT_DISABLED": "Your account is disabled",
-    "VALIDATION.REQUIRED": "Email and password are required"
-  },
-  "forms": {
-    "errors": {
-      "required": "This field is required",
-      "invalid_email": "Invalid email address",
-      "password_too_short": "Password must be at least {min} characters",
-      "password_mismatch": "Passwords do not match"
+    "VALIDATION": {
+      "BLANK": "This field can't be blank",
+      "REQUIRED": "This field is required"
+    },
+    "AUTH_FAILED": {
+      "INVALID_CREDENTIALS": "Invalid credentials",
+      "ACCOUNT_DISABLED": "This account is disabled"
     }
   }
 }
