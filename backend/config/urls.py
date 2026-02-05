@@ -17,11 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from authentication.permissions import IsAuthenticatedEC
 from rest_framework.response import Response
 
 class ProtectedTestView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedEC]
     def get(self, request):
         return Response({
             "user": request.user.username,

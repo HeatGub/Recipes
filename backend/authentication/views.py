@@ -4,7 +4,7 @@ from rest_framework_simplejwt.views import (
 from rest_framework_simplejwt.exceptions import TokenError
 from .serializers import LoginSerializer, RegisterSerializer
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from .permissions import IsAuthenticatedEC
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny
@@ -136,7 +136,7 @@ class LogoutView(APIView):
 
 
 class MeView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedEC]
 
     def get(self, request):
         user = request.user
@@ -152,7 +152,7 @@ class MeView(APIView):
 
 
 class DeleteUserView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedEC]
 
     def delete(self, request):
         user = request.user

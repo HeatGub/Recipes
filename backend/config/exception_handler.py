@@ -97,11 +97,19 @@ def custom_exception_handler(exc: Exception, context: dict):
 
         # ---- NOT AUTHENTICATED ----
         if isinstance(exc, NotAuthenticated):
-            code = f"{ECNS.NOT_AUTH}.{EC.NotAuth.GENERIC}"
+            errors = extract_error_details(
+                detail=raw_detail,
+                namespace=ECNS.NOT_AUTH,
+                fallback_code=EC.NotAuth.GENERIC,
+            )
             return api_response(
                 success=False,
-                code=code,
-                errors={"_error": [code]},
+                code=get_error_code(
+                    errors=errors,
+                    namespace=ECNS.NOT_AUTH,
+                    fallback_code=EC.NotAuth.GENERIC,
+                ),
+                errors=errors,
                 http_status=status.HTTP_401_UNAUTHORIZED,
             )
 

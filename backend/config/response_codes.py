@@ -60,6 +60,7 @@ class EC():
 
     class NotAuth(StrEnum):
         GENERIC = "GENERIC_ERROR"
+        USER_NOT_LOGGED_IN = "USER_NOT_LOGGED_IN"
 
     class Validation(StrEnum):
         GENERIC = "GENERIC_ERROR"
