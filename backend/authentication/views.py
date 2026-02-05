@@ -2,7 +2,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from rest_framework_simplejwt.exceptions import TokenError
-from .serializers import LoginSerializer
+from .serializers import LoginSerializer, RegisterSerializer
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -82,7 +82,37 @@ class LoginView(APIView):
         )
 
         return response
+    
 
+class RegisterView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+
+        serializer = RegisterSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        data = serializer.validated_data
+        refresh_token = data.pop("refresh")
+
+        response = api_response(
+            success=True,
+            code=SC.Auth.REGISTER_SUCCESS,
+            payload=data,
+            http_status=status.HTTP_201_CREATED,
+        )
+
+        response.set_cookie(
+            key=cookie["NAME"],
+            value=refresh_token,
+            httponly=cookie["HTTP_ONLY"],
+            secure=cookie["SECURE"],
+            samesite=cookie["SAMESITE"],
+            domain=cookie["DOMAIN"],
+            path=cookie["PATH"],
+        )
+
+        return response
 
 
 class LogoutView(APIView):
@@ -119,3 +149,30 @@ class MeView(APIView):
                 "email": user.email
             }}
         )
+
+
+class DeleteUserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        user = request.user
+        refresh_token = request.COOKIES.get(cookie["NAME"])
+
+        user.delete()
+
+        if refresh_token:
+            try:
+                RefreshToken(refresh_token).blacklist()
+            except TokenError:
+                # token already expired/invalid → ignore
+                pass
+
+        response = api_response(
+            success=True,
+            code=SC.Auth.USER_DELETED,
+            http_status=status.HTTP_200_OK,
+        )
+
+        response.delete_cookie(cookie["NAME"])
+
+        return response
