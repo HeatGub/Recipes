@@ -13,6 +13,7 @@ from config.responses import api_response
 from rest_framework.exceptions import AuthenticationFailed
 from config.response_codes import EC, SC
 from django.conf import settings
+from config.error_helpers import api_err_dict
 
 
 cookie = settings.AUTH_COOKIE
@@ -24,7 +25,7 @@ class CookieTokenRefreshView(TokenRefreshView):
         refresh = request.COOKIES.get("refresh_token")
 
         if not refresh:
-            raise AuthenticationFailed(detail={"_error": [EC.AuthFailed.REFRESH_TOKEN_MISSING]})
+            raise AuthenticationFailed({"_global": [api_err_dict(EC.AuthFailed.REFRESH_TOKEN_MISSING),]})
 
         serializer = self.get_serializer(data={"refresh": refresh})
         serializer.is_valid(raise_exception=True)

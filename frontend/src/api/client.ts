@@ -1,12 +1,19 @@
 import axios, { AxiosError } from "axios"
 import type { AxiosRequestConfig, AxiosResponse } from "axios"
 
+export interface ApiFieldError {
+  code: string
+  params?: Record<string, any>
+}
+
+export type ApiErrors = Record<string, ApiFieldError[]>
+
 type ApiResponse<TPayload = any> = {
   success: boolean
   code: string
   message?: string | null
   payload: TPayload
-  errors?: Record<string, any>
+  errors?: ApiErrors
   meta?: Record<string, any>
 }
 
@@ -62,7 +69,7 @@ async function handleResponseError(error: AxiosError): Promise<any> {
   }
 
   const code = data?.code
-  const shouldRefresh = code === "GENERIC_TOKEN_ERROR"
+  const shouldRefresh = code === "TOKEN.GENERIC_ERROR"
 
   // Not eligible for refresh  → propagate backend errors
   if (originalRequest.url?.includes("/auth/token/refresh/") || !shouldRefresh) {

@@ -16,6 +16,15 @@ export const loginSchema = z.object({
   password: z.string().min(1, { message: "VALIDATION.BLANK" }),
 })
 
+export interface ApiFieldError {
+  code: string
+  params?: Record<string, any>
+}
+
+export interface ApiErrors {
+  [field: string]: ApiFieldError[]
+}
+
 export function LoginForm({ onSubmit }: LoginFormProps) {
   const { t } = useTranslation()
   const {
@@ -31,22 +40,30 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
 
   const handleFormSubmit = async (data: LoginFormData) => {
     setGlobalError(null)
+
     try {
       await onSubmit(data)
     } catch (err: unknown) {
-      // Type guard to check if err has the expected DRF error shape
-      if (typeof err === "object" && err !== null && "errors" in err && typeof (err as any).errors === "object") {
-        const apiErrors = (err as { errors: Record<string, string[]> }).errors
+      // --- ensure error matches expected API shape ---
+      if (
+        typeof err === "object" &&
+        err !== null &&
+        "errors" in err &&
+        typeof (err as any).errors === "object"
+      ) {
+        const apiErrors = (err as { errors: ApiErrors }).errors
 
-        for (const [field, messages] of Object.entries(apiErrors)) {
-          if (!Array.isArray(messages)) continue
+        for (const [field, fieldErrors] of Object.entries(apiErrors)) {
+          if (!Array.isArray(fieldErrors) || fieldErrors.length === 0) continue
 
-          if (field === "_error") {
-            setGlobalError(messages[0])
-          } else if (messages.length > 0) {
+          const firstError = fieldErrors[0]
+
+          if (field === "_global") {
+            setGlobalError(firstError.code)
+          } else {
             setError(field as keyof LoginFormData, {
               type: "server",
-              message: messages[0],
+              message: firstError.code,
             })
           }
         }

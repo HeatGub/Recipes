@@ -24,10 +24,10 @@ class LoginSerializer(serializers.Serializer):
         errors = {}
 
         if not identifier:
-            errors["identifier"] = [EC.Validation.BLANK]
+            errors["identifier"] = [api_err_dict(EC.Validation.BLANK)]
 
         if not password:
-            errors["password"] = [EC.Validation.BLANK]
+            errors["password"] = [api_err_dict(EC.Validation.BLANK)]
 
         if errors:
             raise ValidationError(errors)
@@ -38,13 +38,13 @@ class LoginSerializer(serializers.Serializer):
         except (DjangoValidationError, User.DoesNotExist):
             user = User.objects.filter(username__iexact=identifier).first()
             if not user:
-                raise AuthenticationFailed({"_error": [EC.AuthFailed.INVALID_CREDENTIALS]})
+                raise AuthenticationFailed({"_global": [api_err_dict(EC.AuthFailed.INVALID_CREDENTIALS),]})
 
         if not user.check_password(password):
-            raise AuthenticationFailed({"_error": [EC.AuthFailed.INVALID_CREDENTIALS]})
+            raise AuthenticationFailed({"_global": [api_err_dict(EC.AuthFailed.INVALID_CREDENTIALS),]})
 
         if not user.is_active:
-            raise AuthenticationFailed({"_error": [EC.AuthFailed.ACCOUNT_DISABLED]})
+            raise AuthenticationFailed({"_global": [api_err_dict(EC.AuthFailed.ACCOUNT_DISABLED),]})
 
         refresh = RefreshToken.for_user(user)
 
