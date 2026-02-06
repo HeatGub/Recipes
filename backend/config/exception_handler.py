@@ -1,5 +1,4 @@
 from typing import Any
-from enum import StrEnum
 from rest_framework.views import exception_handler
 from rest_framework import status
 from rest_framework.exceptions import (
@@ -17,50 +16,109 @@ from .response_codes import ECNS, EC
 from .logger_setup import log_exception
 
 
-def extract_error_details(detail: Any, *, namespace: ECNS, fallback_code: StrEnum | str,) -> dict[str, list[str]]:
+def extract_error_details(
+    *,
+    detail: Any,
+    namespace,
+    fallback_code,
+) -> dict[str, list[dict]]:
 
-    def coerce(value) -> str:
-        if not value:
-            return f"{namespace}.{fallback_code}"
+    def normalize(value):
 
-        if isinstance(value, ErrorDetail):
-            value = str(value)
+        # ---- already structured from api_err() ----
+        if isinstance(value, dict) and "err_code" in value:
+            code = str(value["err_code"])
+            params = value.get("err_params")
 
-        value = str(value)
+        else:
+            if isinstance(value, ErrorDetail):
+                value = value.code or str(value)
 
-        if value.startswith(f"{namespace}."):
-            return value
+            code = str(value) if value else fallback_code
+            params = None
 
-        return f"{namespace}.{value}"
+        # ---- namespace injection ----
+        if not code.startswith(f"{namespace}."):
+            code = f"{namespace}.{code}"
 
+        out = {"code": code}
+        if params:
+            out["params"] = params
+
+        return out
+
+    # ---- dict = field mapping ----
     if isinstance(detail, dict):
-        out = {}
+        out: dict[str, list[dict]] = {}
+
         for field, items in detail.items():
             if not isinstance(items, (list, tuple)):
                 items = [items]
-            out[field] = [coerce(item) for item in items]
+
+            out[field] = [normalize(item) for item in items]
+
         return out
 
-    # fallbacks, should not reach those below as I'll always pass a dict on raise
+    # ---- list = global ----
     if isinstance(detail, (list, tuple)):
-        return {"_error": [coerce(item) for item in detail]}
+        return {"_global": [normalize(item) for item in detail]}
 
-    return {"_error": [coerce(detail)]}
+    return {"_global": [normalize(detail)]}
 
 
-def get_error_code(*, errors: dict[str, list[str]] | None, namespace: ECNS, fallback_code: StrEnum | str) -> str:
-    """
-    Resolve global API error code.
+# def extract_error_details(detail: Any, *, namespace: ECNS, fallback_code: StrEnum | str,) -> dict[str, list[str]]:
 
-    Priority:
-        1) first EC code in errors
-        2) namespace + fallback_code
-    """
+#     def coerce(value) -> str:
+#         if not value:
+#             return f"{namespace}.{fallback_code}"
+
+#         if isinstance(value, ErrorDetail):
+#             value = str(value)
+
+#         value = str(value)
+
+#         if value.startswith(f"{namespace}."):
+#             return value
+
+#         return f"{namespace}.{value}"
+
+#     if isinstance(detail, dict):
+#         out = {}
+#         for field, items in detail.items():
+#             if not isinstance(items, (list, tuple)):
+#                 items = [items]
+#             out[field] = [coerce(item) for item in items]
+#         return out
+
+#     # fallbacks, should not reach those below as I'll always pass a dict on raise
+#     if isinstance(detail, (list, tuple)):
+#         return {"_error": [coerce(item) for item in detail]}
+
+#     return {"_error": [coerce(detail)]}
+
+
+# def get_error_code(*, errors: dict[str, list[str]] | None, namespace: ECNS, fallback_code: StrEnum | str) -> str:
+#     """
+#     Resolve global API error code.
+
+#     Priority:
+#         1) first EC code in errors
+#         2) namespace + fallback_code
+#     """
+
+#     if errors:
+#         for codes in errors.values():
+#             if codes:
+#                 return codes[0]
+
+#     return f"{namespace}.{fallback_code}"
+
+def get_error_code(*, errors, namespace, fallback_code) -> str:
 
     if errors:
-        for codes in errors.values():
-            if codes:
-                return codes[0]
+        for items in errors.values():
+            if items:
+                return items[0]["code"]
 
     return f"{namespace}.{fallback_code}"
 

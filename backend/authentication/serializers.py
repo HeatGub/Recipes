@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework_simplejwt.tokens import RefreshToken
 from config.response_codes import EC
 from rest_framework.exceptions import ValidationError
+from config.error_helpers import api_err_dict
 
 User = get_user_model()
 
@@ -59,12 +60,19 @@ class LoginSerializer(serializers.Serializer):
 
 
 class RegisterSerializer(serializers.Serializer):
+
     username = serializers.CharField(required=False, allow_blank=True)
     email = serializers.CharField(required=False, allow_blank=True)
     password = serializers.CharField(required=False, allow_blank=True, write_only=True)
     password_confirm = serializers.CharField(required=False, allow_blank=True, write_only=True)
 
+    MIN_USERNAME_LEN = 3
+    # MAX_USERNAME_LEN = 40
+    MIN_PASSWORD_LEN = 3
+    MAX_PASSWORD_LEN = 10
+
     def validate(self, attrs):
+
         username = attrs.get("username")
         email = attrs.get("email")
         password = attrs.get("password")
@@ -72,41 +80,84 @@ class RegisterSerializer(serializers.Serializer):
 
         errors = {}
 
-        # ---- REQUIRED ----
+        # ---------- REQUIRED ----------
         if not username:
-            errors["username"] = [EC.Validation.BLANK]
+            errors["username"] = [api_err_dict(EC.Validation.BLANK)]
 
         if not password:
-            errors["password"] = [EC.Validation.BLANK]
+            errors["password"] = [api_err_dict(EC.Validation.BLANK)]
 
         if not password_confirm:
-            errors["password_confirm"] = [EC.Validation.BLANK]
+            errors["password_confirm"] = [api_err_dict(EC.Validation.BLANK)]
 
         if errors:
             raise ValidationError(errors)
 
-        # ---- PASSWORDS MATCH ----
-        if password != password_confirm:
-            raise ValidationError({"password_confirm": [EC.Validation.PASSWORD_MISMATCH]})
-        
-        # ---- USERNAME UNIQUE ----
-        if User.objects.filter(username__iexact=username).exists():
-            raise AuthenticationFailed({"username": [EC.AuthFailed.USERNAME_TAKEN]})
+        # ---------- USERNAME LENGTH ----------
+        if len(username) < self.MIN_USERNAME_LEN:
+            errors.setdefault("username", []).append(
+                api_err_dict(
+                    EC.Validation.USERNAME_TOO_SHORT,
+                    min=self.MIN_USERNAME_LEN,
+                )
+            )
 
-        # ---- EMAIL CHECKS (optional) ----
+        # ---------- PASSWORD LENGTH ----------
+        if len(password) < self.MIN_PASSWORD_LEN:
+            errors.setdefault("password", []).append(
+                api_err_dict(
+                    EC.Validation.PASSWORD_TOO_SHORT,
+                    min=self.MIN_PASSWORD_LEN,
+                )
+            )
+
+        if len(password) > self.MAX_PASSWORD_LEN:
+            errors.setdefault("password", []).append(
+                api_err_dict(
+                    EC.Validation.PASSWORD_TOO_LONG,
+                    max=self.MAX_PASSWORD_LEN,
+                )
+            )
+
+        # ---------- PASSWORD MATCH ----------
+        if password != password_confirm:
+            errors.setdefault("password_confirm", []).append(
+                api_err_dict(EC.Validation.PASSWORD_MISMATCH)
+            )
+
+        if errors:
+            raise ValidationError(errors)
+
+        # ---------- USERNAME UNIQUE ----------
+        if User.objects.filter(username__iexact=username).exists():
+            raise AuthenticationFailed({
+                "username": [
+                    api_err_dict(EC.AuthFailed.USERNAME_TAKEN),
+                ]
+            })
+
+        # ---------- EMAIL ----------
         if email:
             try:
                 validate_email(email)
             except DjangoValidationError:
-                raise ValidationError({"email": [EC.Validation.INVALID_EMAIL]})
+                raise ValidationError({
+                    "email": [
+                        api_err_dict(EC.Validation.INVALID_EMAIL),
+                    ]
+                })
 
             if User.objects.filter(email__iexact=email).exists():
-                raise AuthenticationFailed({"email": [EC.AuthFailed.EMAIL_TAKEN]})
+                raise AuthenticationFailed({
+                    "email": [
+                        api_err_dict(EC.AuthFailed.EMAIL_TAKEN),
+                    ]
+                })
 
-        # ---- CREATE USER ----
+        # ---------- CREATE ----------
         user = User.objects.create_user(
             username=username,
-            email=email if email else "",
+            email=email or "",
             password=password,
         )
 
