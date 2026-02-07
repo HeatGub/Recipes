@@ -80,14 +80,13 @@ class RegisterSerializer(serializers.Serializer):
 
         errors = {}
 
-        # # test global error params
-        # errors.setdefault("_global", []).append(
-        #     api_err_dict(
-        #         EC.Validation.USERNAME_TOO_SHORT,
-        #         min=self.MIN_USERNAME_LEN,
-        #     )
-        # )
-        # raise ValidationError(errors)
+        # test global error params
+        errors.setdefault("_global", []).append(
+            api_err_dict(
+                EC.Validation.USERNAME_TOO_SHORT,
+                min=self.MIN_USERNAME_LEN,
+            )
+        )
 
         # ---------- REQUIRED ----------
         if not username:

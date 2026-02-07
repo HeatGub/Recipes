@@ -3,20 +3,19 @@ import { useForm } from "react-hook-form"
 // import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import SyncLoader from "react-spinners/SyncLoader"
-import { useState } from "react"
 import type { FieldError } from "react-hook-form"
 
 export const registerSchema = z
-  .object({ // off for testing backend
-    username: z.string().min(0, { message: "VALIDATION.BLANK" }),
+  .object({
+    username: z.string().min(1, { message: "VALIDATION.BLANK" }),
     email: z.string({ message: "VALIDATION.INVALID_EMAIL" }),
-    password: z.string().min(0, { message: "VALIDATION.BLANK" }),
-    password_confirm: z.string().min(0, { message: "VALIDATION.BLANK" }),
+    password: z.string().min(1, { message: "VALIDATION.BLANK" }),
+    password_confirm: z.string().min(1, { message: "VALIDATION.BLANK" }),
   })
-  // .refine((data) => data.password === data.password_confirm, {
-  //   path: ["password_confirm"],
-  //   message: "VALIDATION.PASSWORDS_DONT_MATCH",
-  // })
+  .refine((data) => data.password === data.password_confirm, {
+    path: ["password_confirm"],
+    message: "VALIDATION.PASSWORD_MISMATCH",
+  })
 
 export type RegisterFormData = z.infer<typeof registerSchema>
 
@@ -33,6 +32,21 @@ export interface ApiErrors {
   [field: string]: ApiError[]
 }
 
+export type ServerErrorMessage = ApiError & {
+  __type: "server"
+}
+
+export function toServerMessage(error: ApiError): ServerErrorMessage {
+  return {
+    ...error,
+    __type: "server",
+  }
+}
+
+export function rhfMessage(message: ServerErrorMessage): string {
+  return message as unknown as string
+}
+
 export function getApiError(message: unknown): ApiError | null {
   if (!message) return null
   if (typeof message === "object" && message !== null && "code" in message) {
@@ -44,6 +58,7 @@ export function getApiError(message: unknown): ApiError | null {
   return null
 }
 
+
 function FormFieldError({ error }: { error?: FieldError }) {
   const { t } = useTranslation()
   const msg = getApiError(error?.message)
@@ -51,6 +66,7 @@ function FormFieldError({ error }: { error?: FieldError }) {
 
   return (t(`errors.${msg.code}`, msg.params))
 }
+
 
 function FormGlobalError({ error }: { error: ApiError | null }) {
   const { t } = useTranslation()
@@ -67,16 +83,14 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
     register,
     handleSubmit,
     setError,
+    clearErrors,
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormData>({
-    // resolver: zodResolver(registerSchema),
+    // resolver: zodResolver(registerSchema), // off for testing backend
   })
 
-  const [globalError, setGlobalError] = useState<ApiError | null>(null)
-
-
   const handleFormSubmit = async (data: RegisterFormData) => {
-    setGlobalError(null)
+    clearErrors("root")
 
     try {
       await onSubmit(data)
@@ -86,7 +100,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         typeof err === "object" &&
         err !== null &&
         "errors" in err &&
-        typeof (err as any).errors === "object"
+        typeof (err).errors === "object"
       ) {
         const apiErrors = (err as { errors: ApiErrors }).errors
 
@@ -96,22 +110,29 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
           const firstError = fieldErrors[0]
 
           if (field === "_global") {
-            setGlobalError({
-              code: firstError.code,
-              params: firstError.params,
+            setError("root", {
+              type: "server",
+              message: rhfMessage(
+                toServerMessage({
+                  code: firstError.code,
+                  params: firstError.params,
+                })
+              ),
             })
           } else {
             setError(field as keyof RegisterFormData, {
               type: "server",
-              message: {
-                code: firstError.code,
-                params: firstError.params,
-              } as unknown as string, // 👈 single cast at boundary
+              message: rhfMessage(
+                toServerMessage({
+                  code: firstError.code,
+                  params: firstError.params,
+                })
+              ),
             })
           }
         }
       } else {
-        console.error("REGISTER FORM - unexpected error:", err)
+        console.error("FORM - unexpected error:", err)
       }
     }
   }
@@ -144,7 +165,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
       }
 
       {/* EMAIL */}
-      <label>{t("account.email")}</label>
+      <label>{t("account.email_optional")}</label>
       <input
         {...register("email")}
         // type="email"
@@ -185,7 +206,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
       </button>
 
       <p className="mt-1 text-center text-s text-(--text-warning)">
-        <FormGlobalError error={globalError} />
+        <FormGlobalError error={getApiError(errors.root?.message)} />
       </p>
     </form>
   )
