@@ -19,13 +19,19 @@
     "email_optional": "Email (opcjonalnie)",
     "username_or_email": "Nazwa Użytkownika lub Email",
     "password": "Hasło",
-    "confirm_password": "Potwierdź hasło",
+    "password_confirm": "Potwierdź Hasło",
     "create_account": "Stwórz Konto"
   },
   "errors": {
     "VALIDATION": {
       "BLANK": "To pole nie może być puste",
-      "REQUIRED": "To pole jest wymagane"
+      "REQUIRED": "To pole jest wymagane",
+      "USERNAME_TOO_SHORT": "Nazwa użytkownika musi zawierać co najmniej {{min}} znaki",
+      "USERNAME_TOO_LONG": "Nazwa użytkownika nie może przekraczać {{max}} znaków",
+      "PASSWORD_MISMATCH": "Hasła nie są takie same",
+      "PASSWORD_TOO_SHORT": "Hasło musi zawierać co najmniej {{min}} znaki",
+      "PASSWORD_TOO_LONG": "Hasło nie może przekraczać {{max}} znaków",
+      "INVALID_EMAIL": "Nieprawidłowy format e-mail"
     },
     "AUTH_FAILED": {
       "INVALID_CREDENTIALS": "Nieprawidłowe dane logowania",

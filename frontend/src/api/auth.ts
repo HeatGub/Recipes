@@ -30,3 +30,10 @@ export const logout = async () => {
   await api.post("/auth/logout/")
   setAccessToken(null)
 }
+
+export const register = async (email: string, username: string, password: string) => {
+  const res = await api.post("/auth/register/", { email, username, password })
+  const token = res.data.payload.access_token
+  setAccessToken(token)
+  return res.data
+}

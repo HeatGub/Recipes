@@ -4,6 +4,7 @@ import { useAuth } from "../../auth/useAuth"
 import { LoginForm } from "./LoginForm"
 import { RegisterForm } from "./RegisterForm"
 import clsx from "clsx"
+import { api } from "@/api/client"
 
 export function LoginAvatarMenu() {
   const { login, logout, user } = useAuth()
@@ -85,11 +86,10 @@ export function LoginAvatarMenu() {
           {openPanel === "register" && (
             <RegisterForm
               onSubmit={async (data) => {
-                data
-                // console.log("Register form data:", data)
-                // await authApi.register(data)
+                await api.post("/auth/register/", { ...data })
                 closePanel()
-              }}
+              }
+            }
             />
           )}
 

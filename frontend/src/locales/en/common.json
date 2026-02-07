@@ -19,13 +19,19 @@
     "email_optional": "Email (optional)",
     "username_or_email": "Username or Email",
     "password": "Password",
-    "confirm_password": "Confirm Password",
+    "password_confirm": "Confirm Password",
     "create_account": "Create Account"
   },
   "errors": {
     "VALIDATION": {
       "BLANK": "This field can't be blank",
-      "REQUIRED": "This field is required"
+      "REQUIRED": "This field is required",
+      "USERNAME_TOO_SHORT": "Username must be at least {{min}} characters long",
+      "USERNAME_TOO_LONG": "Username can't exceed {{max}} characters",
+      "PASSWORD_MISMATCH": "Passwords do not match",
+      "PASSWORD_TOO_SHORT": "Password must be at least {{min}} characters long",
+      "PASSWORD_TOO_LONG": "Password can't exceed {{max}} characters",
+      "INVALID_EMAIL": "Invalid e-mail"
     },
     "AUTH_FAILED": {
       "INVALID_CREDENTIALS": "Invalid credentials",

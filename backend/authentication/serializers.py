@@ -66,10 +66,10 @@ class RegisterSerializer(serializers.Serializer):
     password = serializers.CharField(required=False, allow_blank=True, write_only=True)
     password_confirm = serializers.CharField(required=False, allow_blank=True, write_only=True)
 
-    MIN_USERNAME_LEN = 3
-    # MAX_USERNAME_LEN = 40
+    MIN_USERNAME_LEN = 2
+    MAX_USERNAME_LEN = 30
     MIN_PASSWORD_LEN = 3
-    MAX_PASSWORD_LEN = 10
+    MAX_PASSWORD_LEN = 100
 
     def validate(self, attrs):
 
@@ -79,6 +79,15 @@ class RegisterSerializer(serializers.Serializer):
         password_confirm = attrs.get("password_confirm")
 
         errors = {}
+
+        # # test global error params
+        # errors.setdefault("_global", []).append(
+        #     api_err_dict(
+        #         EC.Validation.USERNAME_TOO_SHORT,
+        #         min=self.MIN_USERNAME_LEN,
+        #     )
+        # )
+        # raise ValidationError(errors)
 
         # ---------- REQUIRED ----------
         if not username:
@@ -90,15 +99,19 @@ class RegisterSerializer(serializers.Serializer):
         if not password_confirm:
             errors["password_confirm"] = [api_err_dict(EC.Validation.BLANK)]
 
-        if errors:
-            raise ValidationError(errors)
-
         # ---------- USERNAME LENGTH ----------
         if len(username) < self.MIN_USERNAME_LEN:
             errors.setdefault("username", []).append(
                 api_err_dict(
                     EC.Validation.USERNAME_TOO_SHORT,
                     min=self.MIN_USERNAME_LEN,
+                )
+            )
+        elif len(username) > self.MAX_USERNAME_LEN:
+            errors.setdefault("username", []).append(
+                api_err_dict(
+                    EC.Validation.USERNAME_TOO_LONG,
+                    max=self.MAX_USERNAME_LEN,
                 )
             )
 
@@ -136,7 +149,7 @@ class RegisterSerializer(serializers.Serializer):
                 ]
             })
 
-        # ---------- EMAIL ----------
+        # ---------- EMAIL (optional) ----------
         if email:
             try:
                 validate_email(email)
@@ -154,21 +167,30 @@ class RegisterSerializer(serializers.Serializer):
                     ]
                 })
 
-        # ---------- CREATE ----------
-        user = User.objects.create_user(
-            username=username,
-            email=email or "",
-            password=password,
-        )
+        # # ---------- CREATE ----------
+        # user = User.objects.create_user(
+        #     username=username,
+        #     email=email or "",
+        #     password=password,
+        # )
 
-        refresh = RefreshToken.for_user(user)
+        # refresh = RefreshToken.for_user(user)
+
+        # return {
+        #     "refresh": str(refresh),
+        #     "access_token": str(refresh.access_token),
+        #     "user": {
+        #         "id": user.id,
+        #         "username": user.username,
+        #         "email": user.email,
+        #     },
 
         return {
-            "refresh": str(refresh),
-            "access_token": str(refresh.access_token),
+            "refresh": "test",
+            "access_token": "test",
             "user": {
-                "id": user.id,
-                "username": user.username,
-                "email": user.email,
+                "id": "test",
+                "username": "test",
+                "email": "test",
             },
         }
