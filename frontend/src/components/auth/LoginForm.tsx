@@ -1,9 +1,14 @@
 import { useTranslation } from "react-i18next"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 import SyncLoader from "react-spinners/SyncLoader"
-import { useState } from "react"
+import { useFormWithApi } from "@/forms/core/useFormWithApi"
+import { FormFieldError, FormGlobalError } from "@/forms/core/FormErrors"
+
+export const loginSchema = z.object({
+  identifier: z.string().min(0, { message: "VALIDATION.BLANK" }),
+  password: z.string().min(0, { message: "VALIDATION.BLANK" }),
+})
 
 export type LoginFormData = z.infer<typeof loginSchema>
 
@@ -11,71 +16,21 @@ interface LoginFormProps {
   onSubmit: (data: LoginFormData) => Promise<void> | void
 }
 
-export const loginSchema = z.object({
-  identifier: z.string().min(1, { message: "VALIDATION.BLANK" }),
-  password: z.string().min(1, { message: "VALIDATION.BLANK" }),
-})
-
-export interface ApiFieldError {
-  code: string
-  params?: Record<string, any>
-}
-
-export interface ApiErrors {
-  [field: string]: ApiFieldError[]
-}
-
 export function LoginForm({ onSubmit }: LoginFormProps) {
   const { t } = useTranslation()
+
   const {
     register,
     handleSubmit,
-    setError,
+    handleApiSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<LoginFormData>({
+  } = useFormWithApi<LoginFormData>({
     resolver: zodResolver(loginSchema),
   })
 
-  const [globalError, setGlobalError] = useState<string | null>(null)
-
-  const handleFormSubmit = async (data: LoginFormData) => {
-    setGlobalError(null)
-
-    try {
-      await onSubmit(data)
-    } catch (err: unknown) {
-      // --- ensure error matches expected API shape ---
-      if (
-        typeof err === "object" &&
-        err !== null &&
-        "errors" in err &&
-        typeof (err as any).errors === "object"
-      ) {
-        const apiErrors = (err as { errors: ApiErrors }).errors
-
-        for (const [field, fieldErrors] of Object.entries(apiErrors)) {
-          if (!Array.isArray(fieldErrors) || fieldErrors.length === 0) continue
-
-          const firstError = fieldErrors[0]
-
-          if (field === "_global") {
-            setGlobalError(firstError.code)
-          } else {
-            setError(field as keyof LoginFormData, {
-              type: "server",
-              message: firstError.code,
-            })
-          }
-        }
-      } else {
-        console.error("LOGIN FORM - unexpected error:", err)
-      }
-    }
-  }
-
   return (
     <form
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={handleSubmit(handleApiSubmit(onSubmit))}
       className={`relative space-y-1 text-sm transition ${
         isSubmitting ? "pointer-events-none opacity-70 blur-[1px]" : ""
       }`}
@@ -88,23 +43,42 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
 
       <h3 className="text-base font-semibold">{t("account.login")}</h3>
 
+      {/* IDENTIFIER */}
       <label>{t("account.username_or_email")}</label>
-      <input {...register("identifier")} type="text" className="w-full rounded border bg-(--bg-secondary) px-2 py-1" />
-      {errors.identifier?.message && <p className="text-xs text-(--text-error)">{t(`errors.${errors.identifier.message}`)}</p>}
+      <input
+        {...register("identifier")}
+        type="text"
+        className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
+      />
+      {errors.identifier && (
+        <p className="text-xs text-(--text-error)">
+          <FormFieldError error={errors.identifier} />
+        </p>
+      )}
 
+      {/* PASSWORD */}
       <label>{t("account.password")}</label>
       <input
         {...register("password")}
         type="password"
         className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
       />
-      {errors.password?.message && <p className="text-xs text-(--text-error)">{t(`errors.${errors.password.message}`)}</p>}
-      
-      <button type="submit" className="mt-2 w-full rounded bg-(--accent-primary) px-2 py-1 text-(--text-inverted)">
+      {errors.password && (
+        <p className="text-xs text-(--text-error)">
+          <FormFieldError error={errors.password} />
+        </p>
+      )}
+
+      <button
+        type="submit"
+        className="mt-2 w-full rounded bg-(--accent-primary) px-2 py-1 text-(--text-inverted)"
+      >
         {t("account.log_in")}
       </button>
-      
-      {globalError && <p className="mt-1 text-center text-s text-(--text-warning)">{t(`errors.${globalError}`)}</p>}
+
+      <p className="mt-1 text-center text-s text-(--text-warning)">
+        <FormGlobalError error={errors.root?.message} />
+      </p>
     </form>
   )
 }
