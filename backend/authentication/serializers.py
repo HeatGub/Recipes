@@ -6,7 +6,15 @@ from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework_simplejwt.tokens import RefreshToken
 from config.response_codes import EC
 from rest_framework.exceptions import ValidationError
-from config.error_helpers import api_err_dict
+from config.error_helpers import api_err_dict, remove_empty_list_fields
+from config.validators import (
+    validate_required,
+    validate_blank,
+    validate_length,
+    validate_password_match,
+    validate_username_unique,
+    validate_email_register,
+)
 
 User = get_user_model()
 
@@ -23,11 +31,17 @@ class LoginSerializer(serializers.Serializer):
 
         errors = {}
 
-        if not identifier:
-            errors["identifier"] = [api_err_dict(EC.Validation.BLANK)]
+        # ---------- REQUIRED ----------
+        for field in ("identifier", "password"):
+            errors.setdefault(field, []).extend(validate_required(attrs, field))
 
-        if not password:
-            errors["password"] = [api_err_dict(EC.Validation.BLANK)]
+
+        # ---------- BLANK ----------
+        for field in ("identifier", "password"):
+            if field in attrs:
+                errors.setdefault(field, []).extend(validate_blank(attrs[field]))
+
+        errors = remove_empty_list_fields(errors)
 
         if errors:
             raise ValidationError(errors)
@@ -61,15 +75,15 @@ class LoginSerializer(serializers.Serializer):
 
 class RegisterSerializer(serializers.Serializer):
 
-    username = serializers.CharField(required=False, allow_blank=True)
-    email = serializers.CharField(required=False, allow_blank=True)
-    password = serializers.CharField(required=False, allow_blank=True, write_only=True)
-    password_confirm = serializers.CharField(required=False, allow_blank=True, write_only=True)
+    username = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    email = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    password = serializers.CharField(required=False, allow_blank=True, allow_null=True, write_only=True)
+    password_confirm = serializers.CharField(required=False, allow_blank=True, allow_null=True, write_only=True)
 
     MIN_USERNAME_LEN = 2
-    MAX_USERNAME_LEN = 30
+    MAX_USERNAME_LEN = 10
     MIN_PASSWORD_LEN = 3
-    MAX_PASSWORD_LEN = 100
+    MAX_PASSWORD_LEN = 10
 
     def validate(self, attrs):
 
@@ -80,91 +94,40 @@ class RegisterSerializer(serializers.Serializer):
 
         errors = {}
 
-        # # test global error params
-        # errors.setdefault("_global", []).append(
-        #     api_err_dict(
-        #         EC.Validation.USERNAME_TOO_SHORT,
-        #         min=self.MIN_USERNAME_LEN,
-        #     )
-        # )
-
         # ---------- REQUIRED ----------
-        if not username:
-            errors["username"] = [api_err_dict(EC.Validation.BLANK)]
+        for field in ("username", "password", "password_confirm"):
+            errors.setdefault(field, []).extend(validate_required(attrs, field))
 
-        if not password:
-            errors["password"] = [api_err_dict(EC.Validation.BLANK)]
+        # ---------- BLANK ----------
+        for field in ("username", "password", "password_confirm"):
+            if field in attrs:
+                errors.setdefault(field, []).extend(validate_blank(attrs[field]))
 
-        if not password_confirm:
-            errors["password_confirm"] = [api_err_dict(EC.Validation.BLANK)]
+        # ---------- LENGTH ----------
+        if username:
+            field_errors = validate_length(username, min_len=self.MIN_USERNAME_LEN, max_len=self.MAX_USERNAME_LEN,
+                                        min_code=EC.Validation.USERNAME_TOO_SHORT, max_code=EC.Validation.USERNAME_TOO_LONG)
+            errors.setdefault("username", []).extend(field_errors)
 
-        # ---------- USERNAME LENGTH ----------
-        if len(username) < self.MIN_USERNAME_LEN:
-            errors.setdefault("username", []).append(
-                api_err_dict(
-                    EC.Validation.USERNAME_TOO_SHORT,
-                    min=self.MIN_USERNAME_LEN,
-                )
-            )
-        elif len(username) > self.MAX_USERNAME_LEN:
-            errors.setdefault("username", []).append(
-                api_err_dict(
-                    EC.Validation.USERNAME_TOO_LONG,
-                    max=self.MAX_USERNAME_LEN,
-                )
-            )
-
-        # ---------- PASSWORD LENGTH ----------
-        if len(password) < self.MIN_PASSWORD_LEN:
-            errors.setdefault("password", []).append(
-                api_err_dict(
-                    EC.Validation.PASSWORD_TOO_SHORT,
-                    min=self.MIN_PASSWORD_LEN,
-                )
-            )
-
-        if len(password) > self.MAX_PASSWORD_LEN:
-            errors.setdefault("password", []).append(
-                api_err_dict(
-                    EC.Validation.PASSWORD_TOO_LONG,
-                    max=self.MAX_PASSWORD_LEN,
-                )
-            )
+        if password:
+            field_errors = validate_length(password, min_len=self.MIN_PASSWORD_LEN, max_len=self.MAX_PASSWORD_LEN,
+                                        min_code=EC.Validation.PASSWORD_TOO_SHORT, max_code=EC.Validation.PASSWORD_TOO_LONG)
+            errors.setdefault("password", []).extend(field_errors)
 
         # ---------- PASSWORD MATCH ----------
-        if password != password_confirm:
-            errors.setdefault("password_confirm", []).append(
-                api_err_dict(EC.Validation.PASSWORD_MISMATCH)
-            )
+        if password and password_confirm:
+            errors.setdefault("password_confirm", []).extend(validate_password_match(password, password_confirm))
+
+        # ---------- USERNAME UNIQUE ----------
+        errors.setdefault("username", []).extend(validate_username_unique(username))
+
+        # ---------- EMAIL (optional) ----------
+        errors["email"] = validate_email_register(email)
+        
+        errors = remove_empty_list_fields(errors)
 
         if errors:
             raise ValidationError(errors)
-
-        # ---------- USERNAME UNIQUE ----------
-        if User.objects.filter(username__iexact=username).exists():
-            raise AuthenticationFailed({
-                "username": [
-                    api_err_dict(EC.AuthFailed.USERNAME_TAKEN),
-                ]
-            })
-
-        # ---------- EMAIL (optional) ----------
-        if email:
-            try:
-                validate_email(email)
-            except DjangoValidationError:
-                raise ValidationError({
-                    "email": [
-                        api_err_dict(EC.Validation.INVALID_EMAIL),
-                    ]
-                })
-
-            if User.objects.filter(email__iexact=email).exists():
-                raise AuthenticationFailed({
-                    "email": [
-                        api_err_dict(EC.AuthFailed.EMAIL_TAKEN),
-                    ]
-                })
 
         # # ---------- CREATE ----------
         # user = User.objects.create_user(
