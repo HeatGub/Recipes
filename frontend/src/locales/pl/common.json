@@ -28,6 +28,7 @@
       "REQUIRED": "To pole jest wymagane",
       "USERNAME_TOO_SHORT": "Nazwa użytkownika musi zawierać co najmniej {{min}} znaki",
       "USERNAME_TOO_LONG": "Nazwa użytkownika nie może przekraczać {{max}} znaków",
+      "USERNAME_INVALID_FORMAT": "Nazwa użytkownika może zawierać tylko duże i małe liter, cyfry, oraz te znaki: _ - + @ .",
       "PASSWORD_MISMATCH": "Hasła nie są takie same",
       "PASSWORD_TOO_SHORT": "Hasło musi zawierać co najmniej {{min}} znaki",
       "PASSWORD_TOO_LONG": "Hasło nie może przekraczać {{max}} znaków",

@@ -14,7 +14,9 @@ from config.validators import (
     validate_password_match,
     validate_username_unique,
     validate_email_register,
+    validate_username_format
 )
+from config.constants import (MIN_IDENTIFIER_LEN, MAX_IDENTIFIER_LEN, MIN_PASSWORD_LEN, MAX_PASSWORD_LEN)
 
 User = get_user_model()
 
@@ -40,6 +42,17 @@ class LoginSerializer(serializers.Serializer):
         for field in ("identifier", "password"):
             if field in attrs:
                 errors.setdefault(field, []).extend(validate_blank(attrs[field]))
+
+        # ---------- LENGTH ----------
+        if identifier:
+            field_errors = validate_length(identifier, min_len=MIN_IDENTIFIER_LEN, max_len=MAX_IDENTIFIER_LEN,
+                                        min_code=EC.Validation.USERNAME_TOO_SHORT, max_code=EC.Validation.USERNAME_TOO_LONG)
+            errors.setdefault("identifier", []).extend(field_errors)
+        
+        if password:
+            field_errors = validate_length(password, min_len=MIN_PASSWORD_LEN, max_len=MAX_PASSWORD_LEN,
+                                        min_code=EC.Validation.PASSWORD_TOO_SHORT, max_code=EC.Validation.PASSWORD_TOO_LONG)
+            errors.setdefault("password", []).extend(field_errors)
 
         errors = remove_empty_list_fields(errors)
 
@@ -80,11 +93,6 @@ class RegisterSerializer(serializers.Serializer):
     password = serializers.CharField(required=False, allow_blank=True, allow_null=True, write_only=True)
     password_confirm = serializers.CharField(required=False, allow_blank=True, allow_null=True, write_only=True)
 
-    MIN_USERNAME_LEN = 2
-    MAX_USERNAME_LEN = 10
-    MIN_PASSWORD_LEN = 3
-    MAX_PASSWORD_LEN = 10
-
     def validate(self, attrs):
 
         username = attrs.get("username")
@@ -105,12 +113,12 @@ class RegisterSerializer(serializers.Serializer):
 
         # ---------- LENGTH ----------
         if username:
-            field_errors = validate_length(username, min_len=self.MIN_USERNAME_LEN, max_len=self.MAX_USERNAME_LEN,
+            field_errors = validate_length(username, min_len=MIN_IDENTIFIER_LEN, max_len=MAX_IDENTIFIER_LEN,
                                         min_code=EC.Validation.USERNAME_TOO_SHORT, max_code=EC.Validation.USERNAME_TOO_LONG)
             errors.setdefault("username", []).extend(field_errors)
 
         if password:
-            field_errors = validate_length(password, min_len=self.MIN_PASSWORD_LEN, max_len=self.MAX_PASSWORD_LEN,
+            field_errors = validate_length(password, min_len=MIN_PASSWORD_LEN, max_len=MAX_PASSWORD_LEN,
                                         min_code=EC.Validation.PASSWORD_TOO_SHORT, max_code=EC.Validation.PASSWORD_TOO_LONG)
             errors.setdefault("password", []).extend(field_errors)
 
@@ -120,6 +128,9 @@ class RegisterSerializer(serializers.Serializer):
 
         # ---------- USERNAME UNIQUE ----------
         errors.setdefault("username", []).extend(validate_username_unique(username))
+
+        # ---------- USERNAME FORMAT ----------
+        errors.setdefault("username", []).extend(validate_username_format(username))
 
         # ---------- EMAIL (optional) ----------
         errors["email"] = validate_email_register(email)

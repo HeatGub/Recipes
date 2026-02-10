@@ -4,10 +4,58 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import SyncLoader from "react-spinners/SyncLoader"
 import { useFormWithApi } from "@/forms/core/useFormWithApi"
 import { FormFieldError, FormGlobalError } from "@/forms/core/FormErrors"
+import { rhfMessage } from "@/forms/core/apiErrors"
+import {
+  MIN_IDENTIFIER_LEN,
+  MAX_IDENTIFIER_LEN,
+  MIN_PASSWORD_LEN,
+  MAX_PASSWORD_LEN,
+} from "@/forms/core/constants"
 
 export const loginSchema = z.object({
-  identifier: z.string().min(0, { message: "VALIDATION.BLANK" }),
-  password: z.string().min(0, { message: "VALIDATION.BLANK" }),
+  identifier: z.string().superRefine((val, ctx) => {
+    if (val.length < MIN_IDENTIFIER_LEN) {
+      ctx.addIssue({
+        code: "custom",
+        message: rhfMessage({
+          code: "VALIDATION.USERNAME_TOO_SHORT",
+          params: { min: MIN_IDENTIFIER_LEN },
+        }),
+      })
+    }
+
+    if (val.length > MAX_IDENTIFIER_LEN) {
+      ctx.addIssue({
+        code: "custom",
+        message: rhfMessage({
+          code: "VALIDATION.USERNAME_TOO_LONG",
+          params: { max: MAX_IDENTIFIER_LEN },
+        }),
+      })
+    }
+  }),
+
+  password: z.string().superRefine((val, ctx) => {
+    if (val.length < MIN_PASSWORD_LEN) {
+      ctx.addIssue({
+        code: "custom",
+        message: rhfMessage({
+          code: "VALIDATION.PASSWORD_TOO_SHORT",
+          params: { min: MIN_PASSWORD_LEN },
+        }),
+      })
+    }
+
+    if (val.length > MAX_PASSWORD_LEN) {
+      ctx.addIssue({
+        code: "custom",
+        message: rhfMessage({
+          code: "VALIDATION.PASSWORD_TOO_LONG",
+          params: { max: MAX_PASSWORD_LEN },
+        }),
+      })
+    }
+  }),
 })
 
 export type LoginFormData = z.infer<typeof loginSchema>

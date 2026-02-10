@@ -3,6 +3,8 @@ from django.core.exceptions import ValidationError as DjangoValidationError
 from config.error_helpers import api_err_dict
 from config.response_codes import EC
 from django.contrib.auth import get_user_model
+import re
+from config.constants import IDENTIFIER_REGEX_PATTERN
 
 User = get_user_model()
 
@@ -41,6 +43,10 @@ def validate_username_unique(username):
         return [api_err_dict(EC.AuthFailed.USERNAME_TAKEN)]
     return []
 
+def validate_username_format(identifier):
+    if not re.match(IDENTIFIER_REGEX_PATTERN, identifier):
+        return [api_err_dict(EC.Validation.USERNAME_INVALID_FORMAT)]
+    return []
 
 def validate_email_register(email):
     """Checks if email is valid and not taken. Email is not required, returns empty list if not provided"""

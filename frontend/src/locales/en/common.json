@@ -28,6 +28,7 @@
       "REQUIRED": "This field is required",
       "USERNAME_TOO_SHORT": "Username must be at least {{min}} characters long",
       "USERNAME_TOO_LONG": "Username can't exceed {{max}} characters",
+      "USERNAME_INVALID_FORMAT": "Username can only include upper/lowercase letters, numbers, and these symbols: _ - + @ .",
       "PASSWORD_MISMATCH": "Passwords do not match",
       "PASSWORD_TOO_SHORT": "Password must be at least {{min}} characters long",
       "PASSWORD_TOO_LONG": "Password can't exceed {{max}} characters",

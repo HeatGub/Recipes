@@ -1,21 +1,108 @@
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 import SyncLoader from "react-spinners/SyncLoader"
-// import { zodResolver } from "@hookform/resolvers/zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useFormWithApi } from "@/forms/core/useFormWithApi"
 import { FormFieldError, FormGlobalError } from "@/forms/core/FormErrors"
+import { rhfMessage } from "@/forms/core/apiErrors"
+import {
+  MIN_IDENTIFIER_LEN,
+  MAX_IDENTIFIER_LEN,
+  MIN_PASSWORD_LEN,
+  MAX_PASSWORD_LEN,
+  EMAIL_REGEX
+} from "@/forms/core/constants"
 
-export const registerSchema = z
-  .object({
-    username: z.string().min(1, { message: "VALIDATION.BLANK" }),
-    email: z.string({ message: "VALIDATION.INVALID_EMAIL" }),
-    password: z.string().min(1, { message: "VALIDATION.BLANK" }),
-    password_confirm: z.string().min(1, { message: "VALIDATION.BLANK" }),
-  })
-  .refine((data) => data.password === data.password_confirm, {
+export const registerSchema = z.object({
+
+  username: z.string().superRefine((val, ctx) => {
+    if (val.length < MIN_IDENTIFIER_LEN) {
+      ctx.addIssue({
+        code: "custom",
+        message: rhfMessage({
+          code: "VALIDATION.USERNAME_TOO_SHORT",
+          params: { min: MIN_IDENTIFIER_LEN },
+        }),
+      })
+    }
+
+    if (val.length > MAX_IDENTIFIER_LEN) {
+      ctx.addIssue({
+        code: "custom",
+        message: rhfMessage({
+          code: "VALIDATION.USERNAME_TOO_LONG",
+          params: { max: MAX_IDENTIFIER_LEN },
+        }),
+      })
+    }
+  }),
+
+  email: z.string().optional().superRefine((val, ctx) => {
+    if (!val) return
+    
+    if (!EMAIL_REGEX.test(val)) {
+      ctx.addIssue({
+        code: "custom",
+        message: rhfMessage({
+          code: "VALIDATION.INVALID_EMAIL",
+        }),
+      })
+    }
+  }),
+
+  password: z.string().superRefine((val, ctx) => {
+    if (val.length < MIN_PASSWORD_LEN) {
+      ctx.addIssue({
+        code: "custom",
+        message: rhfMessage({
+          code: "VALIDATION.PASSWORD_TOO_SHORT",
+          params: { min: MIN_PASSWORD_LEN },
+        }),
+      })
+    }
+
+    if (val.length > MAX_PASSWORD_LEN) {
+      ctx.addIssue({
+        code: "custom",
+        message: rhfMessage({
+          code: "VALIDATION.PASSWORD_TOO_LONG",
+          params: { max: MAX_PASSWORD_LEN },
+        }),
+      })
+    }
+  }),
+
+  password_confirm: z.string().superRefine((val, ctx) => {
+    if (val.length < MIN_PASSWORD_LEN) {
+      ctx.addIssue({
+        code: "custom",
+        message: rhfMessage({
+          code: "VALIDATION.PASSWORD_TOO_SHORT",
+          params: { min: MIN_PASSWORD_LEN },
+        }),
+      })
+    }
+
+    if (val.length > MAX_PASSWORD_LEN) {
+      ctx.addIssue({
+        code: "custom",
+        message: rhfMessage({
+          code: "VALIDATION.PASSWORD_TOO_LONG",
+          params: { max: MAX_PASSWORD_LEN },
+        }),
+      })
+    }
+  }),
+}).refine(
+  data =>
+    data.password.length > 0 &&
+    data.password_confirm.length > 0 &&
+    data.password === data.password_confirm,
+  {
     path: ["password_confirm"],
     message: "VALIDATION.PASSWORD_MISMATCH",
-  })
+  }
+)
 
 type RegisterFormData = z.infer<typeof registerSchema>
 
@@ -32,7 +119,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
     handleApiSubmit,
     formState: { errors, isSubmitting },
   } = useFormWithApi<RegisterFormData>({
-    // resolver: zodResolver(registerSchema),
+    resolver: zodResolver(registerSchema),
   })
 
   return (
