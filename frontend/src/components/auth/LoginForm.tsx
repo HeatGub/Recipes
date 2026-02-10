@@ -11,6 +11,7 @@ import {
   MIN_PASSWORD_LEN,
   MAX_PASSWORD_LEN,
 } from "@/forms/core/constants"
+import { Button } from "../ui/Button"
 
 export const loginSchema = z.object({
   identifier: z.string().superRefine((val, ctx) => {
@@ -99,7 +100,7 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
       />
       {errors.identifier && (
-        <p className="text-xs text-(--text-error)">
+        <p className="text-xs text-(--text-danger)">
           <FormFieldError error={errors.identifier} />
         </p>
       )}
@@ -112,17 +113,14 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
       />
       {errors.password && (
-        <p className="text-xs text-(--text-error)">
+        <p className="text-xs text-(--text-danger)">
           <FormFieldError error={errors.password} />
         </p>
       )}
 
-      <button
-        type="submit"
-        className="mt-2 w-full rounded bg-(--accent-primary) px-2 py-1 text-(--text-inverted)"
-      >
+      <Button type="submit" variant="primary" className="w-full mt-2">
         {t("account.log_in")}
-      </button>
+      </Button>
 
       <p className="mt-1 text-center text-s text-(--text-warning)">
         <FormGlobalError error={errors.root?.message} />

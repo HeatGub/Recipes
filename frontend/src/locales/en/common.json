@@ -10,7 +10,7 @@
   },
   "account": {
     "login": "Login",
-    "log_in": "Log in",
+    "log_in": "Log In",
     "logged_in_as": "Logged in as",
     "logout": "Logout",
     "register": "Register",
@@ -20,7 +20,8 @@
     "username_or_email": "Username or Email",
     "password": "Password",
     "password_confirm": "Confirm Password",
-    "create_account": "Create Account"
+    "create_account": "Create Account",
+    "account_settings": "Account Settings"
   },
   "errors": {
     "VALIDATION": {

@@ -4,40 +4,48 @@
 :root {
   --bg-primary: #c8c6c6;
   --bg-secondary: #b1aeae;
+  --bg-tertiary: #9098a5;
   --bg-inverted: #1f2937;
   --bg-warning: #ecab13;
+  --bg-danger: #fa2d23;
   --text-primary: #111827;
   --text-secondary: #36393d;
   --text-inverted: #f9fafb;
   --text-muted: #111827a4;
   --text-success: #09740b;
   --text-warning: #dac20c;
-  --text-error: #b41b13;
+  --text-danger: #b41b13;
   --accent-primary: #05797b;
   --accent-secondary: #0f772c;
   --accent-soft: #146e50c1;
   --border-default: #5e5e5e;
   --border-muted: #3a3a3aa9;
+  --shadow-color: rgba(38, 47, 48, 0.25);
+  --shadow-hover: rgba(38, 47, 48, 0.5);
 }
 
 /* Dark theme variables */
 .dark {
   --bg-primary: #222428;
   --bg-secondary: #374151;
+  --bg-tertiary: #6e7a8f;
   --bg-inverted: #a5c0d5;
   --bg-warning: #ecab13;
+  --bg-danger: #ee3228;
   --text-primary: #f9fafb;
   --text-secondary: #d1d5db;
   --text-inverted: #111827;
   --text-muted: #111827a4;
   --text-success: #10a913;
   --text-warning: #f2d708;
-  --text-error: #ef2318;
+  --text-danger: #ef2318;
   --accent-primary: #8ec1ff;
   --accent-secondary: #13f1a0;
   --accent-soft: #146e50c1;
   --border-default: #949494;
   --border-muted: #3a3a3aa9;
+  --shadow-color: rgba(93, 116, 117, 0.25);
+  --shadow-hover: rgba(93, 116, 117, 0.5);
 }
 
 /* no cascade on theme change */

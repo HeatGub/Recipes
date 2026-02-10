@@ -12,6 +12,7 @@ import {
   MAX_PASSWORD_LEN,
   EMAIL_REGEX
 } from "@/forms/core/constants"
+import { Button } from "../ui/Button"
 
 export const registerSchema = z.object({
 
@@ -145,7 +146,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
       />
       {errors.username && (
-        <p className="text-xs text-(--text-error)">
+        <p className="text-xs text-(--text-danger)">
           <FormFieldError error={errors.username} />
         </p>
       )}
@@ -158,7 +159,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
       />
       {errors.email && (
-        <p className="text-xs text-(--text-error)">
+        <p className="text-xs text-(--text-danger)">
           <FormFieldError error={errors.email} />
         </p>
       )}
@@ -171,7 +172,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
       />
       {errors.password && (
-        <p className="text-xs text-(--text-error)">
+        <p className="text-xs text-(--text-danger)">
           <FormFieldError error={errors.password} />
         </p>
       )}
@@ -184,17 +185,14 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
       />
       {errors.password_confirm && (
-        <p className="text-xs text-(--text-error)">
+        <p className="text-xs text-(--text-danger)">
           <FormFieldError error={errors.password_confirm} />
         </p>
       )}
 
-      <button
-        type="submit"
-        className="mt-2 w-full rounded bg-(--accent-primary) px-2 py-1 text-(--text-inverted)"
-      >
+      <Button type="submit" variant="success" className="w-full mt-2">
         {t("account.create_account")}
-      </button>
+      </Button>
 
       <p className="mt-1 text-center text-s text-(--text-warning)">
         <FormGlobalError error={errors.root?.message} />

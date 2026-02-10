@@ -5,11 +5,12 @@ import { LoginForm } from "./LoginForm"
 import { RegisterForm } from "./RegisterForm"
 import clsx from "clsx"
 import { api } from "@/api/client"
+import { Button } from "../ui/Button"
 
 export function LoginAvatarMenu() {
   const { login, logout, user } = useAuth()
 
-  const [openPanel, setOpenPanel] = useState<"login" | "register" | "logout" | null>(null)
+  const [openPanel, setOpenPanel] = useState<"login" | "register" | "logout" | "user_settings" | null>(null)
 
   const isLoggedIn = Boolean(user)
   const avatarLetter = isLoggedIn ? user?.username.charAt(0).toUpperCase() : "?"
@@ -67,7 +68,15 @@ export function LoginAvatarMenu() {
         )}
       </div>
 
-      <div className="absolute right-px z-10 flex h-10 w-10 items-center justify-center rounded-full bg-(--accent-primary) text-lg font-semibold text-(--text-inverted)">
+      <div
+        onClick={() => isLoggedIn && togglePanel("user_settings")}
+        className={clsx(
+          "absolute right-px z-10 flex h-10 w-10 items-center justify-center rounded-full text-lg font-semibold",
+          isLoggedIn
+            ? "cursor-pointer bg-(--accent-primary) text-(--text-inverted)"
+            : "cursor-default bg-(--bg-tertiary) text-(--text-muted)"
+        )}
+      >
         {avatarLetter}
       </div>
 
@@ -88,8 +97,7 @@ export function LoginAvatarMenu() {
               onSubmit={async (data) => {
                 await api.post("/auth/register/", { ...data })
                 closePanel()
-              }
-            }
+              }}
             />
           )}
 
@@ -98,13 +106,16 @@ export function LoginAvatarMenu() {
               <p>
                 {t("account.logged_in_as")} <strong>{user?.username}</strong>
               </p>
-              <button
-                onClick={handleLogout}
-                className="w-full rounded bg-(--bg-warning) px-2 py-1 text-(--text-inverted)"
-              >
+              <Button onClick={handleLogout} variant="warning" className="w-full">
                 {t("account.logout")}
-              </button>
+              </Button>
             </div>
+          )}
+
+          {openPanel === "user_settings" && (
+            <Button onClick={() => {console.log("user settings")}} variant="primary" className="w-full">
+              {t("account.account_settings")}
+            </Button>
           )}
         </div>
       )}

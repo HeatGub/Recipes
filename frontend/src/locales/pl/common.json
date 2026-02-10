@@ -20,7 +20,8 @@
     "username_or_email": "Nazwa Użytkownika lub Email",
     "password": "Hasło",
     "password_confirm": "Potwierdź Hasło",
-    "create_account": "Stwórz Konto"
+    "create_account": "Stwórz Konto",
+    "account_settings": "Ustawienia Konta"
   },
   "errors": {
     "VALIDATION": {
