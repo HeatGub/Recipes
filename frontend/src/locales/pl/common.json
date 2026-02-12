@@ -23,6 +23,10 @@
     "create_account": "Stwórz Konto",
     "account_settings": "Ustawienia Konta"
   },
+  "notFound": {
+    "title": "404 - Strona nie znaleziona",
+    "message": "Strona, której szukasz, nie istnieje"
+  },
   "errors": {
     "VALIDATION": {
       "BLANK": "To pole nie może być puste",

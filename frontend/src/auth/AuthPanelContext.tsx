@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useState, useCallback } from "react"
 import type { ReactNode } from "react"
 
 type AuthPanelType = "login" | "register" | "logout" | "account_settings" | null
@@ -15,7 +15,10 @@ const AuthPanelContext = createContext<AuthPanelContextValue | undefined>(undefi
 export const AuthPanelProvider = ({ children }: { children: ReactNode }) => {
   const [currentPanel, setcurrentPanel] = useState<AuthPanelType>(null)
 
-  const openPanel = (panel: AuthPanelType) => setcurrentPanel(panel)
+  const openPanel = useCallback((panel: AuthPanelType) => {
+    setcurrentPanel(panel)
+  }, [])
+
   const togglePanel = (panel: AuthPanelType) => setcurrentPanel((prev) => (prev === panel ? null : panel))
   const closePanel = () => setcurrentPanel(null)
 
