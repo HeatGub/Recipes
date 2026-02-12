@@ -4,11 +4,14 @@ import { App } from "./App"
 import "./main.css"
 import "./i18n"
 import { AuthProvider } from "./auth/AuthProvider"
+import { AuthPanelProvider } from "./auth/AuthPanelContext"
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AuthProvider>
-      <App />
+      <AuthPanelProvider>
+        <App />
+      </AuthPanelProvider>
     </AuthProvider>
   </StrictMode>
 )

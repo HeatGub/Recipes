@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useAuth } from "../../auth/useAuth"
 import { LoginForm } from "./LoginForm"
@@ -6,17 +5,14 @@ import { RegisterForm } from "./RegisterForm"
 import clsx from "clsx"
 import { api } from "@/api/client"
 import { Button } from "../ui/Button"
+import { useAuthPanel } from "../../auth/AuthPanelContext"
 
 export function LoginAvatarMenu() {
   const { login, logout, user } = useAuth()
-
-  const [openPanel, setOpenPanel] = useState<"login" | "register" | "logout" | "user_settings" | null>(null)
+  const { currentPanel, togglePanel, closePanel } = useAuthPanel()
 
   const isLoggedIn = Boolean(user)
   const avatarLetter = isLoggedIn ? user?.username.charAt(0).toUpperCase() : "?"
-
-  const togglePanel = (panel: typeof openPanel) => setOpenPanel((prev) => (prev === panel ? null : panel))
-  const closePanel = () => setOpenPanel(null)
 
   const handleLogout = () => {
     logout()
@@ -43,7 +39,7 @@ export function LoginAvatarMenu() {
   const getButtonClasses = (panel: "login" | "register" | "logout") =>
     clsx(
       "flex-1 pl-3 pr-2 py-2 text-center transition",
-      openPanel === panel ? panelStyles[panel].selected : panelStyles[panel].hover
+      currentPanel === panel ? panelStyles[panel].selected : panelStyles[panel].hover
     )
 
   return (
@@ -81,9 +77,9 @@ export function LoginAvatarMenu() {
       </div>
 
       {/* Dropdown panels */}
-      {openPanel && (
+      {currentPanel && (
         <div className="absolute top-full right-0 mt-2 max-w-90 min-w-60 rounded-xl border p-4 shadow-lg">
-          {openPanel === "login" && (
+          {currentPanel === "login" && (
             <LoginForm
               onSubmit={async ({ identifier, password }) => {
                 await login(identifier, password)
@@ -92,7 +88,7 @@ export function LoginAvatarMenu() {
             />
           )}
 
-          {openPanel === "register" && (
+          {currentPanel === "register" && (
             <RegisterForm
               onSubmit={async (data) => {
                 await api.post("/auth/register/", { ...data })
@@ -101,7 +97,7 @@ export function LoginAvatarMenu() {
             />
           )}
 
-          {openPanel === "logout" && (
+          {currentPanel === "logout" && (
             <div className="space-y-3">
               <p>
                 {t("account.logged_in_as")} <strong>{user?.username}</strong>
@@ -112,7 +108,7 @@ export function LoginAvatarMenu() {
             </div>
           )}
 
-          {openPanel === "user_settings" && (
+          {currentPanel === "user_settings" && (
             <Button onClick={() => {console.log("user settings")}} variant="primary" className="w-full">
               {t("account.account_settings")}
             </Button>

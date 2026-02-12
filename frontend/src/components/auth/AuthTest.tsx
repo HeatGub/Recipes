@@ -1,5 +1,6 @@
 import { useAuth } from "../../auth/useAuth"
 import { api } from "../../api/client"
+import { useAuthPanel } from "../../auth/AuthPanelContext"
 
 export function AuthTest() {
   const {
@@ -10,6 +11,8 @@ export function AuthTest() {
     login,
     logout,
   } = useAuth()
+
+  const {currentPanel, togglePanel, closePanel, openPanel } = useAuthPanel()
 
   return (
     <div className="flex flex-col gap-4">
@@ -35,6 +38,13 @@ export function AuthTest() {
         <div>authInitFinished: {String(authInitFinished)}</div>
         <div>isAuthenticated: {String(isAuthenticated)}</div>
         <div>authInProgress: {String(authInProgress)}</div>
+        ____________________________________
+        <div className="flex flex-col space-2 gap-2">
+          <div>currentPanel: {String(currentPanel)}</div>
+          <button className="border p-1 font-medium" onClick={() => {openPanel("login")}}>Open Login Panel</button>
+          <button className="border p-1 font-medium" onClick={() => {togglePanel("login")}}>Toggle Login</button>
+          <button className="border p-1 font-medium" onClick={() => {closePanel()}}>Close Panel</button>
+        </div>
       </div>
     </div>
   )
