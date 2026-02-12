@@ -6,16 +6,24 @@ import clsx from "clsx"
 import { api } from "@/api/client"
 import { Button } from "../ui/Button"
 import { useAuthPanel } from "../../auth/AuthPanelContext"
+import { useNavigate } from "react-router-dom"
+import { ROUTES } from "@/router"
 
 export function LoginAvatarMenu() {
   const { login, logout, user } = useAuth()
   const { currentPanel, togglePanel, closePanel } = useAuthPanel()
+  const navigate = useNavigate()
 
   const isLoggedIn = Boolean(user)
   const avatarLetter = isLoggedIn ? user?.username.charAt(0).toUpperCase() : "?"
 
   const handleLogout = () => {
     logout()
+    closePanel()
+  }
+
+  const handleAccountSettings = () => {
+    navigate(ROUTES.accountSettings)
     closePanel()
   }
 
@@ -65,7 +73,7 @@ export function LoginAvatarMenu() {
       </div>
 
       <div
-        onClick={() => isLoggedIn && togglePanel("user_settings")}
+        onClick={() => isLoggedIn && togglePanel("account_settings")}
         className={clsx(
           "absolute right-px z-10 flex h-10 w-10 items-center justify-center rounded-full text-lg font-semibold",
           isLoggedIn
@@ -78,7 +86,7 @@ export function LoginAvatarMenu() {
 
       {/* Dropdown panels */}
       {currentPanel && (
-        <div className="absolute top-full right-0 mt-2 max-w-90 min-w-60 rounded-xl border p-4 shadow-lg">
+        <div className="absolute top-full right-0 mt-2 max-w-90 min-w-60 rounded-xl border p-4 shadow-lg bg-(--bg-primary)">
           {currentPanel === "login" && (
             <LoginForm
               onSubmit={async ({ identifier, password }) => {
@@ -108,8 +116,8 @@ export function LoginAvatarMenu() {
             </div>
           )}
 
-          {currentPanel === "user_settings" && (
-            <Button onClick={() => {console.log("user settings")}} variant="primary" className="w-full">
+          {currentPanel === "account_settings" && (
+            <Button onClick={handleAccountSettings} variant="primary" className="w-full">
               {t("account.account_settings")}
             </Button>
           )}

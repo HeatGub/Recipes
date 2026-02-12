@@ -1,10 +1,6 @@
-import { Dashboard } from "@/components/Dashboard"
-import { AppLayout } from "@/layouts/AppLayout"
+import { RouterProvider } from "react-router-dom"
+import { router } from "@/router"
 
 export function App() {
-  return (
-    <AppLayout>
-      <Dashboard />
-    </AppLayout>
-  )
+  return <RouterProvider router={router} />
 }

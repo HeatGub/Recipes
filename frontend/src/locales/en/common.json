@@ -4,8 +4,8 @@
     "change_lang": "Change Language"
   },
   "sidebar": {
-    "dashboard": "Dashboard",
-    "settings": "Settings",
+    "home": "Home",
+    "account_settings": "Account Settings",
     "recipes": "Recipes"
   },
   "account": {

@@ -1,8 +1,9 @@
 import { useState } from "react"
 import { Sidebar } from "../components/Sidebar"
 import { Header } from "../components/Header"
+import { Outlet } from "react-router-dom"
 
-export function AppLayout({ children }: { children: React.ReactNode }) {
+export function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
@@ -29,7 +30,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         <div className="flex flex-1 flex-col">
           <Header sidebarOpen={sidebarOpen} onToggleSidebar={() => setSidebarOpen((v) => !v)} />
 
-          <main className="flex-1 overflow-y-auto p-4 md:p-6">{children}</main>
+          <main className="flex-1 overflow-y-auto p-4 md:p-6">
+            <Outlet />
+          </main>
         </div>
       </div>
     </div>
