@@ -21,7 +21,11 @@
     "password": "Hasło",
     "password_confirm": "Potwierdź Hasło",
     "create_account": "Stwórz Konto",
-    "account_settings": "Ustawienia Konta"
+    "account_settings": "Ustawienia Konta",
+    "change_username": "Zmień Login",
+    "change_email" : "Zmień E-mail",
+    "change_password" : "Zmień Hasło",
+    "delete_account" : "Usuń Konto"
   },
   "notFound": {
     "title": "404 - Strona nie znaleziona",

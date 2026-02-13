@@ -21,7 +21,11 @@
     "password": "Password",
     "password_confirm": "Confirm Password",
     "create_account": "Create Account",
-    "account_settings": "Account Settings"
+    "account_settings": "Account Settings",
+    "change_username": "Change Username",
+    "change_email" : "Change E-mail",
+    "change_password" : "Change Password",
+    "delete_account" : "Delete Account"
   },
   "notFound": {
     "title": "404 - Page Not Found",
