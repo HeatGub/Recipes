@@ -4,7 +4,7 @@ import { LoginForm } from "./LoginForm"
 import { RegisterForm } from "./RegisterForm"
 import clsx from "clsx"
 import { api } from "@/api/client"
-import { Button } from "../ui/Button"
+import { RichButton } from "../ui/RichButton"
 import { useAuthPanel } from "../../auth/AuthPanelContext"
 import { useNavigate } from "react-router-dom"
 import { ROUTES } from "@/router"
@@ -110,16 +110,16 @@ export function LoginAvatarMenu() {
               <p>
                 {t("account.logged_in_as")} <strong>{user?.username}</strong>
               </p>
-              <Button onClick={handleLogout} variant="warning" className="w-full">
+              <RichButton onClick={handleLogout} variant="warning" className="w-full">
                 {t("account.logout")}
-              </Button>
+              </RichButton>
             </div>
           )}
 
           {currentPanel === "account_settings" && (
-            <Button onClick={handleAccountSettings} variant="primary" className="w-full">
+            <RichButton onClick={handleAccountSettings} variant="primary" className="w-full">
               {t("account.account_settings")}
-            </Button>
+            </RichButton>
           )}
         </div>
       )}

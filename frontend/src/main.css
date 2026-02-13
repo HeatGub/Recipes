@@ -42,8 +42,8 @@
   --accent-primary: #8ec1ff;
   --accent-secondary: #13f1a0;
   --accent-soft: #146e50c1;
-  --border-default: #949494;
-  --border-muted: #3a3a3aa9;
+  --border-default: #585858;
+  --border-muted: #ff2727;
   --shadow-color: rgba(152, 180, 182, 0.25);
   --shadow-hover: rgba(152, 180, 182, 0.5);
 }

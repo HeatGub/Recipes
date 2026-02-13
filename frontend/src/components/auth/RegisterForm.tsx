@@ -12,7 +12,7 @@ import {
   MAX_PASSWORD_LEN,
   EMAIL_REGEX
 } from "@/forms/core/constants"
-import { Button } from "../ui/Button"
+import { RichButton } from "../ui/RichButton"
 
 export const registerSchema = z.object({
 
@@ -190,9 +190,9 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         </p>
       )}
 
-      <Button type="submit" variant="success" className="w-full mt-2">
+      <RichButton type="submit" variant="success" className="w-full mt-2">
         {t("account.create_account")}
-      </Button>
+      </RichButton>
 
       <p className="mt-1 text-center text-s text-(--text-warning)">
         <FormGlobalError error={errors.root?.message} />

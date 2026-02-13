@@ -11,7 +11,7 @@ import {
   MIN_PASSWORD_LEN,
   MAX_PASSWORD_LEN,
 } from "@/forms/core/constants"
-import { Button } from "../ui/Button"
+import { RichButton } from "../ui/RichButton"
 
 export const loginSchema = z.object({
   identifier: z.string().superRefine((val, ctx) => {
@@ -118,9 +118,9 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         </p>
       )}
 
-      <Button type="submit" variant="primary" className="w-full mt-2">
+      <RichButton type="submit" variant="primary" className="w-full mt-2">
         {t("account.log_in")}
-      </Button>
+      </RichButton>
 
       <p className="mt-1 text-center text-s text-(--text-warning)">
         <FormGlobalError error={errors.root?.message} />

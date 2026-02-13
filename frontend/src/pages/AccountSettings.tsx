@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
+import { SettingsSection } from "@/components/SettingsSection"
 
 export function AccountSettings() {
   const [activeTab, setActiveTab] = useState("change_username")
@@ -17,7 +18,27 @@ export function AccountSettings() {
   const renderTabContent = () => {
     switch (activeTab) {
       case "change_username":
-        return <div>Form to change username</div>
+        return (
+          <SettingsSection
+            title={t("account.change_username")}
+            description="Choose a unique username that will be visible to other users."
+          >
+            <form className="max-w-md space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-(--text-primary)">New username</label>
+                <input
+                  type="text"
+                  placeholder="your_new_username"
+                  className="mt-1 w-full rounded-md border bg-(--bg-primary) px-3 py-2 text-sm outline-none focus:border-(--accent-primary) focus:ring-2 focus:ring-(--accent-primary)/30"
+                />
+                <p className="mt-1 text-xs text-(--text-secondary)">
+                  3–20 characters. Letters, numbers and underscores only.
+                </p>
+              </div>
+            </form>
+          </SettingsSection>
+        )
+
       case "change_password":
         return <div>Form to change password</div>
       case "change_email":
@@ -52,7 +73,7 @@ export function AccountSettings() {
       </div>
 
       {/* Content */}
-      <div className="rounded-md bg-(--bg-secondary) p-4 shadow-md">{renderTabContent()}</div>
+      <div className="rounded-md bg-(--bg-secondary) p-2 shadow-md">{renderTabContent()}</div>
     </div>
   )
 }
