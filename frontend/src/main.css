@@ -81,3 +81,9 @@ select:-webkit-autofill {
   box-shadow: 0 0 0px 1000px var(--bg-secondary) inset;
   transition: background-color 9999s ease-in-out 0s;
 }
+
+:focus-visible {
+  box-shadow: 0 0 0 2px var(--accent-secondary);
+  outline: 1px solid var(--accent-primary);
+  outline-offset: 1px;
+}
