@@ -3,15 +3,11 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import SyncLoader from "react-spinners/SyncLoader"
 import { useFormWithApi } from "@/forms/core/useFormWithApi"
-import { FormFieldError, FormGlobalError } from "@/forms/core/FormErrors"
+import { FormGlobalError } from "@/forms/core/FormErrors"
 import { rhfMessage } from "@/forms/core/apiErrors"
-import {
-  MIN_IDENTIFIER_LEN,
-  MAX_IDENTIFIER_LEN,
-  MIN_PASSWORD_LEN,
-  MAX_PASSWORD_LEN,
-} from "@/forms/core/constants"
+import { MIN_IDENTIFIER_LEN, MAX_IDENTIFIER_LEN, MIN_PASSWORD_LEN, MAX_PASSWORD_LEN } from "@/forms/core/constants"
 import { RichButton } from "../ui/RichButton"
+import { AuthPanelFormInput } from "../ui/AuthPanelFormInput"
 
 export const loginSchema = z.object({
   identifier: z.string().superRefine((val, ctx) => {
@@ -93,36 +89,25 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
       <h3 className="text-base font-semibold">{t("account.login")}</h3>
 
       {/* IDENTIFIER */}
-      <label>{t("account.username_or_email")}</label>
-      <input
-        {...register("identifier")}
-        type="text"
-        className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
+      <AuthPanelFormInput
+        label={t("account.username_or_email")}
+        error={errors.identifier}
+        inputProps={register("identifier")}
       />
-      {errors.identifier && (
-        <p className="text-xs text-(--text-danger)">
-          <FormFieldError error={errors.identifier} />
-        </p>
-      )}
 
       {/* PASSWORD */}
-      <label>{t("account.password")}</label>
-      <input
-        {...register("password")}
+      <AuthPanelFormInput
+        label={t("account.password")}
         type="password"
-        className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
+        error={errors.password}
+        inputProps={register("password")}
       />
-      {errors.password && (
-        <p className="text-xs text-(--text-danger)">
-          <FormFieldError error={errors.password} />
-        </p>
-      )}
 
-      <RichButton type="submit" variant="primary" className="w-full mt-2">
+      <RichButton type="submit" variant="primary" className="mt-2 w-full">
         {t("account.log_in")}
       </RichButton>
 
-      <p className="mt-1 text-center text-s text-(--text-warning)">
+      <p className="text-s mt-1 text-center text-(--text-warning)">
         <FormGlobalError error={errors.root?.message} />
       </p>
     </form>

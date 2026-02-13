@@ -9,7 +9,7 @@ import { useAuthPanel } from "../../auth/AuthPanelContext"
 import { useNavigate } from "react-router-dom"
 import { ROUTES } from "@/router"
 
-export function LoginAvatarMenu() {
+export function AuthPanel() {
   const { login, logout, user } = useAuth()
   const { currentPanel, togglePanel, closePanel } = useAuthPanel()
   const navigate = useNavigate()

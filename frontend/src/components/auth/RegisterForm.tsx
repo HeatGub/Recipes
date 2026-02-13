@@ -3,7 +3,7 @@ import { z } from "zod"
 import SyncLoader from "react-spinners/SyncLoader"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useFormWithApi } from "@/forms/core/useFormWithApi"
-import { FormFieldError, FormGlobalError } from "@/forms/core/FormErrors"
+import { FormGlobalError } from "@/forms/core/FormErrors"
 import { rhfMessage } from "@/forms/core/apiErrors"
 import {
   MIN_IDENTIFIER_LEN,
@@ -13,6 +13,7 @@ import {
   EMAIL_REGEX
 } from "@/forms/core/constants"
 import { RichButton } from "../ui/RichButton"
+import { AuthPanelFormInput } from "../ui/AuthPanelFormInput"
 
 export const registerSchema = z.object({
 
@@ -139,56 +140,34 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
       <h3 className="text-base font-semibold">{t("account.register")}</h3>
 
       {/* USERNAME */}
-      <label>{t("account.username")}</label>
-      <input
-        {...register("username")}
-        type="text"
-        className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
+      <AuthPanelFormInput
+        label={t("account.username")}
+        error={errors.username}
+        inputProps={register("username")}
       />
-      {errors.username && (
-        <p className="text-xs text-(--text-danger)">
-          <FormFieldError error={errors.username} />
-        </p>
-      )}
 
       {/* EMAIL */}
-      <label>{t("account.email_optional")}</label>
-      <input
-        {...register("email")}
-        type="text"
-        className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
+      <AuthPanelFormInput
+        label={t("account.email_optional")}
+        error={errors.email}
+        inputProps={register("email")}
       />
-      {errors.email && (
-        <p className="text-xs text-(--text-danger)">
-          <FormFieldError error={errors.email} />
-        </p>
-      )}
 
       {/* PASSWORD */}
-      <label>{t("account.password")}</label>
-      <input
-        {...register("password")}
+      <AuthPanelFormInput
+        label={t("account.password")}
         type="password"
-        className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
+        error={errors.password}
+        inputProps={register("password")}
       />
-      {errors.password && (
-        <p className="text-xs text-(--text-danger)">
-          <FormFieldError error={errors.password} />
-        </p>
-      )}
 
       {/* PASSWORD CONFIRM */}
-      <label>{t("account.password_confirm")}</label>
-      <input
-        {...register("password_confirm")}
+      <AuthPanelFormInput
+        label={t("account.password_confirm")}
         type="password"
-        className="w-full rounded border bg-(--bg-secondary) px-2 py-1"
+        error={errors.password_confirm}
+        inputProps={register("password_confirm")}
       />
-      {errors.password_confirm && (
-        <p className="text-xs text-(--text-danger)">
-          <FormFieldError error={errors.password_confirm} />
-        </p>
-      )}
 
       <RichButton type="submit" variant="success" className="w-full mt-2">
         {t("account.create_account")}
