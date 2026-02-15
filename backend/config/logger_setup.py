@@ -1,6 +1,7 @@
 import logging
-from pathlib import Path
 import traceback
+from pathlib import Path
+from typing import Any, Dict
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 LOG_FILE_PATH = BASE_DIR / "logs.log"
@@ -31,11 +32,9 @@ if not logger.handlers:
 
 
 def log_exception(exc: Exception, context: dict | None = None):
-    stack_trace = "".join(
-        traceback.format_exception(type(exc), exc, exc.__traceback__)
-    )
+    stack_trace = "".join(traceback.format_exception(type(exc), exc, exc.__traceback__))
 
-    extra = {"stack_trace": stack_trace}
+    extra: Dict[str, Any] = {"stack_trace": stack_trace}
     if context:
         extra["context"] = context
 

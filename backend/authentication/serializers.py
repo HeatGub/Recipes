@@ -1,22 +1,26 @@
-from rest_framework import serializers
-from django.contrib.auth import get_user_model
-from rest_framework.exceptions import AuthenticationFailed
-from django.core.validators import validate_email
-from django.core.exceptions import ValidationError as DjangoValidationError
-from rest_framework_simplejwt.tokens import RefreshToken
-from config.response_codes import EC
-from rest_framework.exceptions import ValidationError
+from config.constants import (
+    MAX_IDENTIFIER_LEN,
+    MAX_PASSWORD_LEN,
+    MIN_IDENTIFIER_LEN,
+    MIN_PASSWORD_LEN,
+)
 from config.error_helpers import api_err_dict, remove_empty_list_fields
+from config.response_codes import EC
 from config.validators import (
-    validate_required,
     validate_blank,
+    validate_email_register,
     validate_length,
     validate_password_match,
+    validate_required,
+    validate_username_format,
     validate_username_unique,
-    validate_email_register,
-    validate_username_format
 )
-from config.constants import (MIN_IDENTIFIER_LEN, MAX_IDENTIFIER_LEN, MIN_PASSWORD_LEN, MAX_PASSWORD_LEN)
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError as DjangoValidationError
+from django.core.validators import validate_email
+from rest_framework import serializers
+from rest_framework.exceptions import AuthenticationFailed, ValidationError
+from rest_framework_simplejwt.tokens import RefreshToken
 
 User = get_user_model()
 
@@ -45,13 +49,23 @@ class LoginSerializer(serializers.Serializer):
 
         # ---------- LENGTH ----------
         if identifier:
-            field_errors = validate_length(identifier, min_len=MIN_IDENTIFIER_LEN, max_len=MAX_IDENTIFIER_LEN,
-                                        min_code=EC.Validation.USERNAME_TOO_SHORT, max_code=EC.Validation.USERNAME_TOO_LONG)
+            field_errors = validate_length(
+                identifier,
+                min_len=MIN_IDENTIFIER_LEN,
+                max_len=MAX_IDENTIFIER_LEN,
+                min_code=EC.Validation.USERNAME_TOO_SHORT,
+                max_code=EC.Validation.USERNAME_TOO_LONG,
+            )
             errors.setdefault("identifier", []).extend(field_errors)
-        
+
         if password:
-            field_errors = validate_length(password, min_len=MIN_PASSWORD_LEN, max_len=MAX_PASSWORD_LEN,
-                                        min_code=EC.Validation.PASSWORD_TOO_SHORT, max_code=EC.Validation.PASSWORD_TOO_LONG)
+            field_errors = validate_length(
+                password,
+                min_len=MIN_PASSWORD_LEN,
+                max_len=MAX_PASSWORD_LEN,
+                min_code=EC.Validation.PASSWORD_TOO_SHORT,
+                max_code=EC.Validation.PASSWORD_TOO_LONG,
+            )
             errors.setdefault("password", []).extend(field_errors)
 
         errors = remove_empty_list_fields(errors)
@@ -79,9 +93,9 @@ class LoginSerializer(serializers.Serializer):
             "refresh": str(refresh),
             "access_token": str(refresh.access_token),
             "user": {
-                "id": user.id,
-                "username": user.username,
-                "email": user.email,
+                "id": user.id,         # type: ignore[attr-defined]
+                "username": user.username,         # type: ignore[attr-defined]
+                "email": user.email,         # type: ignore[attr-defined]
             },
         }
 
