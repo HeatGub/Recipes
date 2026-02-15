@@ -11,7 +11,7 @@
   --text-primary: #111827;
   --text-secondary: #36393d;
   --text-inverted: #f9fafb;
-  --text-muted: #111827a4;
+  --text-muted: #666768a4;
   --text-success: #09740b;
   --text-warning: #dac20c;
   --text-danger: #b41b13;
@@ -19,7 +19,7 @@
   --accent-secondary: #0f772c;
   --accent-soft: #146e50c1;
   --border-default: #5e5e5e;
-  --border-muted: #3a3a3aa9;
+  --border-muted: #8b8484a9;
   --shadow-color: rgba(38, 47, 48, 0.25);
   --shadow-hover: rgba(38, 47, 48, 0.5);
 }
@@ -35,7 +35,7 @@
   --text-primary: #f9fafb;
   --text-secondary: #d1d5db;
   --text-inverted: #111827;
-  --text-muted: #111827a4;
+  --text-muted: #909191a4;
   --text-success: #10a913;
   --text-warning: #f2d708;
   --text-danger: #ef2318;
@@ -43,7 +43,7 @@
   --accent-secondary: #13f1a0;
   --accent-soft: #146e50c1;
   --border-default: #585858;
-  --border-muted: #ff2727;
+  --border-muted: #444444;
   --shadow-color: rgba(152, 180, 182, 0.25);
   --shadow-hover: rgba(152, 180, 182, 0.5);
 }
@@ -86,4 +86,23 @@ select:-webkit-autofill {
   box-shadow: 0 0 0 2px var(--accent-secondary);
   outline: 1px solid var(--accent-primary);
   outline-offset: 1px;
+}
+
+input:disabled,
+textarea:disabled,
+select:disabled {
+  background-color: var(--bg-primary);
+  color: var(--text-muted);
+  border-color: var(--border-muted);
+  opacity: 1; /* prevent browser default fade */
+  cursor: not-allowed;
+}
+
+input:read-only,
+textarea:read-only,
+select:read-only {
+  background-color: var(--bg-primary);
+  color: var(--text-muted);
+  border-color: var(--border-muted);
+  opacity: 1; /* prevent browser default fade */
 }

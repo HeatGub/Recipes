@@ -5,10 +5,11 @@ interface SettingsSectionProps {
   title: string
   description?: string
   children: ReactNode
-  footer?: ReactNode
+  // footer?: ReactNode
+  buttonFormId?: string
 }
 
-export function SettingsSection({ title, description, children }: SettingsSectionProps) {
+export function SettingsSection({ title, description, children, buttonFormId }: SettingsSectionProps) {
   return (
     <section className="overflow-hidden rounded-xl border-2 bg-(--bg-primary) shadow-sm">
 
@@ -19,12 +20,12 @@ export function SettingsSection({ title, description, children }: SettingsSectio
       </div>
 
       {/* Content */}
-      <div className="px-6 py-6">{children}</div>
+      <div className="px-6 py-4">{children}</div>
       
       {/* Footer */}
       <div className="flex justify-end gap-4 border-t bg-(--bg-primary) px-6 py-4">
         <Button variant="ghost">Cancel</Button>
-        <Button variant="primary" className="hover:bg-(--accent-secondary)">Save Changes</Button>
+        <Button form={buttonFormId} variant="primary" className="hover:bg-(--accent-secondary)">Save Changes</Button>
       </div>
     </section>
   )

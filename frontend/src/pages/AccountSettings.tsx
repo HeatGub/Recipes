@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { SettingsSection } from "@/components/SettingsSection"
+import { ChangeUsernameForm } from "@/forms/settings/ChangeUsernameForm"
 
 export function AccountSettings() {
   const [activeTab, setActiveTab] = useState("change_username")
@@ -22,20 +23,9 @@ export function AccountSettings() {
           <SettingsSection
             title={t("account.change_username")}
             description="Choose a unique username that will be visible to other users."
+            buttonFormId="change-username-form"
           >
-            <form className="max-w-md space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-(--text-primary)">New username</label>
-                <input
-                  type="text"
-                  placeholder="your_new_username"
-                  className="mt-1 w-full rounded-md border bg-(--bg-primary) px-3 py-2 text-sm outline-none focus:border-(--accent-primary) focus:ring-2 focus:ring-(--accent-primary)/30"
-                />
-                <p className="mt-1 text-xs text-(--text-secondary)">
-                  3–20 characters. Letters, numbers and underscores only.
-                </p>
-              </div>
-            </form>
+            <ChangeUsernameForm onSubmit={() => new Promise(r => setTimeout(r, 1000))}></ChangeUsernameForm>
           </SettingsSection>
         )
 
@@ -55,7 +45,7 @@ export function AccountSettings() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl">
+    <div className="mx-auto max-w-5xl">
       <div className="mb-3 flex w-full flex-col gap-2 border-b pb-3 md:flex-row md:flex-wrap">
         {tabs.map((tab) => (
           <button

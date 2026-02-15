@@ -12,8 +12,8 @@ import {
   MAX_PASSWORD_LEN,
   EMAIL_REGEX
 } from "@/forms/core/constants"
-import { RichButton } from "../ui/RichButton"
-import { AuthPanelFormInput } from "../ui/AuthPanelFormInput"
+import { RichButton } from "../../components/ui/RichButton"
+import { AuthPanelFormInput } from "../../components/ui/AuthPanelFormInput"
 
 export const registerSchema = z.object({
 
