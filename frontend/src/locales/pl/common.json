@@ -22,10 +22,23 @@
     "password_confirm": "Potwierdź Hasło",
     "create_account": "Stwórz Konto",
     "account_settings": "Ustawienia Konta",
-    "change_username": "Zmień Login",
-    "change_email" : "Zmień E-mail",
-    "change_password" : "Zmień Hasło",
-    "delete_account" : "Usuń Konto"
+    "settings": {
+      "change_username": "Zmień Login",
+      "change_email": "Zmień Email",
+      "change_password": "Zmień Hasło",
+      "delete_account": "Usuń Konto",
+      "current_username": "Obecny Login",
+      "new_username": "Nowy Login",
+      "description": {
+        "change_username":"Wybierz unikalny login który będzie widoczny dla innych użytkowników",
+        "delete_account": "Usuń konto wraz z całą jego zawartością"
+      },
+      "init_msg": {
+        "current_username": "Twój obecny login",
+        "new_username": "Wprowadź nowy login",
+        "password_confirm": "Wprowadź hasło by potwierdzić"
+      }
+    }
   },
   "notFound": {
     "title": "404 - Strona nie znaleziona",

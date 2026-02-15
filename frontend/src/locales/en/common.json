@@ -22,10 +22,23 @@
     "password_confirm": "Confirm Password",
     "create_account": "Create Account",
     "account_settings": "Account Settings",
-    "change_username": "Change Username",
-    "change_email" : "Change E-mail",
-    "change_password" : "Change Password",
-    "delete_account" : "Delete Account"
+    "settings": {
+      "change_username": "Change Username",
+      "change_email": "Change E-mail",
+      "change_password": "Change Password",
+      "delete_account": "Delete Account",
+      "current_username": "Current Username",
+      "new_username": "New Username",
+      "description": {
+        "change_username":"Choose a unique username that will be visible to other users",
+        "delete_account": "Delete acount with all of its content"
+      },
+      "init_msg": {
+        "current_username": "Your current username",
+        "new_username": "Enter your new username",
+        "password_confirm": "Enter your password to confirm"
+      }
+    }
   },
   "notFound": {
     "title": "404 - Page Not Found",

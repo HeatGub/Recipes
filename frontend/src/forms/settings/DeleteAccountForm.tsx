@@ -4,34 +4,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import SyncLoader from "react-spinners/SyncLoader"
 import { useFormWithApi } from "@/forms/core/useFormWithApi"
 import { rhfMessage } from "@/forms/core/apiErrors"
-import { MIN_IDENTIFIER_LEN, MAX_IDENTIFIER_LEN, MIN_PASSWORD_LEN, MAX_PASSWORD_LEN } from "@/forms/core/constants"
+import { MIN_PASSWORD_LEN, MAX_PASSWORD_LEN } from "@/forms/core/constants"
 import { SettingsFormInput } from "@/components/ui/SettingsFormInput"
 import { useAuth } from "@/auth/useAuth"
 import { Button } from "@/components/ui/Button"
 
-export const changeUsernameSchema = z.object({
+export const deleteAccountSchema = z.object({
   username_current: z.string(),
-  username_new: z.string().superRefine((val, ctx) => {
-    if (val.length < MIN_IDENTIFIER_LEN) {
-      ctx.addIssue({
-        code: "custom",
-        message: rhfMessage({
-          code: "VALIDATION.USERNAME_TOO_SHORT",
-          params: { min: MIN_IDENTIFIER_LEN },
-        }),
-      })
-    }
-
-    if (val.length > MAX_IDENTIFIER_LEN) {
-      ctx.addIssue({
-        code: "custom",
-        message: rhfMessage({
-          code: "VALIDATION.USERNAME_TOO_LONG",
-          params: { max: MAX_IDENTIFIER_LEN },
-        }),
-      })
-    }
-  }),
 
   password: z.string().superRefine((val, ctx) => {
     if (val.length < MIN_PASSWORD_LEN) {
@@ -56,13 +35,13 @@ export const changeUsernameSchema = z.object({
   }),
 })
 
-export type ChangeUsernameFormData = z.infer<typeof changeUsernameSchema>
+export type DeleteAccountFormData = z.infer<typeof deleteAccountSchema>
 
-interface ChangeUsernameFormProps {
-  onSubmit: (data: ChangeUsernameFormData) => Promise<void> | void
+interface DeleteAccountFormProps {
+  onSubmit: (data: DeleteAccountFormData) => Promise<void> | void
 }
 
-export function ChangeUsernameForm({ onSubmit }: ChangeUsernameFormProps) {
+export function DeleteAccountForm({ onSubmit }: DeleteAccountFormProps) {
   const { t } = useTranslation()
   const { user } = useAuth()
 
@@ -72,18 +51,16 @@ export function ChangeUsernameForm({ onSubmit }: ChangeUsernameFormProps) {
     handleApiSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useFormWithApi<ChangeUsernameFormData>({
-    resolver: zodResolver(changeUsernameSchema),
+  } = useFormWithApi<DeleteAccountFormData>({
+    resolver: zodResolver(deleteAccountSchema),
     defaultValues: {
       username_current: String(user?.username),
-      username_new: "",
       password: "",
     },
   })
 
   return (
     <form
-      id="change-username-form"
       onSubmit={handleSubmit(handleApiSubmit(onSubmit))}
       className={`relative space-y-1 text-sm transition ${
         isSubmitting ? "pointer-events-none opacity-70 blur-[1px]" : ""
@@ -97,21 +74,11 @@ export function ChangeUsernameForm({ onSubmit }: ChangeUsernameFormProps) {
 
       {/* CURRENT USERNAME */}
       <SettingsFormInput
-        label={t("account.settings.current_username")}
+        label={t("account.username")}
         initialMessage={t("account.settings.init_msg.current_username")}
         inputProps={{
           ...register("username_current"),
           readOnly: true,
-        }}
-      />
-
-      {/* NEW USERNAME */}
-      <SettingsFormInput
-        label={t("account.settings.new_username")}
-        error={errors.username_new}
-        initialMessage={t("account.settings.init_msg.new_username")}
-        inputProps={{
-          ...register("username_new"),
         }}
       />
 
@@ -130,8 +97,8 @@ export function ChangeUsernameForm({ onSubmit }: ChangeUsernameFormProps) {
         <Button variant="ghost" onClick={() => reset()}>
           Cancel
         </Button>
-        <Button type="submit" variant="primary" className="hover:bg-(--accent-secondary)">
-          Save Changes
+        <Button type="submit" variant="danger" className="hover:text-(--text-inverted)">
+          {t("account.settings.delete_account")}
         </Button>
       </div>
 

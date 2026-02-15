@@ -2,16 +2,17 @@ import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { SettingsSection } from "@/components/SettingsSection"
 import { ChangeUsernameForm } from "@/forms/settings/ChangeUsernameForm"
+import { DeleteAccountForm } from "@/forms/settings/DeleteAccountForm"
 
 export function AccountSettings() {
-  const [activeTab, setActiveTab] = useState("change_username")
+  const [activeTab, setActiveTab] = useState("delete_account")
   const { t } = useTranslation()
 
   const tabs = [
-    { id: "change_username", label: t("account.change_username") },
-    { id: "change_password", label: t("account.change_password") },
-    { id: "change_email", label: t("account.change_email") },
-    { id: "delete_account", label: t("account.delete_account") },
+    { id: "change_username", label: t("account.settings.change_username") },
+    { id: "change_password", label: t("account.settings.change_password") },
+    { id: "change_email", label: t("account.settings.change_email") },
+    { id: "delete_account", label: t("account.settings.delete_account") },
     { id: "placeholder_1", label: "Placeholder 1" },
     { id: "placeholder_2", label: "Placeholder 2" },
   ]
@@ -21,11 +22,10 @@ export function AccountSettings() {
       case "change_username":
         return (
           <SettingsSection
-            title={t("account.change_username")}
-            description="Choose a unique username that will be visible to other users."
-            buttonFormId="change-username-form"
+            title={t("account.settings.change_username")}
+            description={t("account.settings.description.change_username")}
           >
-            <ChangeUsernameForm onSubmit={() => new Promise(r => setTimeout(r, 1000))}></ChangeUsernameForm>
+            <ChangeUsernameForm onSubmit={() => new Promise((r) => setTimeout(r, 1000))}></ChangeUsernameForm>
           </SettingsSection>
         )
 
@@ -34,7 +34,14 @@ export function AccountSettings() {
       case "change_email":
         return <div>Form to change email</div>
       case "delete_account":
-        return <div>Delete account</div>
+        return (
+          <SettingsSection
+            title={t("account.settings.delete_account")}
+            description={t("account.settings.description.delete_account")}
+          >
+            <DeleteAccountForm onSubmit={() => new Promise((r) => setTimeout(r, 1000))}></DeleteAccountForm>
+          </SettingsSection>
+        )
       case "placeholder_1":
         return <div>Placeholder 1 settings</div>
       case "placeholder_2":
