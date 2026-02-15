@@ -40,7 +40,7 @@ def validate_password_match(password, password_confirm):
 
 def validate_username_unique(username):
     if User.objects.filter(username__iexact=username).exists():
-        return [api_err_dict(EC.AuthFailed.USERNAME_TAKEN)]
+        return [api_err_dict(EC.Validation.USERNAME_TAKEN)]
     return []
 
 def validate_username_format(identifier):
@@ -61,6 +61,6 @@ def validate_email_register(email):
         return errors
 
     if User.objects.filter(email__iexact=email).exists():
-        errors.append(api_err_dict(EC.AuthFailed.EMAIL_TAKEN))
+        errors.append(api_err_dict(EC.Validation.EMAIL_TAKEN))
 
     return errors

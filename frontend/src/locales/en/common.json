@@ -54,7 +54,9 @@
       "PASSWORD_MISMATCH": "Passwords do not match",
       "PASSWORD_TOO_SHORT": "Password must be at least {{min}} characters long",
       "PASSWORD_TOO_LONG": "Password can't exceed {{max}} characters",
-      "INVALID_EMAIL": "Invalid e-mail"
+      "INVALID_EMAIL": "Invalid e-mail",
+      "USERNAME_TAKEN": "This username is already taken",
+      "EMAIL_TAKEN":"This e-mail is in use"
     },
     "AUTH_FAILED": {
       "INVALID_CREDENTIALS": "Invalid credentials",

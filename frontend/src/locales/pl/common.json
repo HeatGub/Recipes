@@ -54,7 +54,9 @@
       "PASSWORD_MISMATCH": "Hasła nie są takie same",
       "PASSWORD_TOO_SHORT": "Hasło musi zawierać co najmniej {{min}} znaki",
       "PASSWORD_TOO_LONG": "Hasło nie może przekraczać {{max}} znaków",
-      "INVALID_EMAIL": "Nieprawidłowy format e-mail"
+      "INVALID_EMAIL": "Nieprawidłowy format e-mail",
+      "USERNAME_TAKEN": "Ten login jest już zajęty",
+      "EMAIL_TAKEN":"Ten e-mail jest już zajęty"
     },
     "AUTH_FAILED": {
       "INVALID_CREDENTIALS": "Nieprawidłowe dane logowania",
