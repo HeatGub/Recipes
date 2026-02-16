@@ -8,8 +8,9 @@
     "account_settings": "Ustawienia Konta",
     "recipes": "Przepisy"
   },
-    "general": {
-    "cancel": "Anuluj"
+  "general": {
+    "cancel": "Anuluj",
+    "confirm": "Potwierdź"
   },
   "account": {
     "login": "Logowanie",
@@ -34,8 +35,9 @@
       "current_username": "Obecny Login",
       "new_username": "Nowy Login",
       "description": {
-        "change_username":"Wybierz unikalny login który będzie widoczny dla innych użytkowników",
-        "delete_account": "Usuń konto wraz z całą jego zawartością"
+        "change_username": "Wybierz unikalny login który będzie widoczny dla innych użytkowników",
+        "delete_account": "Usuń konto wraz z całą jego zawartością",
+        "delete_account_confirm": "Czy na pewno chcesz usunąć konto? Tej operacji nie da się cofnąć."
       },
       "init_msg": {
         "current_username": "Twój obecny login",
@@ -60,7 +62,7 @@
       "PASSWORD_TOO_LONG": "Hasło nie może przekraczać {{max}} znaków",
       "INVALID_EMAIL": "Nieprawidłowy format e-mail",
       "USERNAME_TAKEN": "Ten login jest już zajęty",
-      "EMAIL_TAKEN":"Ten e-mail jest już zajęty"
+      "EMAIL_TAKEN": "Ten e-mail jest już zajęty"
     },
     "AUTH_FAILED": {
       "INVALID_CREDENTIALS": "Nieprawidłowe dane logowania",

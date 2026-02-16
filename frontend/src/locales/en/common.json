@@ -9,7 +9,8 @@
     "recipes": "Recipes"
   },
   "general": {
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "confirm": "Confirm"
   },
   "account": {
     "login": "Login",
@@ -34,8 +35,9 @@
       "current_username": "Current Username",
       "new_username": "New Username",
       "description": {
-        "change_username":"Choose a unique username that will be visible to other users",
-        "delete_account": "Delete acount with all of its content"
+        "change_username": "Choose a unique username that will be visible to other users",
+        "delete_account": "Delete acount with all of its content",
+        "delete_account_confirm": "Are you sure you want to delete your account? This action cannot be undone."
       },
       "init_msg": {
         "current_username": "Your current username",
@@ -60,7 +62,7 @@
       "PASSWORD_TOO_LONG": "Password can't exceed {{max}} characters",
       "INVALID_EMAIL": "Invalid e-mail",
       "USERNAME_TAKEN": "This username is already taken",
-      "EMAIL_TAKEN":"This e-mail is in use"
+      "EMAIL_TAKEN": "This e-mail is in use"
     },
     "AUTH_FAILED": {
       "INVALID_CREDENTIALS": "Invalid credentials",
