@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next"
 import clsx from "clsx"
 import { ROUTES } from "@/router"
 import { useAuth } from "../auth/useAuth"
-import { HomeIcon, Wrench } from "lucide-react" // Example icons
+import { HomeIcon, Wrench } from "lucide-react"
 
 interface SidebarProps {
   sidebarOpen: boolean

@@ -8,11 +8,15 @@
     "account_settings": "Ustawienia Konta",
     "recipes": "Przepisy"
   },
+    "general": {
+    "cancel": "Anuluj"
+  },
   "account": {
     "login": "Logowanie",
     "log_in": "Zaloguj",
     "logged_in_as": "Zalogowany jako",
     "logout": "Wyloguj",
+    "log_out": "Wyloguj",
     "register": "Rejestracja",
     "username": "Nazwa Użytkownika",
     "email": "Email",

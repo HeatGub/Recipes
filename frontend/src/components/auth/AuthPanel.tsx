@@ -8,6 +8,7 @@ import { RichButton } from "../ui/RichButton"
 import { useAuthPanel } from "../../auth/AuthPanelContext"
 import { useNavigate } from "react-router-dom"
 import { ROUTES } from "@/router"
+import { UserPlus, LogIn, LogOut } from "lucide-react" // Example icons
 
 export function AuthPanel() {
   const { login, logout, user } = useAuth()
@@ -31,43 +32,46 @@ export function AuthPanel() {
 
   const panelStyles: Record<"login" | "register" | "logout", { selected: string; hover: string }> = {
     login: {
-      selected: "rounded-l-full bg-(--accent-primary) text-(--text-inverted)",
-      hover: "rounded-l-full hover:bg-(--accent-primary) hover:text-(--text-inverted)",
+      selected: "bg-(--accent-primary) text-(--text-inverted)",
+      hover: "hover:bg-(--accent-primary) hover:text-(--text-inverted) bg-(--bg-secondary)",
     },
     register: {
-      selected: "pr-11 rounded-r-full bg-(--accent-secondary) text-(--text-inverted)",
-      hover: "pr-11 rounded-r-full hover:bg-(--accent-secondary) hover:text-(--text-inverted)",
+      selected: "bg-(--accent-secondary) text-(--text-inverted)",
+      hover: "hover:bg-(--accent-secondary) hover:text-(--text-inverted) bg-(--bg-secondary)",
     },
     logout: {
-      selected: "pr-11 rounded-full bg-(--bg-warning) text-(--text-inverted)",
-      hover: "pr-11 rounded-full hover:bg-(--bg-warning) hover:text-(--text-inverted)",
+      selected: "bg-(--bg-warning) text-(--text-inverted)",
+      hover: "hover:bg-(--bg-warning) hover:text-(--text-inverted) bg-(--bg-secondary)",
     },
   }
 
   const getButtonClasses = (panel: "login" | "register" | "logout") =>
     clsx(
-      "flex-1 pl-3 pr-2 py-2 text-center transition",
+      "flex items-center gap-1 pl-2 pr-6 h-6 text-s leading-none border rounded-full transition w-fit whitespace-nowrap",
       currentPanel === panel ? panelStyles[panel].selected : panelStyles[panel].hover
     )
 
   return (
-    <div className="relative right-1 inline-flex items-center">
-      <div className="flex overflow-hidden rounded-full border-2">
+    <div className="relative inline-flex items-center">
+      <div className="mr-5 flex h-10 flex-col items-end justify-center">
         {!isLoggedIn && (
           <>
-            <button className={getButtonClasses("login")} onClick={() => togglePanel("login")}>
-              {t("account.login")}
+            <button className={getButtonClasses("register")} onClick={() => togglePanel("register")}>
+              <UserPlus className="h-5 w-5" />
+              {t("account.register")}
             </button>
 
-            <button className={getButtonClasses("register")} onClick={() => togglePanel("register")}>
-              {t("account.register")}
+            <button className={getButtonClasses("login")} onClick={() => togglePanel("login")}>
+              <LogIn className="h-5 w-5" />
+              {t("account.log_in")}
             </button>
           </>
         )}
 
         {isLoggedIn && (
           <button className={getButtonClasses("logout")} onClick={() => togglePanel("logout")}>
-            {t("account.logout")}
+            <LogOut className="h-5 w-5" />
+            {/* {t("account.log_out")} */}
           </button>
         )}
       </div>
@@ -75,10 +79,10 @@ export function AuthPanel() {
       <div
         onClick={() => isLoggedIn && togglePanel("account_settings")}
         className={clsx(
-          "absolute right-px z-10 flex h-10 w-10 items-center justify-center rounded-full text-lg font-semibold",
+          "absolute right-px z-10 flex h-10 w-10 items-center justify-center rounded-full text-xl font-semibold",
           isLoggedIn
-            ? "cursor-pointer bg-(--accent-primary) text-(--text-inverted)"
-            : "cursor-default bg-(--bg-tertiary) text-(--text-muted)"
+            ? "cursor-pointer border-3 border-(--accent-primary)! bg-(--accent-secondary) text-(--text-inverted) outline-2 outline-(--border-default)! hover:text-2xl hover:shadow-[0_0_10px_var(--shadow-hover)]"
+            : "cursor-default border-2 border-(--accent-primary)! bg-(--bg-tertiary) text-(--text-secondary) outline-2 outline-(--border-default)!"
         )}
       >
         {avatarLetter}
@@ -86,7 +90,7 @@ export function AuthPanel() {
 
       {/* Dropdown panels */}
       {currentPanel && (
-        <div className="absolute top-full right-0 mt-2 max-w-90 min-w-60 rounded-xl border p-4 shadow-lg bg-(--bg-primary)">
+        <div className="absolute top-full right-0 mt-2 max-w-90 min-w-60 rounded-xl border bg-(--bg-primary) p-4 shadow-lg">
           {currentPanel === "login" && (
             <LoginForm
               onSubmit={async ({ identifier, password }) => {
@@ -111,7 +115,7 @@ export function AuthPanel() {
                 {t("account.logged_in_as")} <strong>{user?.username}</strong>
               </p>
               <RichButton onClick={handleLogout} variant="warning" className="w-full">
-                {t("account.logout")}
+                {t("account.log_out")}
               </RichButton>
             </div>
           )}

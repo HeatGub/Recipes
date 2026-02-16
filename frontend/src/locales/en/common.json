@@ -8,11 +8,15 @@
     "account_settings": "Account Settings",
     "recipes": "Recipes"
   },
+  "general": {
+    "cancel": "Cancel"
+  },
   "account": {
     "login": "Login",
     "log_in": "Log In",
     "logged_in_as": "Logged in as",
     "logout": "Logout",
+    "log_out": "Log Out",
     "register": "Register",
     "username": "Username",
     "email": "Email",

@@ -86,7 +86,7 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         </div>
       )}
 
-      <h3 className="text-base font-semibold">{t("account.login")}</h3>
+      <h3 className="text-base font-semibold">{t("account.log_in")}</h3>
 
       {/* IDENTIFIER */}
       <AuthPanelFormInput
