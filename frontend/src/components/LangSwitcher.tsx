@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { Earth } from "lucide-react"
 
 export const LangSwitcher = () => {
   const { i18n } = useTranslation();
@@ -11,9 +12,23 @@ export const LangSwitcher = () => {
   return (
     <button
       onClick={toggleLang}
-      className="px-2 py-1 border rounded bg-(--bg-secondary)"
+       className="
+        h-8
+        cursor-pointer
+        flex items-center justify-center
+        gap-1
+        px-2 py-0
+        rounded
+        bg-(--bg-secondary)
+        text-s
+        leading-none
+        transition-colors duration-300
+        hover:bg-(--accent-primary)
+        hover:text-(--text-inverted)
+      "
     >
-      {i18n.language === "pl" ? "EN" : "PL"}
+    <Earth className="h-4 w-4"/>
+    {i18n.language === "pl" ? "PL" : "EN"}
     </button>
   );
 };

@@ -47,7 +47,7 @@ export function AuthPanel() {
 
   const getButtonClasses = (panel: "login" | "register" | "logout") =>
     clsx(
-      "flex items-center gap-1 pl-2 pr-6 h-6 text-s leading-none border rounded-full transition w-fit whitespace-nowrap",
+      "flex items-center gap-1 pl-2 pr-6 h-6 text-s leading-none border-1 rounded-full transition w-fit whitespace-nowrap",
       currentPanel === panel ? panelStyles[panel].selected : panelStyles[panel].hover
     )
 

@@ -29,7 +29,7 @@
   --bg-primary: #121314;
   --bg-secondary: #1c1e20;
   --bg-tertiary: #3b3f47;
-  --bg-inverted: #a5c0d5;
+  --bg-inverted: #d6d6d6;
   --bg-warning: #ecab13;
   --bg-danger: #ee3228;
   --text-primary: #f0f0f0;
@@ -43,7 +43,7 @@
   --accent-secondary: #11df93;
   --accent-soft: #146e50c1;
   --border-default: #585858;
-  --border-muted: #3b3b3b;
+  --border-muted: #333333;
   --shadow-color: rgba(152, 180, 182, 0.25);
   --shadow-hover: rgba(152, 180, 182, 0.5);
 }

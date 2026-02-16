@@ -1,5 +1,5 @@
 import { useState } from "react"
-import clsx from "clsx"
+import { SunMoon } from "lucide-react"
 
 export function ThemeToggle() {
   const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains("dark"))
@@ -16,21 +16,17 @@ const toggleTheme = () => {
 
   setIsDark(!isDark)
 }
-
   return (
-    <div className="flex flex-col items-center gap-4">
       <button
         onClick={toggleTheme}
-        className={clsx(
-          "rounded px-4 py-2",
-          "bg-(--bg-secondary)",
-          "transition-colors duration-300",
-          "hover:bg-(--bg-inverted)",
-          "hover:text-(--text-inverted)"
-        )}
+        className="flex items-center justify-center 
+        p-0.5
+        border border-(--border-muted)!
+        cursor-pointer rounded bg-(--bg-secondary) 
+        transition-colors duration-300 
+        hover:bg-(--bg-inverted) hover:text-(--text-inverted)"
       >
-        {isDark ? "Light" : "Dark"}
+        <SunMoon className="h-7 w-7"/>
       </button>
-    </div>
   )
 }
