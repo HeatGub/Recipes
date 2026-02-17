@@ -127,17 +127,14 @@ export function ChangeUsernameForm({ onSubmit }: ChangeUsernameFormProps) {
 
       {/* Footer */}
       <div className="flex justify-end gap-4 border-t bg-(--bg-primary) pt-4">
-        <Button variant="ghost" onClick={() => reset()}>
+        <Button type="button" variant="ghost" onClick={() => reset()}>
           Cancel
         </Button>
         <Button type="submit" variant="primary" className="hover:bg-(--accent-secondary)">
           Save Changes
         </Button>
       </div>
-
-      {/* <p className="text-s mt-1 text-center text-(--text-warning)">
-        <FormGlobalError error={errors.root?.message} />
-      </p> */}
+      
     </form>
   )
 }

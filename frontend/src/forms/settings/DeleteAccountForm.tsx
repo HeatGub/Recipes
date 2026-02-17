@@ -130,7 +130,7 @@ export function DeleteAccountForm() {
 
         {/* Footer */}
         <div className="flex justify-end gap-4 border-t bg-(--bg-primary) pt-4">
-          <Button variant="ghost" onClick={() => reset()}>
+          <Button type="button" variant="ghost" onClick={() => reset()}>
             {t("general.cancel")}
           </Button>
           <Button type="submit" variant="danger" className="hover:text-(--text-inverted)">
