@@ -57,6 +57,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  const deleteAccount = async (password: string) => {
+    setAuthInProgress(true)
+    try {
+      await authApi.deleteAccount(password)
+      console.log("delete user")
+      // setUser(null)
+      // setIsAuthenticated(false)
+    } finally {
+      setAuthInProgress(false)
+    }
+  }
+
   const value: AuthContextType = {
     user,
     isAuthenticated,
@@ -64,6 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     authInProgress,
     login,
     logout,
+    deleteAccount,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

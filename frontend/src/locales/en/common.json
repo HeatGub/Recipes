@@ -50,7 +50,11 @@
     "title": "404 - Page Not Found",
     "message": "The page you are looking for does not exist"
   },
+  "success": {
+    "account_deleted": "Account has been deleted!"
+  },
   "errors": {
+    "SOMETHING_WENT_WRONG": "Something went wrong, please try again.",
     "VALIDATION": {
       "BLANK": "This field can't be blank",
       "REQUIRED": "This field is required",
@@ -66,7 +70,8 @@
     },
     "AUTH_FAILED": {
       "INVALID_CREDENTIALS": "Invalid credentials",
-      "ACCOUNT_DISABLED": "This account is disabled"
+      "ACCOUNT_DISABLED": "This account is disabled",
+      "INVALID_PASSWORD": "Invalid Password"
     }
   }
 }

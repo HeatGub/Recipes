@@ -50,7 +50,11 @@
     "title": "404 - Strona nie znaleziona",
     "message": "Strona, której szukasz, nie istnieje"
   },
+  "success": {
+    "account_deleted": "Konto zostało usunięte!"
+  },
   "errors": {
+    "SOMETHING_WENT_WRONG": "Coś poszło nie tak, spróbuj ponownie.",
     "VALIDATION": {
       "BLANK": "To pole nie może być puste",
       "REQUIRED": "To pole jest wymagane",
@@ -66,7 +70,8 @@
     },
     "AUTH_FAILED": {
       "INVALID_CREDENTIALS": "Nieprawidłowe dane logowania",
-      "ACCOUNT_DISABLED": "To konto jest zablokowane"
+      "ACCOUNT_DISABLED": "To konto jest zablokowane",
+      "INVALID_PASSWORD": "Nieprawidłowe Hasło"
     }
   }
 }

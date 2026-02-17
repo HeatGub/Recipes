@@ -40,13 +40,9 @@ export const deleteAccountSchema = z.object({
 
 export type DeleteAccountFormData = z.infer<typeof deleteAccountSchema>
 
-interface DeleteAccountFormProps {
-  onSubmit?: (data: DeleteAccountFormData) => Promise<void> | void
-}
-
-export function DeleteAccountForm({ onSubmit }: DeleteAccountFormProps) {
+export function DeleteAccountForm() {
   const { t } = useTranslation()
-  const { user } = useAuth()
+  const { user, deleteAccount } = useAuth()
 
   const [isModalOpen, setModalOpen] = useState(false)
   const [pendingData, setPendingData] = useState<DeleteAccountFormData | null>(null)
@@ -65,29 +61,26 @@ export function DeleteAccountForm({ onSubmit }: DeleteAccountFormProps) {
     },
   })
 
-  // 🔹 When form validates → open modal
+  // Only open modal after validation
   const handleValidatedSubmit = (data: DeleteAccountFormData) => {
     setPendingData(data)
     setModalOpen(true)
   }
 
-  // 🔹 Run original API logic after confirm
+  // API logic
+  const submitDelete = async (data: DeleteAccountFormData) => {
+    await deleteAccount(data.password)
+    showToast("success", t("success.account_deleted"))
+  }
+
   const handleConfirmModal = async () => {
     if (!pendingData) return
 
-    try {
-      // Call optional prop if provided
-      if (onSubmit) await onSubmit(pendingData)
+    const wrappedSubmit = handleApiSubmit(submitDelete)
+    await wrappedSubmit(pendingData)
 
-      await new Promise((r) => setTimeout(r, 1000))
-
-      showToast("success", "Account deleted successfully!")
-    } catch {
-      showToast("error", "Failed to delete account")
-    } finally {
-      setModalOpen(false)
-      setPendingData(null)
-    }
+    setModalOpen(false)
+    setPendingData(null)
   }
 
   return (

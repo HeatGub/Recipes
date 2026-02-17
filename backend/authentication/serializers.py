@@ -181,3 +181,51 @@ class RegisterSerializer(serializers.Serializer):
                 "email": "test",
             },
         }
+    
+
+class DeleteAccountSerializer(serializers.Serializer):
+
+    password = serializers.CharField(required=False, allow_blank=True, write_only=True)
+
+    def validate(self, attrs):
+        request = self.context["request"]
+        user = request.user
+        password = attrs.get("password")
+
+        errors = {}
+
+        # ---------- REQUIRED ----------
+        errors.setdefault("password", []).extend(validate_required(attrs, "password"))
+
+        # ---------- BLANK ----------
+        if "password" in attrs:
+            errors.setdefault("password", []).extend(validate_blank(password))
+
+        # ---------- LENGTH ----------
+        if password:
+            field_errors = validate_length(
+                password,
+                min_len=MIN_PASSWORD_LEN,
+                max_len=MAX_PASSWORD_LEN,
+                min_code=EC.Validation.PASSWORD_TOO_SHORT,
+                max_code=EC.Validation.PASSWORD_TOO_LONG,
+            )
+            errors.setdefault("password", []).extend(field_errors)
+
+        errors = remove_empty_list_fields(errors)
+
+        if errors:
+            raise ValidationError(errors)
+
+        # ---------- PASSWORD CHECK ----------
+        if not user.check_password(password):
+            raise AuthenticationFailed({
+                "password": [
+                    api_err_dict(EC.AuthFailed.INVALID_PASSWORD)
+                ],
+                "_toast": [
+                    api_err_dict(EC.AuthFailed.INVALID_PASSWORD)
+                ]
+            })
+        
+        return attrs

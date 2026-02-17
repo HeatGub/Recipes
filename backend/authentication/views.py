@@ -2,7 +2,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from rest_framework_simplejwt.exceptions import TokenError
-from .serializers import LoginSerializer, RegisterSerializer
+from .serializers import LoginSerializer, RegisterSerializer, DeleteAccountSerializer
 from rest_framework.views import APIView
 from .permissions import IsAuthenticatedEC
 from rest_framework.response import Response
@@ -153,21 +153,26 @@ class MeView(APIView):
         )
 
 
-class DeleteUserView(APIView):
+class DeleteAccountView(APIView):
     permission_classes = [IsAuthenticatedEC]
 
     def delete(self, request):
+        serializer = DeleteAccountSerializer(
+            data=request.data,
+            context={"request": request},
+        )
+        serializer.is_valid(raise_exception=True)
+
         user = request.user
         refresh_token = request.COOKIES.get(cookie["NAME"])
+        # user.delete()
 
-        user.delete()
-
-        if refresh_token:
-            try:
-                RefreshToken(refresh_token).blacklist()
-            except TokenError:
-                # token already expired/invalid → ignore
-                pass
+        # # Blacklist refresh token (rotation + blacklist)
+        # if refresh_token:
+        #     try:
+        #         RefreshToken(refresh_token).blacklist()
+        #     except TokenError:
+        #         pass
 
         response = api_response(
             success=True,

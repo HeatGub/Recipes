@@ -37,3 +37,11 @@ export const register = async (email: string, username: string, password: string
   setAccessToken(token)
   return res.data
 }
+
+export const deleteAccount = async (password: string) => {
+  const res = await api.delete("/auth/delete/", {
+    data: { password },
+  })
+  // setAccessToken(null)
+  return res.data
+}

@@ -7,5 +7,5 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(), name="logout"),
     path("me/", MeView.as_view(), name="auth-me"),
     path("register/", RegisterView.as_view(), name="register"),
-    path("delete/", DeleteUserView.as_view(), name="delete_user")
+    path("delete/", DeleteAccountView.as_view(), name="delete_user")
 ]
