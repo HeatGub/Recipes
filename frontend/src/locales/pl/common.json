@@ -22,6 +22,7 @@
     "username": "Nazwa Użytkownika",
     "email": "Email",
     "email_optional": "Email (opcjonalnie)",
+    "email_not_provided": "Brak adresu e-mail",
     "username_or_email": "Nazwa Użytkownika lub Email",
     "password": "Hasło",
     "password_confirm": "Potwierdź Hasło",

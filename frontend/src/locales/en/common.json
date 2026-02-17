@@ -22,6 +22,7 @@
     "username": "Username",
     "email": "Email",
     "email_optional": "Email (optional)",
+    "email_not_provided": "No e-mail provided",
     "username_or_email": "Username or Email",
     "password": "Password",
     "password_confirm": "Confirm Password",

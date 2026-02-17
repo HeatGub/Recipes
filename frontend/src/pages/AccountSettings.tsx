@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next"
 import { SettingsSection } from "@/components/SettingsSection"
 import { ChangeUsernameForm } from "@/forms/settings/ChangeUsernameForm"
 import { DeleteAccountForm } from "@/forms/settings/DeleteAccountForm"
+import { ProfileHeader } from "@/components/ui/ProfileHeader"
 
 export function AccountSettings() {
   const [activeTab, setActiveTab] = useState("delete_account")
@@ -52,6 +53,7 @@ export function AccountSettings() {
 
   return (
     <div className="mx-auto max-w-5xl">
+      <ProfileHeader />
       <div className="mb-3 flex w-full flex-col gap-2 border-b pb-3 md:flex-row md:flex-wrap">
         {tabs.map((tab) => (
           <button

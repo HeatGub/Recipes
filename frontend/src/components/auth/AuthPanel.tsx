@@ -16,7 +16,7 @@ export function AuthPanel() {
   const navigate = useNavigate()
 
   const isLoggedIn = Boolean(user)
-  const avatarLetter = isLoggedIn ? user?.username.charAt(0).toUpperCase() : "?"
+  const avatarLetter = isLoggedIn ? user?.username.charAt(0) : "?"
 
   const handleLogout = () => {
     logout()
