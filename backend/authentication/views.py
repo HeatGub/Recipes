@@ -14,6 +14,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from config.response_codes import EC, SC
 from django.conf import settings
 from config.error_helpers import api_err_dict
+import time
 
 
 cookie = settings.AUTH_COOKIE
@@ -157,6 +158,8 @@ class DeleteAccountView(APIView):
     permission_classes = [IsAuthenticatedEC]
 
     def delete(self, request):
+        time.sleep(2)
+
         serializer = DeleteAccountSerializer(
             data=request.data,
             context={"request": request},
@@ -180,6 +183,6 @@ class DeleteAccountView(APIView):
             http_status=status.HTTP_200_OK,
         )
 
-        response.delete_cookie(cookie["NAME"])
+        # response.delete_cookie(cookie["NAME"])
 
         return response

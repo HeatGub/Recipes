@@ -10,7 +10,8 @@
   },
   "general": {
     "cancel": "Anuluj",
-    "confirm": "Potwierdź"
+    "confirm": "Potwierdź",
+    "close": "Zamknij"
   },
   "account": {
     "login": "Logowanie",

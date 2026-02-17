@@ -13,7 +13,7 @@ export function ProfileHeader() {
     <div className="pl-6 flex h-16 mb-8 w-full rounded bg-linear-to-r from-(--accent-primary) to-(--accent-secondary)">
       <div
         className={clsx(
-          "flex h-20 w-20 items-center justify-center rounded-full text-5xl font-semibold",
+          "flex h-20 w-20 items-center justify-center rounded-full text-5xl font-semibold select-none",
           "border-3 border-(--accent-primary)! bg-(--bg-secondary) text-(--text-primary) outline-8 outline-(--bg-tertiary)!", 
         )}
       >

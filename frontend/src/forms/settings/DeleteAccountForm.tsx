@@ -46,6 +46,7 @@ export function DeleteAccountForm() {
 
   const [isModalOpen, setModalOpen] = useState(false)
   const [pendingData, setPendingData] = useState<DeleteAccountFormData | null>(null)
+  const [modalLoading, setModalLoading] = useState(false)
 
   const {
     register,
@@ -61,24 +62,33 @@ export function DeleteAccountForm() {
     },
   })
 
-  // Only open modal after validation
+  // Show modal after form validation
   const handleValidatedSubmit = (data: DeleteAccountFormData) => {
     setPendingData(data)
     setModalOpen(true)
   }
 
-  // API logic
-  const submitDelete = async (data: DeleteAccountFormData) => {
-    await deleteAccount(data.password)
-    showToast("success", t("success.account_deleted"))
-  }
-
   const handleConfirmModal = async () => {
     if (!pendingData) return
 
-    const wrappedSubmit = handleApiSubmit(submitDelete)
-    await wrappedSubmit(pendingData)
+    setModalLoading(true) // modal shows loading
 
+    const wrappedSubmit = handleApiSubmit(async (data: DeleteAccountFormData) => {
+      await deleteAccount(data.password)
+      reset() 
+      showToast("success", t("success.account_deleted"))
+    })
+
+    try {
+      await wrappedSubmit(pendingData)
+      setModalOpen(false)
+      setPendingData(null)
+    } finally {
+      setModalLoading(false)
+    }
+  }
+
+  const handleCancelModal = () => {
     setModalOpen(false)
     setPendingData(null)
   }
@@ -90,19 +100,19 @@ export function DeleteAccountForm() {
         isOpen={isModalOpen}
         title={t("account.settings.delete_account")}
         description={t("account.settings.description.delete_account_confirm")}
-        onClose={() => setModalOpen(false)}
+        onClose={handleCancelModal}
         onConfirm={handleConfirmModal}
         confirmVariant="danger"
       />
 
       {/* Form */}
       <form
-        onSubmit={handleSubmit(handleApiSubmit(handleValidatedSubmit))}
+        onSubmit={handleSubmit(handleValidatedSubmit)}
         className={`relative space-y-1 text-sm transition ${
-          isSubmitting ? "pointer-events-none opacity-70 blur-[1px]" : ""
+          modalLoading || isModalOpen ? "pointer-events-none opacity-70 blur-[1px]" : ""
         }`}
       >
-        {isSubmitting && (
+        {(isSubmitting || modalLoading) && (
           <div className="absolute inset-0 z-10 flex items-center justify-center">
             <SyncLoader size={8} color="var(--accent-primary)" />
           </div>

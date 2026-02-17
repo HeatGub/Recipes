@@ -20,7 +20,7 @@ export function Button({ variant = "primary", className, ...props }: ButtonProps
   return (
     <button
       className={clsx(
-        "text-base rounded px-3 py-1 font-medium cursor-pointer disabled:cursor-default",
+        "text-base rounded px-3 py-1 font-medium  select-none cursor-pointer disabled:cursor-default",
         "hover:shadow-[0_0_5px_var(--shadow-color)] disabled:hover:shadow-none",
         VARIANT_STYLES[variant],
         className

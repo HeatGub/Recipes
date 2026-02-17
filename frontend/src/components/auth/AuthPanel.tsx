@@ -79,7 +79,7 @@ export function AuthPanel() {
       <div
         onClick={() => isLoggedIn && togglePanel("account_settings")}
         className={clsx(
-          "absolute right-px z-10 flex h-10 w-10 items-center justify-center rounded-full text-xl font-semibold",
+          "absolute right-px z-10 flex h-10 w-10 items-center justify-center rounded-full text-xl font-semibold select-none",
           isLoggedIn
             ? "cursor-pointer border-3 border-(--accent-primary)! bg-(--accent-secondary) text-(--text-inverted) outline-2 outline-(--border-default)! hover:text-2xl hover:shadow-[0_0_10px_var(--shadow-hover)]"
             : "cursor-default border-2 border-(--accent-primary)! bg-(--bg-tertiary) text-(--text-secondary) outline-2 outline-(--border-default)!"
