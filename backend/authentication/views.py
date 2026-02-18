@@ -15,19 +15,18 @@ from config.response_codes import EC, SC
 from django.conf import settings
 from config.error_helpers import api_err_dict
 
-
 cookie = settings.AUTH_COOKIE
 
 class CookieTokenRefreshView(TokenRefreshView):
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
-        refresh = request.COOKIES.get("refresh_token")
+        refresh_token = request.COOKIES.get(cookie["NAME"])
 
-        if not refresh:
+        if not refresh_token:
             raise AuthenticationFailed({"_global": [api_err_dict(EC.AuthFailed.REFRESH_TOKEN_MISSING),]})
 
-        serializer = self.get_serializer(data={"refresh": refresh})
+        serializer = self.get_serializer(data={"refresh": refresh_token})
         serializer.is_valid(raise_exception=True)
 
         response = Response(serializer.validated_data, status=status.HTTP_200_OK)
@@ -35,11 +34,11 @@ class CookieTokenRefreshView(TokenRefreshView):
         if "access" in response.data:
             response.data["access_token"] = response.data.pop("access")
 
-        new_refresh = response.data.pop("refresh", None)
-        if new_refresh:
+        new_refresh_token = response.data.pop("refresh", None)
+        if new_refresh_token:
             response.set_cookie(
                 key=cookie["NAME"],
-                value=new_refresh,
+                value=new_refresh_token,
                 httponly=cookie["HTTP_ONLY"],
                 secure=cookie["SECURE"],
                 samesite=cookie["SAMESITE"],
@@ -64,7 +63,7 @@ class LoginView(APIView):
         serializer.is_valid(raise_exception=True)
 
         data = serializer.validated_data
-        refresh_token = data.pop("refresh")
+        refresh_token = data.pop(cookie["NAME"])
 
         response = api_response(
             success=True,
@@ -93,7 +92,7 @@ class RegisterView(APIView):
         serializer.is_valid(raise_exception=True)
 
         data = serializer.validated_data
-        refresh_token = data.pop("refresh")
+        refresh_token = data.pop(cookie["NAME"])
 
         response = api_response(
             success=True,
@@ -119,7 +118,7 @@ class LogoutView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        refresh_token = request.COOKIES.get("refresh_token")
+        refresh_token = request.COOKIES.get(cookie["NAME"])
 
         if refresh_token:
             try:
@@ -132,7 +131,7 @@ class LogoutView(APIView):
             success=True,
             code=SC.Auth.LOGOUT_SUCCESS,
         )
-        response.delete_cookie("refresh_token")
+        response.delete_cookie(cookie["NAME"])
 
         return response
 

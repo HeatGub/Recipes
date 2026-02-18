@@ -23,8 +23,10 @@ from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import AbstractUser
 from typing import cast, Type
+from django.conf import settings
 
 User = cast(Type[AbstractUser], get_user_model())
+cookie = settings.AUTH_COOKIE
 
 class LoginSerializer(serializers.Serializer):
 
@@ -88,11 +90,11 @@ class LoginSerializer(serializers.Serializer):
         if not user.is_active:
             raise AuthenticationFailed({"_global": [api_err_dict(EC.AuthFailed.ACCOUNT_DISABLED),]})
 
-        refresh = RefreshToken.for_user(user)
+        refresh_token = RefreshToken.for_user(user)
 
         return {
-            "refresh": str(refresh),
-            "access_token": str(refresh.access_token),
+            cookie["NAME"]: str(refresh_token),
+            "access_token": str(refresh_token.access_token),
             "user": {
                 "id": user.pk,
                 "username": user.username,
@@ -162,11 +164,11 @@ class RegisterSerializer(serializers.Serializer):
             password=password,
         )
 
-        refresh = RefreshToken.for_user(user)
+        refresh_token = RefreshToken.for_user(user)
 
         return {
-            "refresh": str(refresh),
-            "access_token": str(refresh.access_token),
+            cookie["NAME"]: str(refresh_token),
+            "access_token": str(refresh_token.access_token),
             "user": {
                 "id": user.pk,
                 "username": user.username,
