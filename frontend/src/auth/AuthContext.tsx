@@ -6,6 +6,13 @@ export type User = {
   email: string
 }
 
+export type RegisterPayload = {
+  username: string
+  email?: string
+  password: string
+  password_confirm: string
+}
+
 export type AuthContextType = {
   user: User | null
   isAuthenticated: boolean
@@ -13,6 +20,7 @@ export type AuthContextType = {
   authInProgress: boolean
   login: (identifier: string, password: string) => Promise<void>
   logout: () => Promise<void>
+  register: (data:RegisterPayload) => Promise<void>
   deleteAccount: (password: string) => Promise<void>
 }
 

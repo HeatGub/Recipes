@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import type { ReactNode } from "react"
 import { AuthContext } from "./AuthContext"
-import type { AuthContextType, User } from "./AuthContext"
+import type { AuthContextType, User, RegisterPayload } from "./AuthContext"
 import * as authApi from "../api/auth"
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -57,13 +57,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  const register = async (data:RegisterPayload)  => {
+    setAuthInProgress(true)
+    try {
+      const res = await authApi.register(data)
+      setIsAuthenticated(true)
+      setUser(res.payload.user)
+    } finally {
+      setAuthInProgress(false)
+    }
+  }
+
   const deleteAccount = async (password: string) => {
     setAuthInProgress(true)
     try {
       await authApi.deleteAccount(password)
-      console.log("delete user")
-      // setUser(null)
-      // setIsAuthenticated(false)
+      setUser(null)
+      setIsAuthenticated(false)
     } finally {
       setAuthInProgress(false)
     }
@@ -76,6 +86,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     authInProgress,
     login,
     logout,
+    register,
     deleteAccount,
   }
 

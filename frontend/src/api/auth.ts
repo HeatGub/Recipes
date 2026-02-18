@@ -1,4 +1,5 @@
 import { api, setAccessToken } from "./client"
+import type { RegisterPayload } from "@/auth/AuthContext"
 
 export const authInit = async () => {
   try {
@@ -31,8 +32,8 @@ export const logout = async () => {
   setAccessToken(null)
 }
 
-export const register = async (email: string, username: string, password: string) => {
-  const res = await api.post("/auth/register/", { email, username, password })
+export const register = async (data: RegisterPayload) => {
+  const res = await api.post("/auth/register/", { ...data })
   const token = res.data.payload.access_token
   setAccessToken(token)
   return res.data
@@ -42,6 +43,6 @@ export const deleteAccount = async (password: string) => {
   const res = await api.delete("/auth/delete/", {
     data: { password },
   })
-  // setAccessToken(null)
+  setAccessToken(null)
   return res.data
 }

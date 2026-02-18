@@ -21,9 +21,10 @@ from django.core.validators import validate_email
 from rest_framework import serializers
 from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth.models import AbstractUser
+from typing import cast, Type
 
-User = get_user_model()
-
+User = cast(Type[AbstractUser], get_user_model())
 
 class LoginSerializer(serializers.Serializer):
 
@@ -93,9 +94,9 @@ class LoginSerializer(serializers.Serializer):
             "refresh": str(refresh),
             "access_token": str(refresh.access_token),
             "user": {
-                "id": user.id,         # type: ignore[attr-defined]
-                "username": user.username,         # type: ignore[attr-defined]
-                "email": user.email,         # type: ignore[attr-defined]
+                "id": user.pk,
+                "username": user.username,
+                "email": user.email,
             },
         }
 
@@ -154,32 +155,23 @@ class RegisterSerializer(serializers.Serializer):
         if errors:
             raise ValidationError(errors)
 
-        # # ---------- CREATE ----------
-        # user = User.objects.create_user(
-        #     username=username,
-        #     email=email or "",
-        #     password=password,
-        # )
+        # ---------- CREATE ----------
+        user = User.objects.create_user(
+            username=username,
+            email=email if email else None,
+            password=password,
+        )
 
-        # refresh = RefreshToken.for_user(user)
-
-        # return {
-        #     "refresh": str(refresh),
-        #     "access_token": str(refresh.access_token),
-        #     "user": {
-        #         "id": user.id,
-        #         "username": user.username,
-        #         "email": user.email,
-        #     },
+        refresh = RefreshToken.for_user(user)
 
         return {
-            "refresh": "test",
-            "access_token": "test",
+            "refresh": str(refresh),
+            "access_token": str(refresh.access_token),
             "user": {
-                "id": "test",
-                "username": "test",
-                "email": "test",
-            },
+                "id": user.pk,
+                "username": user.username,
+                "email": user.email,
+            }
         }
     
 

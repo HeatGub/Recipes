@@ -3,7 +3,6 @@ import { useAuth } from "../../auth/useAuth"
 import { LoginForm } from "../../forms/auth/LoginForm"
 import { RegisterForm } from "../../forms/auth/RegisterForm"
 import clsx from "clsx"
-import { api } from "@/api/client"
 import { RichButton } from "../ui/RichButton"
 import { useAuthPanel } from "../../auth/AuthPanelContext"
 import { useNavigate } from "react-router-dom"
@@ -11,7 +10,7 @@ import { ROUTES } from "@/router"
 import { UserPlus, LogIn, LogOut } from "lucide-react" // Example icons
 
 export function AuthPanel() {
-  const { login, logout, user } = useAuth()
+  const { login, logout, register, user } = useAuth()
   const { currentPanel, togglePanel, closePanel } = useAuthPanel()
   const navigate = useNavigate()
 
@@ -102,8 +101,8 @@ export function AuthPanel() {
 
           {currentPanel === "register" && (
             <RegisterForm
-              onSubmit={async (data) => {
-                await api.post("/auth/register/", { ...data })
+              onSubmit={async(registerPayload) => {
+                await register(registerPayload)
                 closePanel()
               }}
             />

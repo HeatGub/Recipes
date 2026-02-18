@@ -13,8 +13,6 @@ import { Modal } from "@/components/ui/Modal"
 import { showToast } from "@/components/ui/Toasts"
 
 export const deleteAccountSchema = z.object({
-  username_current: z.string(),
-
   password: z.string().superRefine((val, ctx) => {
     if (val.length < MIN_PASSWORD_LEN) {
       ctx.addIssue({
@@ -42,7 +40,7 @@ export type DeleteAccountFormData = z.infer<typeof deleteAccountSchema>
 
 export function DeleteAccountForm() {
   const { t } = useTranslation()
-  const { user, deleteAccount } = useAuth()
+  const { deleteAccount } = useAuth()
 
   const [isModalOpen, setModalOpen] = useState(false)
   const [pendingData, setPendingData] = useState<DeleteAccountFormData | null>(null)
@@ -57,7 +55,6 @@ export function DeleteAccountForm() {
   } = useFormWithApi<DeleteAccountFormData>({
     resolver: zodResolver(deleteAccountSchema),
     defaultValues: {
-      username_current: String(user?.username),
       password: "",
     },
   })
@@ -117,16 +114,6 @@ export function DeleteAccountForm() {
             <SyncLoader size={8} color="var(--accent-primary)" />
           </div>
         )}
-
-        {/* CURRENT USERNAME */}
-        <SettingsFormInput
-          label={t("account.username")}
-          initialMessage={t("account.settings.init_msg.current_username")}
-          inputProps={{
-            ...register("username_current"),
-            readOnly: true,
-          }}
-        />
 
         {/* PASSWORD */}
         <SettingsFormInput
