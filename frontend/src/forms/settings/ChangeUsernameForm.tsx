@@ -8,9 +8,11 @@ import { MIN_IDENTIFIER_LEN, MAX_IDENTIFIER_LEN, MIN_PASSWORD_LEN, MAX_PASSWORD_
 import { SettingsFormInput } from "@/components/ui/SettingsFormInput"
 import { useAuth } from "@/auth/useAuth"
 import { Button } from "@/components/ui/Button"
+import { api } from "@/api/client"
+import { showToast } from "@/components/ui/Toasts"
 
 export const changeUsernameSchema = z.object({
-  username_current: z.string(),
+  // username_current: z.string(),
   username_new: z.string().superRefine((val, ctx) => {
     if (val.length < MIN_IDENTIFIER_LEN) {
       ctx.addIssue({
@@ -58,13 +60,9 @@ export const changeUsernameSchema = z.object({
 
 export type ChangeUsernameFormData = z.infer<typeof changeUsernameSchema>
 
-interface ChangeUsernameFormProps {
-  onSubmit: (data: ChangeUsernameFormData) => Promise<void> | void
-}
-
-export function ChangeUsernameForm({ onSubmit }: ChangeUsernameFormProps) {
+export function ChangeUsernameForm() {
   const { t } = useTranslation()
-  const { user } = useAuth()
+  const { updateMe } = useAuth()
 
   const {
     register,
@@ -74,12 +72,19 @@ export function ChangeUsernameForm({ onSubmit }: ChangeUsernameFormProps) {
     formState: { errors, isSubmitting },
   } = useFormWithApi<ChangeUsernameFormData>({
     resolver: zodResolver(changeUsernameSchema),
-    defaultValues: {
-      username_current: String(user?.username),
-      username_new: "",
-      password: "",
-    },
+    // defaultValues: {
+    //   username_current: String(user?.username),
+    //   username_new: "",
+    //   password: "",
+    // },
   })
+
+  const onSubmit = async (data: ChangeUsernameFormData) => {
+    await api.patch("/auth/me/username/", data)
+    updateMe()
+    reset()
+    showToast("success", t("success.username_changed"))
+  }
 
   return (
     <form
@@ -91,7 +96,7 @@ export function ChangeUsernameForm({ onSubmit }: ChangeUsernameFormProps) {
     >
       {isSubmitting && <LoadingOverlay />}
 
-      {/* CURRENT USERNAME */}
+      {/* CURRENT USERNAME
       <SettingsFormInput
         label={t("account.settings.current_username")}
         initialMessage={t("account.settings.init_msg.current_username")}
@@ -99,7 +104,7 @@ export function ChangeUsernameForm({ onSubmit }: ChangeUsernameFormProps) {
           ...register("username_current"),
           readOnly: true,
         }}
-      />
+      /> */}
 
       {/* NEW USERNAME */}
       <SettingsFormInput

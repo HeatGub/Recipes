@@ -7,7 +7,7 @@ import { DeleteAccountForm } from "@/forms/settings/DeleteAccountForm"
 import { ProfileHeader } from "@/components/ui/ProfileHeader"
 
 export function AccountSettings() {
-  const [activeTab, setActiveTab] = useState("change_password")
+  const [activeTab, setActiveTab] = useState("change_username")
   const { t } = useTranslation()
 
   const tabs = [
@@ -27,7 +27,7 @@ export function AccountSettings() {
             title={t("account.settings.change_username")}
             description={t("account.settings.description.change_username")}
           >
-            <ChangeUsernameForm onSubmit={() => new Promise((r) => setTimeout(r, 1000))}></ChangeUsernameForm>
+            <ChangeUsernameForm/>
           </SettingsSection>
         )
       case "change_password":
@@ -36,7 +36,7 @@ export function AccountSettings() {
             title={t("account.settings.change_password")}
             description={t("account.settings.description.change_password")}
           >
-            <ChangePasswordForm></ChangePasswordForm>
+            <ChangePasswordForm/>
           </SettingsSection>
         )
       case "change_email":
@@ -47,7 +47,7 @@ export function AccountSettings() {
             title={t("account.settings.delete_account")}
             description={t("account.settings.description.delete_account")}
           >
-            <DeleteAccountForm></DeleteAccountForm>
+            <DeleteAccountForm/>
           </SettingsSection>
         )
       case "placeholder_1":

@@ -61,7 +61,8 @@
   },
   "success": {
     "account_deleted": "Account has been deleted!",
-    "password_changed": "Password has been changed! Please log in again."
+    "password_changed": "Password has been changed! Please log in again.",
+    "username_changed": "Username has been changed!"
   },
   "errors": {
     "SOMETHING_WENT_WRONG": "Something went wrong, please try again.",

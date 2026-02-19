@@ -107,3 +107,4 @@ class SC(): # not necessary, but let's keep response codes tidy
         REGISTER_SUCCESS = "AUTH.REGISTER_SUCCESS"
         USER_DELETED = "AUTH.USER_DELETED"
         PASSWORD_CHANGED = "AUTH.PASSWORD_CHANGED"
+        USERNAME_CHANGED = "AUTH.USERNAME_CHANGED"

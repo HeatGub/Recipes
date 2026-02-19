@@ -61,7 +61,8 @@
   },
   "success": {
     "account_deleted": "Konto zostało usunięte!",
-    "password_changed": "Hasło zostało zmienione! Zaloguj się ponownie."
+    "password_changed": "Hasło zostało zmienione! Zaloguj się ponownie.",
+    "username_changed": "Login został zmieniony!"
   },
   "errors": {
     "SOMETHING_WENT_WRONG": "Coś poszło nie tak, spróbuj ponownie.",

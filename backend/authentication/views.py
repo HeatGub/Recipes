@@ -2,7 +2,13 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from rest_framework_simplejwt.exceptions import TokenError
-from .serializers import LoginSerializer, RegisterSerializer, DeleteAccountSerializer, ChangePasswordSerializer
+from .serializers import (
+    LoginSerializer,
+    RegisterSerializer,
+    DeleteAccountSerializer,
+    ChangePasswordSerializer,
+    ChangeUsernameSerializer,
+)
 from rest_framework.views import APIView
 from .permissions import IsAuthenticatedEC
 from rest_framework.response import Response
@@ -17,6 +23,7 @@ from config.error_helpers import api_err_dict
 
 cookie = settings.AUTH_COOKIE
 
+
 class CookieTokenRefreshView(TokenRefreshView):
     permission_classes = [AllowAny]
 
@@ -24,7 +31,13 @@ class CookieTokenRefreshView(TokenRefreshView):
         refresh_token = request.COOKIES.get(cookie["NAME"])
 
         if not refresh_token:
-            raise AuthenticationFailed({"_global": [api_err_dict(EC.AuthFailed.REFRESH_TOKEN_MISSING),]})
+            raise AuthenticationFailed(
+                {
+                    "_global": [
+                        api_err_dict(EC.AuthFailed.REFRESH_TOKEN_MISSING),
+                    ]
+                }
+            )
 
         serializer = self.get_serializer(data={"refresh": refresh_token})
         serializer.is_valid(raise_exception=True)
@@ -82,7 +95,7 @@ class LoginView(APIView):
         )
 
         return response
-    
+
 
 class RegisterView(APIView):
     permission_classes = [AllowAny]
@@ -144,11 +157,9 @@ class MeView(APIView):
         return api_response(
             success=True,
             code=SC.Auth.GENERIC,
-            payload={"user": {
-                "id": user.id,
-                "username": user.username,
-                "email": user.email
-            }}
+            payload={
+                "user": {"id": user.id, "username": user.username, "email": user.email}
+            },
         )
 
 
@@ -182,11 +193,14 @@ class DeleteAccountView(APIView):
 
         return response
 
+
 class ChangePasswordView(APIView):
     permission_classes = [IsAuthenticatedEC]
 
     def patch(self, request):
-        serializer = ChangePasswordSerializer(data=request.data, context={"request": request})
+        serializer = ChangePasswordSerializer(
+            data=request.data, context={"request": request}
+        )
         serializer.is_valid(raise_exception=True)
 
         user = request.user
@@ -194,7 +208,7 @@ class ChangePasswordView(APIView):
 
         user.set_password(data["new_password"])
         user.save()
-        
+
         refresh_token = request.COOKIES.get(cookie["NAME"])
 
         if refresh_token:
@@ -212,3 +226,20 @@ class ChangePasswordView(APIView):
         response.delete_cookie(cookie["NAME"])
 
         return response
+
+
+class ChangeUsernameView(APIView):
+    permission_classes = [IsAuthenticatedEC]
+
+    def patch(self, request):
+        serializer = ChangeUsernameSerializer(data=request.data, context={"request": request})
+        serializer.is_valid(raise_exception=True)
+
+        serializer.save()
+
+        # Not returning user here, front calls auth/me right after
+        return api_response(
+            success=True,
+            code=SC.Auth.USERNAME_CHANGED,
+            http_status=status.HTTP_200_OK,
+        )

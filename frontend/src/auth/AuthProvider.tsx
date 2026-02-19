@@ -57,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  const register = async (data:RegisterPayload)  => {
+  const register = async (data: RegisterPayload) => {
     setAuthInProgress(true)
     try {
       const res = await authApi.register(data)
@@ -79,6 +79,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  const updateMe = async () => {
+    setAuthInProgress(true)
+    try {
+      const me = await authApi.me()
+      setUser(me.payload.user)
+      setIsAuthenticated(true)
+    } catch {
+      setIsAuthenticated(false)
+      setUser(null)
+    } finally {
+      setAuthInProgress(false)
+    }
+  }
+
   const value: AuthContextType = {
     user,
     isAuthenticated,
@@ -88,6 +102,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     logout,
     register,
     deleteAccount,
+    updateMe,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

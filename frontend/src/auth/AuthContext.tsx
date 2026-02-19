@@ -22,6 +22,7 @@ export type AuthContextType = {
   logout: () => Promise<void>
   register: (data:RegisterPayload) => Promise<void>
   deleteAccount: (password: string) => Promise<void>
+  updateMe: () => Promise<void>
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
