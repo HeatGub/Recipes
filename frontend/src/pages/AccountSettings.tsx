@@ -3,11 +3,12 @@ import { useTranslation } from "react-i18next"
 import { SettingsSection } from "@/components/SettingsSection"
 import { ChangeUsernameForm } from "@/forms/settings/ChangeUsernameForm"
 import { ChangePasswordForm } from "@/forms/settings/ChangePasswordForm"
+import { ChangeEmailForm } from "@/forms/settings/ChangeEmailForm"
 import { DeleteAccountForm } from "@/forms/settings/DeleteAccountForm"
 import { ProfileHeader } from "@/components/ui/ProfileHeader"
 
 export function AccountSettings() {
-  const [activeTab, setActiveTab] = useState("change_username")
+  const [activeTab, setActiveTab] = useState("change_email")
   const { t } = useTranslation()
 
   const tabs = [
@@ -27,7 +28,7 @@ export function AccountSettings() {
             title={t("account.settings.change_username")}
             description={t("account.settings.description.change_username")}
           >
-            <ChangeUsernameForm/>
+            <ChangeUsernameForm />
           </SettingsSection>
         )
       case "change_password":
@@ -36,18 +37,26 @@ export function AccountSettings() {
             title={t("account.settings.change_password")}
             description={t("account.settings.description.change_password")}
           >
-            <ChangePasswordForm/>
+            <ChangePasswordForm />
           </SettingsSection>
         )
       case "change_email":
-        return <div>Form to change email</div>
+        return (
+          <SettingsSection
+            title={t("account.settings.change_email")}
+            description={t("account.settings.description.change_email")}
+          >
+            <ChangeEmailForm />
+          </SettingsSection>
+        )
+
       case "delete_account":
         return (
           <SettingsSection
             title={t("account.settings.delete_account")}
             description={t("account.settings.description.delete_account")}
           >
-            <DeleteAccountForm/>
+            <DeleteAccountForm />
           </SettingsSection>
         )
       case "placeholder_1":

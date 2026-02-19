@@ -355,3 +355,63 @@ class ChangeUsernameSerializer(serializers.Serializer):
         user.save(update_fields=["username"])
 
         return user
+
+
+class ChangeEmailSerializer(serializers.Serializer):
+
+    email = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    password = serializers.CharField(required=False, allow_blank=True, allow_null=True, write_only=True)
+
+    def validate(self, attrs):
+
+        request = self.context["request"]
+        user = request.user
+        email = attrs.get("email")
+        password = attrs.get("password")
+
+        errors = {}
+
+        # ---------- REQUIRED ----------
+        for field in ("email", "password"):
+            errors.setdefault(field, []).extend(validate_required(attrs, field))
+
+        # ---------- BLANK ----------
+        for field in ("email", "password"):
+            if field in attrs:
+                errors.setdefault(field, []).extend(validate_blank(attrs[field]))
+
+        # ---------- LENGTH ----------
+        if password:
+            field_errors = validate_length(
+                password,
+                min_len=MIN_PASSWORD_LEN,
+                max_len=MAX_PASSWORD_LEN,
+                min_code=EC.Validation.PASSWORD_TOO_SHORT,
+                max_code=EC.Validation.PASSWORD_TOO_LONG)
+            errors.setdefault("password", []).extend(field_errors)
+
+        # ---------- EMAIL (not empty by now, can use validate_email_register) ----------
+        errors["email"] = validate_email_register(email)
+        
+        errors = remove_empty_list_fields(errors)
+
+        if errors:
+            raise ValidationError(errors)
+        
+        # ---------- PASSWORD CHECK ----------
+        if not user.check_password(password):
+            raise AuthenticationFailed({
+                "password": [
+                    api_err_dict(EC.AuthFailed.INVALID_PASSWORD)
+                ],
+            })
+        
+        return attrs
+    
+    def save(self, **kwargs):
+        user = self.context["request"].user
+        email_new = self.validated_data["email"]
+        user.email = email_new
+        user.save(update_fields=["email"])
+
+        return user

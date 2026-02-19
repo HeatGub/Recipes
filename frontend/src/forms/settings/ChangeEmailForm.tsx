@@ -4,36 +4,36 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { LoadingOverlay } from "@/components/ui/LoadingOverlay"
 import { useFormWithApi } from "@/forms/core/useFormWithApi"
 import { rhfMessage } from "@/forms/core/apiErrors"
-import { MIN_IDENTIFIER_LEN, MAX_IDENTIFIER_LEN, MIN_PASSWORD_LEN, MAX_PASSWORD_LEN } from "@/forms/core/constants"
+import { EMAIL_REGEX, MIN_PASSWORD_LEN, MAX_PASSWORD_LEN } from "@/forms/core/constants"
 import { SettingsFormInput } from "@/components/ui/SettingsFormInput"
 import { useAuth } from "@/auth/useAuth"
 import { Button } from "@/components/ui/Button"
 import { api } from "@/api/client"
 import { showToast } from "@/components/ui/Toasts"
 
-export const changeUsernameSchema = z.object({
-  // username_current: z.string(),
-  username_new: z.string().superRefine((val, ctx) => {
-    if (val.length < MIN_IDENTIFIER_LEN) {
-      ctx.addIssue({
-        code: "custom",
-        message: rhfMessage({
-          code: "VALIDATION.USERNAME_TOO_SHORT",
-          params: { min: MIN_IDENTIFIER_LEN },
-        }),
-      })
-    }
-
-    if (val.length > MAX_IDENTIFIER_LEN) {
-      ctx.addIssue({
-        code: "custom",
-        message: rhfMessage({
-          code: "VALIDATION.USERNAME_TOO_LONG",
-          params: { max: MAX_IDENTIFIER_LEN },
-        }),
-      })
-    }
-  }),
+export const changeEmailSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .superRefine((val, ctx) => {
+      if (!val || val.length == 0) {
+        ctx.addIssue({
+          code: "custom",
+          message: rhfMessage({
+            code: "VALIDATION.REQUIRED",
+          }),
+        })
+        return
+      }
+      if (!EMAIL_REGEX.test(val)) {
+        ctx.addIssue({
+          code: "custom",
+          message: rhfMessage({
+            code: "VALIDATION.INVALID_EMAIL",
+          }),
+        })
+      }
+    }),
 
   password: z.string().superRefine((val, ctx) => {
     if (val.length < MIN_PASSWORD_LEN) {
@@ -58,9 +58,9 @@ export const changeUsernameSchema = z.object({
   }),
 })
 
-export type ChangeUsernameFormData = z.infer<typeof changeUsernameSchema>
+export type ChangeEmailFormData = z.infer<typeof changeEmailSchema>
 
-export function ChangeUsernameForm() {
+export function ChangeEmailForm() {
   const { t } = useTranslation()
   const { updateMe } = useAuth()
 
@@ -70,25 +70,19 @@ export function ChangeUsernameForm() {
     handleApiSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useFormWithApi<ChangeUsernameFormData>({
-    resolver: zodResolver(changeUsernameSchema),
-    // defaultValues: {
-    //   username_current: String(user?.username),
-    //   username_new: "",
-    //   password: "",
-    // },
+  } = useFormWithApi<ChangeEmailFormData>({
+    resolver: zodResolver(changeEmailSchema),
   })
 
-  const onSubmit = async (data: ChangeUsernameFormData) => {
-    await api.patch("/auth/me/username/", data)
+  const onSubmit = async (data: ChangeEmailFormData) => {
+    await api.patch("/auth/me/email/", data)
     updateMe()
     reset()
-    showToast("success", t("success.username_changed"))
+    showToast("success", t("success.email_changed"))
   }
 
   return (
     <form
-      id="change-username-form"
       onSubmit={handleSubmit(handleApiSubmit(onSubmit))}
       className={`relative space-y-1 text-sm transition ${
         isSubmitting ? "pointer-events-none opacity-70 blur-[1px]" : ""
@@ -96,23 +90,13 @@ export function ChangeUsernameForm() {
     >
       {isSubmitting && <LoadingOverlay />}
 
-      {/* CURRENT USERNAME
+      {/* EMAIL */}
       <SettingsFormInput
-        label={t("account.settings.current_username")}
-        initialMessage={t("account.settings.init_msg.current_username")}
+        label={t("account.settings.new_email")}
+        error={errors.email}
+        initialMessage={t("account.settings.init_msg.new_email")}
         inputProps={{
-          ...register("username_current"),
-          readOnly: true,
-        }}
-      /> */}
-
-      {/* NEW USERNAME */}
-      <SettingsFormInput
-        label={t("account.settings.new_username")}
-        error={errors.username_new}
-        initialMessage={t("account.settings.init_msg.new_username")}
-        inputProps={{
-          ...register("username_new"),
+          ...register("email"),
         }}
       />
 
@@ -132,7 +116,7 @@ export function ChangeUsernameForm() {
           Cancel
         </Button>
         <Button type="submit" variant="primary" className="hover:bg-(--accent-secondary)">
-          {t("account.settings.change_username")}
+          {t("account.settings.change_email")}
         </Button>
       </div>
     </form>

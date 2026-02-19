@@ -8,6 +8,7 @@ from .serializers import (
     DeleteAccountSerializer,
     ChangePasswordSerializer,
     ChangeUsernameSerializer,
+    ChangeEmailSerializer,
 )
 from rest_framework.views import APIView
 from .permissions import IsAuthenticatedEC
@@ -237,9 +238,26 @@ class ChangeUsernameView(APIView):
 
         serializer.save()
 
-        # Not returning user here, front calls auth/me right after
+        # Not returning user here, front calls /auth/me/ right after
         return api_response(
             success=True,
             code=SC.Auth.USERNAME_CHANGED,
+            http_status=status.HTTP_200_OK,
+        )
+
+
+class ChangeEmailView(APIView):
+    permission_classes = [IsAuthenticatedEC]
+
+    def patch(self, request):
+        serializer = ChangeEmailSerializer(data=request.data, context={"request": request})
+        serializer.is_valid(raise_exception=True)
+
+        serializer.save()
+
+        # Not returning user here, front calls /auth/me/ right after
+        return api_response(
+            success=True,
+            code=SC.Auth.EMAIL_CHANGED,
             http_status=status.HTTP_200_OK,
         )

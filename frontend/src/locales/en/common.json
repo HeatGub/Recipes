@@ -33,14 +33,16 @@
       "change_username": "Change Username",
       "change_email": "Change E-mail",
       "change_password": "Change Password",
-      "current_password" : "Current Password",
+      "current_password": "Current Password",
       "new_password": "New Password",
       "new_password_confirm": "New Password Confirmation",
       "delete_account": "Delete Account",
       "current_username": "Current Username",
       "new_username": "New Username",
+      "new_email": "New E-mail",
       "description": {
         "change_username": "Choose a unique username that will be visible to other users",
+        "change_email": "Update your email address. It can be used for login and password reset.",
         "change_password": "Update your password to keep your account secure",
         "delete_account": "Delete acount with all of its content",
         "delete_account_confirm": "Are you sure you want to delete your account? This action cannot be undone."
@@ -49,9 +51,10 @@
         "current_username": "Your current username",
         "new_username": "Your new username",
         "password_confirm": "Enter your password to confirm",
-        "current_password":"Your current password",
-        "new_password":"Your new password",
-        "new_password_confirm": "Enter your new password once again"
+        "current_password": "Your current password",
+        "new_password": "Your new password",
+        "new_password_confirm": "Enter your new password once again",
+        "new_email": "Enter you new e-mail adress"
       }
     }
   },
@@ -62,7 +65,8 @@
   "success": {
     "account_deleted": "Account has been deleted!",
     "password_changed": "Password has been changed! Please log in again.",
-    "username_changed": "Username has been changed!"
+    "username_changed": "Username has been changed!",
+    "email_changed": "E-mail has been changed!"
   },
   "errors": {
     "SOMETHING_WENT_WRONG": "Something went wrong, please try again.",

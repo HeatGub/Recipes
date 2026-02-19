@@ -33,14 +33,16 @@
       "change_username": "Zmień Login",
       "change_email": "Zmień Email",
       "change_password": "Zmień Hasło",
-      "current_password" : "Obecne Hasło",
+      "current_password": "Obecne Hasło",
       "new_password": "Nowe Hasło",
       "new_password_confirm": "Potwierdź Nowe Hasło",
       "delete_account": "Usuń Konto",
       "current_username": "Obecny Login",
       "new_username": "Nowy Login",
+      "new_email": "Nowe E-mail",
       "description": {
         "change_username": "Wybierz unikalny login który będzie widoczny dla innych użytkowników",
+        "change_email": "Zaktualizuj swój adres e-mail. Może być używany do logowania i resetowania hasła.",
         "change_password": "Zmień hasło, aby zabezpieczyć swoje konto",
         "delete_account": "Usuń konto wraz z całą jego zawartością",
         "delete_account_confirm": "Czy na pewno chcesz usunąć konto? Tej operacji nie da się cofnąć."
@@ -49,9 +51,10 @@
         "current_username": "Twój obecny login",
         "new_username": "Wprowadź nowy login",
         "password_confirm": "Wprowadź hasło by potwierdzić",
-        "current_password":"Twoje aktualne hasło",
-        "new_password":"Twoje nowe hasło",
-        "new_password_confirm": "Wpisz nowe hasło jeszcze raz"
+        "current_password": "Twoje aktualne hasło",
+        "new_password": "Twoje nowe hasło",
+        "new_password_confirm": "Wpisz nowe hasło jeszcze raz",
+        "new_email": "Podaj nowy adres e-mail"
       }
     }
   },
@@ -62,7 +65,8 @@
   "success": {
     "account_deleted": "Konto zostało usunięte!",
     "password_changed": "Hasło zostało zmienione! Zaloguj się ponownie.",
-    "username_changed": "Login został zmieniony!"
+    "username_changed": "Login został zmieniony!",
+    "email_changed": "E-mail has been changed!"
   },
   "errors": {
     "SOMETHING_WENT_WRONG": "Coś poszło nie tak, spróbuj ponownie.",
