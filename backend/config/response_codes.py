@@ -74,6 +74,7 @@ class EC():
         PASSWORD_MISMATCH = "PASSWORD_MISMATCH"
         EMAIL_TAKEN = "EMAIL_TAKEN"
         USERNAME_TAKEN = "USERNAME_TAKEN"
+        PASSWORD_SAME_AS_OLD = "PASSWORD_SAME_AS_OLD"
 
     class Forbidden(StrEnum):
         GENERIC = "GENERIC_ERROR"
@@ -105,3 +106,4 @@ class SC(): # not necessary, but let's keep response codes tidy
         LOGOUT_SUCCESS = "AUTH.LOGOUT_SUCCESS"
         REGISTER_SUCCESS = "AUTH.REGISTER_SUCCESS"
         USER_DELETED = "AUTH.USER_DELETED"
+        PASSWORD_CHANGED = "AUTH.PASSWORD_CHANGED"

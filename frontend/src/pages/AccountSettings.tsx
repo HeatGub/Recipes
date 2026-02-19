@@ -2,11 +2,12 @@ import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { SettingsSection } from "@/components/SettingsSection"
 import { ChangeUsernameForm } from "@/forms/settings/ChangeUsernameForm"
+import { ChangePasswordForm } from "@/forms/settings/ChangePasswordForm"
 import { DeleteAccountForm } from "@/forms/settings/DeleteAccountForm"
 import { ProfileHeader } from "@/components/ui/ProfileHeader"
 
 export function AccountSettings() {
-  const [activeTab, setActiveTab] = useState("delete_account")
+  const [activeTab, setActiveTab] = useState("change_password")
   const { t } = useTranslation()
 
   const tabs = [
@@ -30,7 +31,14 @@ export function AccountSettings() {
           </SettingsSection>
         )
       case "change_password":
-        return <div>Form to change password</div>
+        return (
+          <SettingsSection
+            title={t("account.settings.change_password")}
+            description={t("account.settings.description.change_password")}
+          >
+            <ChangePasswordForm></ChangePasswordForm>
+          </SettingsSection>
+        )
       case "change_email":
         return <div>Form to change email</div>
       case "delete_account":
@@ -58,7 +66,7 @@ export function AccountSettings() {
         {tabs.map((tab) => (
           <button
             key={tab.id}
-            className={`w-full min-w-0 rounded-md px-4 py-2 text-center select-none font-medium wrap-break-word transition-colors md:flex-1 ${
+            className={`w-full min-w-0 rounded-md px-4 py-2 text-center font-medium wrap-break-word transition-colors select-none md:flex-1 ${
               activeTab === tab.id
                 ? "bg-(--accent-primary) text-(--text-inverted)"
                 : "bg-(--bg-secondary) text-(--text-primary) hover:bg-(--bg-tertiary)"

@@ -223,3 +223,62 @@ class DeleteAccountSerializer(serializers.Serializer):
             })
         
         return attrs
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+
+    current_password = serializers.CharField(required=False, allow_blank=True, write_only=True)
+    new_password = serializers.CharField(required=False, allow_blank=True, allow_null=True, write_only=True)
+    new_password_confirm = serializers.CharField(required=False, allow_blank=True, allow_null=True, write_only=True)
+
+    def validate(self, attrs):
+        request = self.context["request"]
+        user = request.user
+        current_password = attrs.get("current_password")
+        new_password = attrs.get("new_password")
+        new_password_confirm = attrs.get("new_password_confirm")
+
+        errors = {}
+
+        # ---------- REQUIRED ----------
+        for field in ("current_password", "new_password", "new_password_confirm"):
+            errors.setdefault(field, []).extend(validate_required(attrs, field))
+
+        # ---------- BLANK ----------
+        for field in ("current_password", "new_password", "new_password_confirm"):
+            if field in attrs:
+                errors.setdefault(field, []).extend(validate_blank(attrs[field]))
+
+        # ---------- LENGTH ----------
+        if new_password:
+            field_errors = validate_length(
+                new_password,
+                min_len=MIN_PASSWORD_LEN,
+                max_len=MAX_PASSWORD_LEN,
+                min_code=EC.Validation.PASSWORD_TOO_SHORT,
+                max_code=EC.Validation.PASSWORD_TOO_LONG,
+            )
+            errors.setdefault("new_password", []).extend(field_errors)
+        
+        # ---------- PASSWORD MATCH ----------
+        if new_password and new_password_confirm:
+            errors.setdefault("new_password_confirm", []).extend(validate_password_match(new_password, new_password_confirm))
+
+        # ---------- NEW != CURRENT ----------
+        if new_password == current_password:
+            errors.setdefault("new_password", []).append(api_err_dict(EC.Validation.PASSWORD_SAME_AS_OLD))
+
+        errors = remove_empty_list_fields(errors)
+
+        if errors:
+            raise ValidationError(errors)
+
+        # ---------- PASSWORD CHECK ----------
+        if not user.check_password(current_password):
+            raise AuthenticationFailed({
+                "current_password": [
+                    api_err_dict(EC.AuthFailed.INVALID_PASSWORD)
+                ],
+            })
+        
+        return attrs

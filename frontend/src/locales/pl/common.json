@@ -33,18 +33,25 @@
       "change_username": "Zmień Login",
       "change_email": "Zmień Email",
       "change_password": "Zmień Hasło",
+      "current_password" : "Obecne Hasło",
+      "new_password": "Nowe Hasło",
+      "new_password_confirm": "Potwierdź Nowe Hasło",
       "delete_account": "Usuń Konto",
       "current_username": "Obecny Login",
       "new_username": "Nowy Login",
       "description": {
         "change_username": "Wybierz unikalny login który będzie widoczny dla innych użytkowników",
+        "change_password": "Zmień hasło, aby zabezpieczyć swoje konto",
         "delete_account": "Usuń konto wraz z całą jego zawartością",
         "delete_account_confirm": "Czy na pewno chcesz usunąć konto? Tej operacji nie da się cofnąć."
       },
       "init_msg": {
         "current_username": "Twój obecny login",
         "new_username": "Wprowadź nowy login",
-        "password_confirm": "Wprowadź hasło by potwierdzić"
+        "password_confirm": "Wprowadź hasło by potwierdzić",
+        "current_password":"Twoje aktualne hasło",
+        "new_password":"Twoje nowe hasło",
+        "new_password_confirm": "Wpisz nowe hasło jeszcze raz"
       }
     }
   },
@@ -53,7 +60,8 @@
     "message": "Strona, której szukasz, nie istnieje"
   },
   "success": {
-    "account_deleted": "Konto zostało usunięte!"
+    "account_deleted": "Konto zostało usunięte!",
+    "password_changed": "Hasło zostało zmienione! Zaloguj się ponownie."
   },
   "errors": {
     "SOMETHING_WENT_WRONG": "Coś poszło nie tak, spróbuj ponownie.",
@@ -68,7 +76,8 @@
       "PASSWORD_TOO_LONG": "Hasło nie może przekraczać {{max}} znaków",
       "INVALID_EMAIL": "Nieprawidłowy format e-mail",
       "USERNAME_TAKEN": "Ten login jest już zajęty",
-      "EMAIL_TAKEN": "Ten e-mail jest już zajęty"
+      "EMAIL_TAKEN": "Ten e-mail jest już zajęty",
+      "PASSWORD_SAME_AS_OLD": "To twoje aktualne hasło"
     },
     "AUTH_FAILED": {
       "INVALID_CREDENTIALS": "Nieprawidłowe dane logowania",

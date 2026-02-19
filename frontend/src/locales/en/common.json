@@ -33,18 +33,25 @@
       "change_username": "Change Username",
       "change_email": "Change E-mail",
       "change_password": "Change Password",
+      "current_password" : "Current Password",
+      "new_password": "New Password",
+      "new_password_confirm": "New Password Confirmation",
       "delete_account": "Delete Account",
       "current_username": "Current Username",
       "new_username": "New Username",
       "description": {
         "change_username": "Choose a unique username that will be visible to other users",
+        "change_password": "Update your password to keep your account secure",
         "delete_account": "Delete acount with all of its content",
         "delete_account_confirm": "Are you sure you want to delete your account? This action cannot be undone."
       },
       "init_msg": {
         "current_username": "Your current username",
-        "new_username": "Enter your new username",
-        "password_confirm": "Enter your password to confirm"
+        "new_username": "Your new username",
+        "password_confirm": "Enter your password to confirm",
+        "current_password":"Your current password",
+        "new_password":"Your new password",
+        "new_password_confirm": "Enter your new password once again"
       }
     }
   },
@@ -53,7 +60,8 @@
     "message": "The page you are looking for does not exist"
   },
   "success": {
-    "account_deleted": "Account has been deleted!"
+    "account_deleted": "Account has been deleted!",
+    "password_changed": "Password has been changed! Please log in again."
   },
   "errors": {
     "SOMETHING_WENT_WRONG": "Something went wrong, please try again.",
@@ -68,7 +76,8 @@
       "PASSWORD_TOO_LONG": "Password can't exceed {{max}} characters",
       "INVALID_EMAIL": "Invalid e-mail",
       "USERNAME_TAKEN": "This username is already taken",
-      "EMAIL_TAKEN": "This e-mail is in use"
+      "EMAIL_TAKEN": "This e-mail is in use",
+      "PASSWORD_SAME_AS_OLD": "This is the password you currently use"
     },
     "AUTH_FAILED": {
       "INVALID_CREDENTIALS": "Invalid credentials",

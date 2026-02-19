@@ -2,7 +2,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from rest_framework_simplejwt.exceptions import TokenError
-from .serializers import LoginSerializer, RegisterSerializer, DeleteAccountSerializer
+from .serializers import LoginSerializer, RegisterSerializer, DeleteAccountSerializer, ChangePasswordSerializer
 from rest_framework.views import APIView
 from .permissions import IsAuthenticatedEC
 from rest_framework.response import Response
@@ -175,6 +175,37 @@ class DeleteAccountView(APIView):
         response = api_response(
             success=True,
             code=SC.Auth.USER_DELETED,
+            http_status=status.HTTP_200_OK,
+        )
+
+        response.delete_cookie(cookie["NAME"])
+
+        return response
+
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticatedEC]
+
+    def patch(self, request):
+        serializer = ChangePasswordSerializer(data=request.data, context={"request": request})
+        serializer.is_valid(raise_exception=True)
+
+        user = request.user
+        data = serializer.validated_data
+
+        user.set_password(data["new_password"])
+        user.save()
+        
+        refresh_token = request.COOKIES.get(cookie["NAME"])
+
+        if refresh_token:
+            try:
+                RefreshToken(refresh_token).blacklist()
+            except TokenError:
+                pass
+
+        response = api_response(
+            success=True,
+            code=SC.Auth.PASSWORD_CHANGED,
             http_status=status.HTTP_200_OK,
         )
 
