@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import SyncLoader from "react-spinners/SyncLoader"
+import { LoadingOverlay } from "@/components/ui/LoadingOverlay"
 import { useFormWithApi } from "@/forms/core/useFormWithApi"
 import { FormGlobalError } from "@/forms/core/FormErrors"
 import { rhfMessage } from "@/forms/core/apiErrors"
@@ -80,11 +80,7 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         isSubmitting ? "pointer-events-none opacity-70 blur-[1px]" : ""
       }`}
     >
-      {isSubmitting && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center">
-          <SyncLoader size={8} color="var(--accent-primary)" />
-        </div>
-      )}
+      {isSubmitting && <LoadingOverlay />}
 
       <h3 className="text-base font-semibold">{t("account.log_in")}</h3>
 

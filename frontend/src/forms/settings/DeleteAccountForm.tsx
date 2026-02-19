@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import SyncLoader from "react-spinners/SyncLoader"
+import { LoadingOverlay } from "@/components/ui/LoadingOverlay"
 import { useFormWithApi } from "@/forms/core/useFormWithApi"
 import { rhfMessage } from "@/forms/core/apiErrors"
 import { MIN_PASSWORD_LEN, MAX_PASSWORD_LEN } from "@/forms/core/constants"
@@ -72,7 +72,7 @@ export function DeleteAccountForm() {
 
     const wrappedSubmit = handleApiSubmit(async (data: DeleteAccountFormData) => {
       await deleteAccount(data.password)
-      reset() 
+      reset()
       showToast("success", t("success.account_deleted"))
     })
 
@@ -109,11 +109,7 @@ export function DeleteAccountForm() {
           modalLoading || isModalOpen ? "pointer-events-none opacity-70 blur-[1px]" : ""
         }`}
       >
-        {(isSubmitting || modalLoading) && (
-          <div className="absolute inset-0 z-10 flex items-center justify-center">
-            <SyncLoader size={8} color="var(--accent-primary)" />
-          </div>
-        )}
+        {(isSubmitting || modalLoading) && <LoadingOverlay />}
 
         {/* PASSWORD */}
         <SettingsFormInput

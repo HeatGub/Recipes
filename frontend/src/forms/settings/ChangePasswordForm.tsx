@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import SyncLoader from "react-spinners/SyncLoader"
+import { LoadingOverlay } from "@/components/ui/LoadingOverlay"
 import { useFormWithApi } from "@/forms/core/useFormWithApi"
 import { rhfMessage } from "@/forms/core/apiErrors"
 import { MIN_PASSWORD_LEN, MAX_PASSWORD_LEN } from "@/forms/core/constants"
@@ -119,11 +119,7 @@ export function ChangePasswordForm() {
         isSubmitting ? "pointer-events-none opacity-70 blur-[1px]" : ""
       }`}
     >
-      {isSubmitting && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center">
-          <SyncLoader size={8} color="var(--accent-primary)" />
-        </div>
-      )}
+      {isSubmitting && <LoadingOverlay />}
 
       {/* CURRENT PASSWORD */}
       <SettingsFormInput

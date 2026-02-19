@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
-import SyncLoader from "react-spinners/SyncLoader"
+import { LoadingOverlay } from "@/components/ui/LoadingOverlay"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useFormWithApi } from "@/forms/core/useFormWithApi"
 import { FormGlobalError } from "@/forms/core/FormErrors"
@@ -132,9 +132,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
       }`}
     >
       {isSubmitting && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center">
-          <SyncLoader size={8} color="var(--accent-primary)" />
-        </div>
+        <LoadingOverlay />
       )}
 
       <h3 className="text-base font-semibold">{t("account.register")}</h3>
