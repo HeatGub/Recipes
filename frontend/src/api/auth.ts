@@ -40,7 +40,7 @@ export const register = async (data: RegisterPayload) => {
 }
 
 export const deleteAccount = async (password: string) => {
-  const res = await api.delete("/auth/delete/", {
+  const res = await api.delete("/auth/me/delete/", {
     data: { password },
   })
   setAccessToken(null)

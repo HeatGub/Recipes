@@ -12,7 +12,6 @@ import { api } from "@/api/client"
 import { showToast } from "@/components/ui/Toasts"
 
 export const changeUsernameSchema = z.object({
-  // username_current: z.string(),
   username_new: z.string().superRefine((val, ctx) => {
     if (val.length < MIN_IDENTIFIER_LEN) {
       ctx.addIssue({
@@ -72,11 +71,6 @@ export function ChangeUsernameForm() {
     formState: { errors, isSubmitting },
   } = useFormWithApi<ChangeUsernameFormData>({
     resolver: zodResolver(changeUsernameSchema),
-    // defaultValues: {
-    //   username_current: String(user?.username),
-    //   username_new: "",
-    //   password: "",
-    // },
   })
 
   const onSubmit = async (data: ChangeUsernameFormData) => {
@@ -88,32 +82,20 @@ export function ChangeUsernameForm() {
 
   return (
     <form
-      id="change-username-form"
       onSubmit={handleSubmit(handleApiSubmit(onSubmit))}
+      autoComplete="off"
       className={`relative space-y-1 text-sm transition ${
         isSubmitting ? "pointer-events-none opacity-70 blur-[1px]" : ""
       }`}
     >
       {isSubmitting && <LoadingOverlay />}
 
-      {/* CURRENT USERNAME
-      <SettingsFormInput
-        label={t("account.settings.current_username")}
-        initialMessage={t("account.settings.init_msg.current_username")}
-        inputProps={{
-          ...register("username_current"),
-          readOnly: true,
-        }}
-      /> */}
-
       {/* NEW USERNAME */}
       <SettingsFormInput
         label={t("account.settings.new_username")}
         error={errors.username_new}
         initialMessage={t("account.settings.init_msg.new_username")}
-        inputProps={{
-          ...register("username_new"),
-        }}
+        inputProps={{ ...register("username_new"), autoComplete: "username" }}
       />
 
       {/* PASSWORD */}
@@ -123,7 +105,7 @@ export function ChangeUsernameForm() {
         error={errors.password}
         initialMessage={t("account.settings.init_msg.password_confirm")}
         border={false}
-        inputProps={register("password")}
+        inputProps={{ ...register("password"), autoComplete: "current-password" }}
       />
 
       {/* Footer */}

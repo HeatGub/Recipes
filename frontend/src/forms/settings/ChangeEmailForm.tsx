@@ -84,6 +84,7 @@ export function ChangeEmailForm() {
   return (
     <form
       onSubmit={handleSubmit(handleApiSubmit(onSubmit))}
+      autoComplete="off"
       className={`relative space-y-1 text-sm transition ${
         isSubmitting ? "pointer-events-none opacity-70 blur-[1px]" : ""
       }`}
@@ -95,9 +96,7 @@ export function ChangeEmailForm() {
         label={t("account.settings.new_email")}
         error={errors.email}
         initialMessage={t("account.settings.init_msg.new_email")}
-        inputProps={{
-          ...register("email"),
-        }}
+        inputProps={{ ...register("email"), autoComplete: "email" }}
       />
 
       {/* PASSWORD */}
@@ -107,7 +106,7 @@ export function ChangeEmailForm() {
         error={errors.password}
         initialMessage={t("account.settings.init_msg.password_confirm")}
         border={false}
-        inputProps={register("password")}
+        inputProps={{ ...register("password"), autoComplete: "current-password" }}
       />
 
       {/* Footer */}

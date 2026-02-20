@@ -105,6 +105,7 @@ export function DeleteAccountForm() {
       {/* Form */}
       <form
         onSubmit={handleSubmit(handleValidatedSubmit)}
+        autoComplete="off"
         className={`relative space-y-1 text-sm transition ${
           modalLoading || isModalOpen ? "pointer-events-none opacity-70 blur-[1px]" : ""
         }`}
@@ -118,7 +119,7 @@ export function DeleteAccountForm() {
           error={errors.password}
           initialMessage={t("account.settings.init_msg.password_confirm")}
           border={false}
-          inputProps={register("password")}
+          inputProps={{ ...register("password"), autoComplete: "current-password" }}
         />
 
         {/* Footer */}

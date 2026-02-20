@@ -115,6 +115,7 @@ export function ChangePasswordForm() {
   return (
     <form
       onSubmit={handleSubmit(handleApiSubmit(onSubmit))}
+      autoComplete="off"
       className={`relative space-y-1 text-sm transition ${
         isSubmitting ? "pointer-events-none opacity-70 blur-[1px]" : ""
       }`}
@@ -127,9 +128,7 @@ export function ChangePasswordForm() {
         type="password"
         error={errors.current_password}
         initialMessage={t("account.settings.init_msg.current_password")}
-        inputProps={{
-          ...register("current_password"),
-        }}
+        inputProps={{ ...register("current_password"), autoComplete: "current-password" }}
       />
 
       {/* NEW PASSWORD */}
@@ -138,9 +137,7 @@ export function ChangePasswordForm() {
         type="password"
         error={errors.new_password}
         initialMessage={t("account.settings.init_msg.new_password")}
-        inputProps={{
-          ...register("new_password"),
-        }}
+        inputProps={{ ...register("new_password"), autoComplete: "new-password" }}
       />
 
       {/* NEW PASSWORD CONFIRM */}
@@ -150,7 +147,7 @@ export function ChangePasswordForm() {
         error={errors.new_password_confirm}
         initialMessage={t("account.settings.init_msg.new_password_confirm")}
         border={false}
-        inputProps={register("new_password_confirm")}
+        inputProps={{ ...register("new_password_confirm"), autoComplete: "new-password" }}
       />
 
       {/* Footer */}

@@ -16,8 +16,6 @@ export function AccountSettings() {
     { id: "change_password", label: t("account.settings.change_password") },
     { id: "change_email", label: t("account.settings.change_email") },
     { id: "delete_account", label: t("account.settings.delete_account") },
-    { id: "placeholder_1", label: "Placeholder 1" },
-    { id: "placeholder_2", label: "Placeholder 2" },
   ]
 
   const renderTabContent = () => {
@@ -59,10 +57,6 @@ export function AccountSettings() {
             <DeleteAccountForm />
           </SettingsSection>
         )
-      case "placeholder_1":
-        return <div>Placeholder 1 settings</div>
-      case "placeholder_2":
-        return <div>Placeholder 2 settings</div>
       default:
         return null
     }
