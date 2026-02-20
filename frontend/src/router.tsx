@@ -1,4 +1,4 @@
-import { AppLayout } from "@/layouts/AppLayout"
+import { AppLayout } from "@/components/layout/AppLayout"
 import { createBrowserRouter } from "react-router-dom"
 import { Home } from "@/pages/Home"
 import { AccountSettings } from "@/pages/AccountSettings"

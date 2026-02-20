@@ -1,8 +1,8 @@
-import { ThemeToggle } from "./ThemeToggle"
-import { LangSwitcher } from "./LangSwitcher"
-import { AuthPanel } from "./auth/AuthPanel"
+import { ThemeToggle } from "../common/ThemeToggle"
+import { LangSwitcher } from "../common/LangSwitcher"
+import { AuthPanel } from "../auth/AuthPanel"
 import { useTranslation } from "react-i18next"
-import { Button } from "./ui/Button"
+import { Button } from "../ui/Button"
 import { Menu } from "lucide-react"
 
 export function Header({ sidebarOpen, onToggleSidebar }: { sidebarOpen: boolean; onToggleSidebar: () => void }) {

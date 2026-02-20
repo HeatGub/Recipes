@@ -1,4 +1,4 @@
-import { ThemeToggle } from "@/components/ThemeToggle"
+import { ThemeToggle } from "@/components/common/ThemeToggle"
 import { AuthTest } from "@/components/auth/AuthTest"
 import clsx from "clsx"
 

@@ -7,7 +7,7 @@ import { FormGlobalError } from "@/forms/core/FormErrors"
 import { rhfMessage } from "@/forms/core/apiErrors"
 import { MIN_IDENTIFIER_LEN, MAX_IDENTIFIER_LEN, MIN_PASSWORD_LEN, MAX_PASSWORD_LEN } from "@/forms/core/constants"
 import { RichButton } from "../../components/ui/RichButton"
-import { AuthPanelFormInput } from "../../components/ui/AuthPanelFormInput"
+import { AuthPanelFormInput } from "../../components/auth/AuthPanelFormInput"
 
 export const loginSchema = z.object({
   identifier: z.string().superRefine((val, ctx) => {

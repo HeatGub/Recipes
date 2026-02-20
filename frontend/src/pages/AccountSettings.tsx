@@ -1,11 +1,11 @@
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
-import { SettingsSection } from "@/components/SettingsSection"
+import { SettingsSection } from "@/components/settings/SettingsSection"
 import { ChangeUsernameForm } from "@/forms/settings/ChangeUsernameForm"
 import { ChangePasswordForm } from "@/forms/settings/ChangePasswordForm"
 import { ChangeEmailForm } from "@/forms/settings/ChangeEmailForm"
 import { DeleteAccountForm } from "@/forms/settings/DeleteAccountForm"
-import { ProfileHeader } from "@/components/ui/ProfileHeader"
+import { ProfileHeader } from "@/components/common/ProfileHeader"
 
 export function AccountSettings() {
   const [activeTab, setActiveTab] = useState("change_email")
