@@ -24,6 +24,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import AbstractUser
 from typing import cast, Type
 from django.conf import settings
+from django.utils import timezone
 
 User = cast(Type[AbstractUser], get_user_model())
 cookie = settings.AUTH_COOKIE
@@ -89,6 +90,9 @@ class LoginSerializer(serializers.Serializer):
 
         if not user.is_active:
             raise AuthenticationFailed({"_global": [api_err_dict(EC.AuthFailed.ACCOUNT_DISABLED),]})
+        
+        user.last_login = timezone.now()
+        user.save(update_fields=["last_login"])
 
         refresh_token = RefreshToken.for_user(user)
 
