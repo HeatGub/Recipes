@@ -16,6 +16,7 @@ staticfiles/
 .vscode/
 /my_docs/
 *.log
+recipe*.json
 
 # ======================
 # Frontend - CHECK /frontend/.gitignore

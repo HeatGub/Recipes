@@ -33,12 +33,12 @@ export function AppLayout() {
         </aside>
 
         {/* Main content */}
-        <div className="flex flex-1 flex-col overflow-hidden min-w-0">
+        <div className="flex flex-1 flex-col min-w-0">
           <Header
             sidebarOpen={sidebarOpen}
             onToggleSidebar={() => setSidebarOpen((v) => !v)}
           />
-          <main className="overflow-y-auto p-4 md:p-6 bg-(--bg-primary)">
+          <main className="overflow-y-hidden p-4 md:p-6 bg-(--bg-primary)">
             <Outlet />
           </main>
         </div>
