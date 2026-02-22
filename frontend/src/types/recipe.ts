@@ -13,6 +13,7 @@ export type IngredientCategory = {
 
 export type Step = {
   position: number
+  title?: string
   description: string
 }
 
