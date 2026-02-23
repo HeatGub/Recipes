@@ -25,7 +25,7 @@ export type Rating = {
 
 export type RecipeDetails = {
   author: string
-  portions: number
+  basePortions: number
   lastUpdated: string
   rating: Rating
 }
