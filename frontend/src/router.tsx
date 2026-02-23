@@ -8,13 +8,13 @@ import { RecipePage } from "./pages/RecipePage"
 // import recipe from "./pages/recipe.json"
 import recipeLongSteps from "./pages/recipeLongSteps.json"
 // import recipeManySteps from "./pages/recipeManySteps.json"
-
-
+import { RecipeForm } from "@/forms/recipes/RecipeForm"
 
 export const ROUTES = {
   home: "/",
   accountSettings: "/account-settings",
-  recipeDetails: "/recipe"
+  recipeDetails: "/recipe",
+  recipeCreate: "/recipe/create"
 }
 
 export const router = createBrowserRouter([
@@ -35,9 +35,12 @@ export const router = createBrowserRouter([
 
       {
         path: ROUTES.recipeDetails,
-        element: (
-            <RecipePage recipe={recipeLongSteps} />
-        ),
+        element: <RecipePage recipe={recipeLongSteps} />,
+      },
+
+      {
+        path: ROUTES.recipeCreate,
+        element: <RecipeForm onSubmit={async (form_data)=>{console.log(form_data)}}/>,
       },
 
       { path: "*", element: <NotFound /> },
