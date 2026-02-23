@@ -2,13 +2,15 @@ import type { Control, UseFormRegister } from "react-hook-form"
 import { useFieldArray } from "react-hook-form"
 import type { RecipeFormData } from "./RecipeForm"
 import { IngredientCategoryFields } from "./IngredientCategoryFields"
+import type { FieldErrors } from "react-hook-form"
 
 interface Props {
   control: Control<RecipeFormData>
   register: UseFormRegister<RecipeFormData>
+  errors?: FieldErrors<RecipeFormData>["ingredients"]
 }
 
-export function IngredientsSectionForm({ control, register }: Props) {
+export function IngredientsSectionForm({ control, register, errors }: Props) {
   const { fields, append } = useFieldArray({
     control,
     name: "ingredients",
@@ -26,6 +28,7 @@ export function IngredientsSectionForm({ control, register }: Props) {
           control={control}
           register={register}
           catIndex={catIndex}
+          errors={errors?.[catIndex]}
         />
       ))}
 

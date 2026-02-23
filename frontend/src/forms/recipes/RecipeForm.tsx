@@ -5,6 +5,7 @@ import { PreparationSectionForm } from "./PreparationSectionForm"
 import { RecipeDetailsCardForm } from "./RecipeDetailsCardForm"
 import { RichButton } from "@/components/ui/RichButton"
 import { RecipeLayout } from "@/components/layout/RecipeLayout"
+import { FormTextArea } from "@/components/ui/FormTextArea"
 
 import { z } from "zod"
 
@@ -81,24 +82,25 @@ export function RecipeForm({ onSubmit }: Props) {
           <div className="space-y-4 text-center">
             <div className="flex flex-col gap-6">
               <div className="space-y-3 text-center">
-                <input
+                <FormTextArea
                   {...register("title")}
-                  placeholder="Recipe title"
-                  className="w-full bg-transparent text-center text-3xl font-bold outline-none"
+                  placeholder="Recipe Title"
+                  error={errors.title}
+                  className="text-center text-3xl font-bold outline-none"
                 />
-
-                <textarea
+                <FormTextArea
                   {...register("description")}
                   placeholder="Recipe description"
+                  error={errors.title}
                   className="w-full resize-none bg-transparent text-center text-(--text-secondary) outline-none"
                 />
               </div>
             </div>
           </div>
         }
-        details={<RecipeDetailsCardForm register={register} errors={errors} />}
-        ingredients={<IngredientsSectionForm control={control} register={register} />}
-        preparation={<PreparationSectionForm control={control} register={register} />}
+        details={<RecipeDetailsCardForm register={register} errors={errors.details} />}
+        ingredients={<IngredientsSectionForm control={control} register={register} errors={errors.ingredients}/>}
+        preparation={<PreparationSectionForm control={control} register={register} errors={errors.steps} />}
         footer={
           <div className="p-8">
             <RichButton type="submit" variant="primary" className="w-full">

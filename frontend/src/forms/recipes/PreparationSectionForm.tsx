@@ -1,13 +1,15 @@
 import { useFieldArray } from "react-hook-form"
-import type { Control, UseFormRegister  } from "react-hook-form"
+import type { Control, UseFormRegister, FieldErrors } from "react-hook-form"
 import type { RecipeFormData } from "./RecipeForm"
+import { FormTextArea } from "@/components/ui/FormTextArea"
 
 interface Props {
   control: Control<RecipeFormData>
   register: UseFormRegister<RecipeFormData>
+  errors: FieldErrors<RecipeFormData>["steps"]
 }
 
-export function PreparationSectionForm({ control, register }: Props) {
+export function PreparationSectionForm({ control, register, errors }: Props) {
   const { fields, append } = useFieldArray({
     control,
     name: "steps",
@@ -17,19 +19,21 @@ export function PreparationSectionForm({ control, register }: Props) {
     <section>
       <h2 className="text-xl font-semibold">Preparation</h2>
 
-      <div className="space-y-4 mt-4">
+      <div className="mt-4 space-y-4">
         {fields.map((field, index) => (
           <div key={field.id} className="border-b pb-4">
-            <input
+            <FormTextArea
               {...register(`steps.${index}.title`)}
+              error={errors?.[index]?.title}
               placeholder="Step title"
-              className="text-lg font-medium w-full bg-transparent outline-none"
+              className="w-full bg-transparent text-lg text-(--accent-primary) font-medium outline-none"
             />
-
-            <textarea
+            <FormTextArea
               {...register(`steps.${index}.description`)}
               placeholder="Step description"
-              className="w-full mt-2 bg-transparent outline-none resize-none"
+              error={errors?.[index]?.description}
+              rows={2}
+              className="mt-2 w-full resize-none bg-transparent outline-none"
             />
           </div>
         ))}
