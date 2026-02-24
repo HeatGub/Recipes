@@ -18,7 +18,7 @@ export function IngredientsSectionForm({ control, register, errors }: Props) {
 
   return (
     <section className="p-3 bg-(--bg-secondary) rounded-2xl">
-      <h2 className="text-xl text-center font-semibold pb-1 border-b">
+      <h2 className="text-xl text-center text-(--text-secondary) font-semibold pb-1 border-b">
         Ingredients
       </h2>
 

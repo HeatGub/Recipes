@@ -41,11 +41,7 @@ export const recipeFormSchema = z.object({
 
 export type RecipeFormData = z.infer<typeof recipeFormSchema>
 
-interface Props {
-  onSubmit: (data: RecipeFormData) => Promise<void>
-}
-
-export function RecipeForm({ onSubmit }: Props) {
+export function RecipeForm() {
   const {
     register,
     control,
@@ -74,6 +70,14 @@ export function RecipeForm({ onSubmit }: Props) {
     },
   })
 
+  const onSubmit = (data: RecipeFormData) => {
+    const stepsWithPosition = data.steps.map((step, index) => ({
+      ...step,
+      position: index + 1,
+    }))
+    console.log(stepsWithPosition)
+  }
+
   return (
     <form onSubmit={handleSubmit(handleApiSubmit(onSubmit))} className="mx-auto max-w-5xl">
       <RecipeLayout
@@ -98,11 +102,11 @@ export function RecipeForm({ onSubmit }: Props) {
           </div>
         }
         details={<RecipeDetailsCardForm register={register} errors={errors.details} />}
-        ingredients={<IngredientsSectionForm control={control} register={register} errors={errors.ingredients}/>}
+        ingredients={<IngredientsSectionForm control={control} register={register} errors={errors.ingredients} />}
         preparation={<PreparationSectionForm control={control} register={register} errors={errors.steps} />}
         footer={
-          <div className="p-8">
-            <RichButton type="submit" variant="primary" className="w-full">
+          <div className="flex justify-center px-8 pt-4 pb-8">
+            <RichButton type="submit" variant="primary" className="w-40">
               Save recipe
             </RichButton>
           </div>

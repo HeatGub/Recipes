@@ -19,7 +19,11 @@ export function FormTextArea({ error, className, ...props }: TextAreaProps) {
         className={`w-full resize-none overflow-hidden rounded bg-transparent ${className ?? ""}`}
       />
 
-      {error && <FormFieldError error={error} />}
+      {error && (
+        <p className="text-xs text-(--text-danger)">
+          <FormFieldError error={error} />
+        </p>
+      )}
     </div>
   )
 }

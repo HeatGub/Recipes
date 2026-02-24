@@ -25,7 +25,7 @@ type DoubleClickButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 export function DoubleClickButton({
   variant = "ghost",
   confirmVariant = "ghost",
-  firstClickContent = <Trash2 className="h-4 w-4 text-(--text-warning)" />,
+  firstClickContent = <Trash2 className="h-4 w-4 text-(--text-warning) hover:h-5 hover:w-5" />,
   secondClickContent = <Trash2 className="h-5 w-5 text-(--text-danger) drop-shadow-[0_0_4px_var(--text-danger)]" />,
   confirmDelay = 1500,
   children,

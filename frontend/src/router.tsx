@@ -40,7 +40,7 @@ export const router = createBrowserRouter([
 
       {
         path: ROUTES.recipeCreate,
-        element: <RecipeForm onSubmit={async (form_data)=>{console.log(form_data)}}/>,
+        element: <RecipeForm/>,
       },
 
       { path: "*", element: <NotFound /> },
