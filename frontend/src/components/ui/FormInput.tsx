@@ -12,7 +12,7 @@ export function FormInput({ label, error, wrapperClassName = "", className = "",
     <div className={`flex flex-col ${wrapperClassName}`}>
       {label && <label className="mb-1">{label}</label>}
       <input
-        className={`mb-1 w-full rounded border-dashed border border-(--border-muted)! bg-transparent px-1 ${className}`}
+        className={`w-full rounded border-dashed border border-(--border-muted)! bg-transparent px-1 ${className}`}
         // ${error ? "border-red-500!" : "border-(--border-muted)!"}
         {...props}
       />

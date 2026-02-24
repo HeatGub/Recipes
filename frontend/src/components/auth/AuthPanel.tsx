@@ -7,7 +7,7 @@ import { RichButton } from "../ui/RichButton"
 import { useAuthPanel } from "../../auth/AuthPanelContext"
 import { useNavigate } from "react-router-dom"
 import { ROUTES } from "@/router"
-import { UserPlus, LogIn, LogOut } from "lucide-react" // Example icons
+import { UserPlus, LogIn, LogOut } from "lucide-react"
 
 export function AuthPanel() {
   const { login, logout, register, user } = useAuth()

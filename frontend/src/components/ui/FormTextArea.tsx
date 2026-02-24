@@ -7,7 +7,7 @@ interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
 
 export function FormTextArea({ error, className, ...props }: TextAreaProps) {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col flex-1 min-w-0">
       <textarea
         rows={1}
         {...props}

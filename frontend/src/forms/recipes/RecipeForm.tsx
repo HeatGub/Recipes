@@ -6,7 +6,6 @@ import { RecipeDetailsCardForm } from "./RecipeDetailsCardForm"
 import { RichButton } from "@/components/ui/RichButton"
 import { RecipeLayout } from "@/components/layout/RecipeLayout"
 import { FormTextArea } from "@/components/ui/FormTextArea"
-
 import { z } from "zod"
 
 export const ingredientItemSchema = z.object({
@@ -23,7 +22,6 @@ export const ingredientCategorySchema = z.object({
 })
 
 export const stepSchema = z.object({
-  position: z.number(),
   title: z.string().optional(),
   description: z.string().min(0),
 })
@@ -72,7 +70,7 @@ export function RecipeForm({ onSubmit }: Props) {
           items: [{ name: "", amount: undefined, unit: "", notes: null }],
         },
       ],
-      steps: [{ position: 1, title: "", description: "" }],
+      steps: [{ title: "", description: "" }],
     },
   })
 
