@@ -16,6 +16,7 @@ export const RecipePage = ({ recipe }: { recipe: Recipe }) => {
       details={<RecipeDetailsCard {...recipe.details} />}
       ingredients={<RecipeIngredientsSection ingredients={recipe.ingredients} />}
       preparation={<RecipePreparationSection steps={recipe.steps} />}
+      variant="view"
     />
   )
 }

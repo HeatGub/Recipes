@@ -56,6 +56,7 @@ export function RecipeForm({ onSubmit }: Props) {
     formState: { errors },
   } = useFormWithApi<RecipeFormData>({
     resolver: zodResolver(recipeFormSchema),
+    mode: "onChange",
     defaultValues: {
       title: "",
       description: "",
@@ -108,6 +109,7 @@ export function RecipeForm({ onSubmit }: Props) {
             </RichButton>
           </div>
         }
+        variant="edit"
       />
     </form>
   )

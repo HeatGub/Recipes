@@ -4,6 +4,7 @@ interface RecipeLayoutProps {
   ingredients: React.ReactNode
   preparation: React.ReactNode
   footer?: React.ReactNode
+  variant: "view" | "edit"
 }
 
 export function RecipeLayout({
@@ -12,6 +13,7 @@ export function RecipeLayout({
   ingredients,
   preparation,
   footer,
+  variant
 }: RecipeLayoutProps) {
   return (
     <div className="mx-auto max-w-5xl">
@@ -24,7 +26,7 @@ export function RecipeLayout({
         </header>
 
         <div className="py-10 px-16">
-          <div className="float-left mr-8 mb-3 w-full md:w-85">
+          <div className={`float-left mr-8 mb-3 w-full ${variant === "view" ? "md:w-85" : ""} float-left`}>
             {ingredients}
           </div>
 

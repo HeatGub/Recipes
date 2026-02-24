@@ -27,7 +27,7 @@ export function IngredientCategoryFields({
       <FormInput
         {...register(`ingredients.${catIndex}.title`)}
         placeholder="Category title"
-        className="bg-transparent font-semibold outline-none"
+        className="font-semibold"
         error={errors?.title}
       />
 
@@ -42,22 +42,29 @@ export function IngredientCategoryFields({
                 valueAsNumber: true,
               })}
               placeholder="amount"
-              className="w-10"
+              wrapperClassName="w-20"
               error={itemErrors?.amount}
             />
 
             <FormInput
               {...register(`ingredients.${catIndex}.items.${itemIndex}.unit`)}
               placeholder="unit"
-              className="w-20"
+              wrapperClassName="w-30"
               error={itemErrors?.unit}
             />
 
             <FormInput
               {...register(`ingredients.${catIndex}.items.${itemIndex}.name`)}
               placeholder="ingredient"
-              className="flex-1"
+              wrapperClassName="flex-1"
               error={itemErrors?.name}
+            />
+
+            <FormInput
+              {...register(`ingredients.${catIndex}.items.${itemIndex}.notes`)}
+              placeholder="notes"
+              wrapperClassName="flex-1"
+              error={itemErrors?.notes}
             />
           </div>
         )
