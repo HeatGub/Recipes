@@ -25,21 +25,10 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
       <h2 className="text-xl font-semibold text-(--text-secondary)">Preparation</h2>
       <div className="mt-2 space-y-4">
         {fields.map((field, index) => (
-          <div key={field.id} className="relative border-b border-(--border-muted)! pb-4 pt-4">
+          <div key={field.id} className="relative border-b border-(--border-muted)! pt-4 pb-4">
             <div className="absolute top-2 right-4">
               {/* Right: buttons */}
               <div className="flex">
-                <Button
-                  type="button"
-                  title="Add step below"
-                  variant="ghost"
-                  onClick={() => insert(index + 1, { title: "", description: "" })}
-                  className="rounded-full border border-(--border-muted)! px-2! py-0! text-(--text-muted)! hover:bg-(--bg-secondary) hover:text-(--accent-secondary)!"
-                >
-                  <Plus className="h-4 w-4"/>
-                  {/* <CirclePlus className="h-4 w-4"/> */}
-
-                </Button>
                 <Button
                   type="button"
                   variant="ghost"
@@ -99,6 +88,17 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
               rows={1}
               className="mt-3 w-full resize-none border border-dashed border-(--border-muted)! bg-transparent p-2 outline-none"
             />
+
+            <Button
+              type="button"
+              title="Add step below"
+              variant="ghost"
+              onClick={() => insert(index + 1, { title: "", description: "" })}
+              className="absolute -bottom-2.5 right-0 rounded-full border border-(--border-muted)! px-2! py-0! text-(--text-muted)! hover:bg-(--bg-secondary) hover:text-(--accent-secondary)!"
+            >
+              <Plus className="h-4 w-4" />
+              {/* <CirclePlus className="h-4 w-4"/> */}
+            </Button>
           </div>
         ))}
       </div>
