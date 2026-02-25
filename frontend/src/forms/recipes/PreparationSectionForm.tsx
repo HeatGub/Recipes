@@ -6,7 +6,7 @@ import { DoubleClickButton } from "@/components/ui/DoubleClickButton"
 import { StepIndicator } from "@/components/common/StepIndicator"
 import { FormInput } from "@/components/ui/FormInput"
 import { Button } from "@/components/ui/Button"
-import { Plus, ArrowDown, ArrowUp, CirclePlus } from "lucide-react"
+import { Trash2, Plus, ArrowDown, ArrowUp, CirclePlus } from "lucide-react"
 
 interface Props {
   control: Control<RecipeFormData>
@@ -23,16 +23,23 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
   return (
     <section>
       <h2 className="text-xl font-semibold text-(--text-secondary)">Preparation</h2>
-      <div className="mt-4 space-y-4">
+      <div className="mt-2 space-y-4">
         {fields.map((field, index) => (
-          <div key={field.id} className="relative border-b border-(--border-muted)! pb-4">
-            <div className="absolute right-0 -bottom-2.5 left-0 flex items-center justify-between">
-              <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-(--border-muted) text-sm font-semibold text-(--text-inverted)">
-                {index + 1}
-              </span>
-
+          <div key={field.id} className="relative border-b border-(--border-muted)! pb-4 pt-4">
+            <div className="absolute top-2 right-4">
               {/* Right: buttons */}
               <div className="flex">
+                <Button
+                  type="button"
+                  title="Add step below"
+                  variant="ghost"
+                  onClick={() => insert(index + 1, { title: "", description: "" })}
+                  className="rounded-full border border-(--border-muted)! px-2! py-0! text-(--text-muted)! hover:bg-(--bg-secondary) hover:text-(--accent-secondary)!"
+                >
+                  <Plus className="h-4 w-4"/>
+                  {/* <CirclePlus className="h-4 w-4"/> */}
+
+                </Button>
                 <Button
                   type="button"
                   variant="ghost"
@@ -53,15 +60,21 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
                   <ArrowUp className="h-4 w-4" />
                 </Button>
 
-                <Button
-                  type="button"
-                  title="Add step below"
-                  variant="ghost"
-                  onClick={() => insert(index + 1, { title: "", description: "" })}
-                  className="rounded-full border border-(--border-muted)! px-2! py-0! text-(--text-muted)! hover:bg-(--bg-secondary) hover:text-(--accent-secondary)!"
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
+                <DoubleClickButton
+                  title="Remove step"
+                  firstClickContent={
+                    <div className="rounded-full border border-(--border-muted)! bg-(--bg-primary) px-2! py-0!">
+                      <Trash2 className="h-4 w-4 text-(--text-muted) hover:text-(--text-warning) hover:drop-shadow-[0_0_4px_var(--text-warning)]" />
+                    </div>
+                  }
+                  secondClickContent={
+                    <div className="rounded-full border border-(--border-muted)! bg-(--bg-primary) px-2! py-0!">
+                      <Trash2 className="h-4 w-4 text-(--text-danger) drop-shadow-[0_0_4px_var(--text-danger)]" />
+                    </div>
+                  }
+                  onClick={() => remove(index)}
+                  className="absolute top-0 right-0"
+                />
               </div>
             </div>
 
@@ -73,10 +86,9 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
                 {...register(`steps.${index}.title`)}
                 error={errors?.[index]?.title}
                 placeholder="Step title"
-                className="w-full text-lg font-medium text-(--accent-primary)"
+                className="w-full p-2 text-lg font-medium text-(--accent-primary)"
                 wrapperClassName="flex-1 min-w-0"
               />
-              <DoubleClickButton title="Remove step" onClick={() => remove(index)} className="absolute top-0 right-0" />
             </div>
 
             {/* Description */}
@@ -100,9 +112,9 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
               description: "",
             })
           }}
-          className="flex gap-2 justify-center items-center rounded-full text-sm text-(--accent-primary) hover:bg-(--accent-secondary)"
+          className="flex items-center justify-center gap-2 rounded-full text-sm text-(--accent-primary) hover:bg-(--accent-secondary)"
         >
-          <CirclePlus/>
+          <CirclePlus />
           Step
         </Button>
       )}

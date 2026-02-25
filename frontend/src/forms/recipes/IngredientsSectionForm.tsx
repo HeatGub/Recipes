@@ -19,7 +19,7 @@ export function IngredientsSectionForm({ control, register, errors }: Props) {
   })
 
   return (
-    <section className="rounded-2xl bg-(--bg-secondary) p-3">
+    <section className="rounded-2xl bg-(--bg-secondary) p-3 m-4">
       <h2 className="border-b pb-1 text-center text-xl font-semibold text-(--text-secondary)">Ingredients</h2>
 
       {fields.map((category, catIndex) => (
@@ -46,7 +46,7 @@ export function IngredientsSectionForm({ control, register, errors }: Props) {
             items: [],
           })
         }
-        className="items-left mt-2 w-full border border-dashed! border-(--border-muted)! bg-transparent p-0! text-(--text-muted)! hover:text-(--accent-secondary)!"
+        className="items-left mt-2 w-full bg-transparent p-0! text-(--text-muted)! hover:text-(--accent-secondary)!"
       >
         <div className="flex items-center gap-2 pl-2">
           <CirclePlus className="h-5 w-5" /> Category

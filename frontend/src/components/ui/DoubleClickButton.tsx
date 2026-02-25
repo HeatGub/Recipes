@@ -3,13 +3,7 @@ import clsx from "clsx"
 import { Trash2 } from "lucide-react"
 
 const VARIANT_STYLES = {
-  primary: "bg-(--accent-primary) text-(--text-inverted)",
-  secondary: "bg-(--bg-tertiary) text-(--text-primary)",
-  tertiary: "bg-(--bg-secondary) text-(--text-primary)",
-  ghost: "text-(--text-primary)",
-  warning: "bg-(--bg-warning) text-(--text-inverted)",
-  danger: "bg-(--bg-danger) text-(--text-primary) hover:text-(--text-inverted) hover:shadow-[0_0_5px_var(--bg-danger)] disabled:hover:text-(--text-primary)",
-  success: "bg-(--accent-secondary) text-(--text-inverted)",
+  default: "text-(--text-primary) rounded",
 } as const
 
 export type ButtonVariant = keyof typeof VARIANT_STYLES
@@ -23,10 +17,12 @@ type DoubleClickButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 }
 
 export function DoubleClickButton({
-  variant = "ghost",
-  confirmVariant = "ghost",
-  firstClickContent = <Trash2 className="h-5 w-5 text-(--text-muted) hover:text-(--text-warning)" />,
-  secondClickContent = <Trash2 className="h-5 w-5 text-(--text-danger) drop-shadow-[0_0_4px_var(--text-danger)]" />,
+  variant = "default",
+  confirmVariant = "default",
+  firstClickContent = <Trash2 className="h-5 w-5 rounded text-(--text-muted) hover:text-(--text-warning) hover:drop-shadow-[0_0_4px_var(--text-warning)]" />,
+  secondClickContent = (
+    <Trash2 className="h-5 w-5 rounded text-(--text-danger) drop-shadow-[0_0_4px_var(--text-danger)]" />
+  ),
   confirmDelay = 1500,
   children,
   onClick,
@@ -55,8 +51,8 @@ export function DoubleClickButton({
       {...props}
       onClick={handleClick}
       className={clsx(
-        "flex cursor-pointer items-center justify-center rounded p-1 text-sm font-medium select-none disabled:cursor-default",
-        "hover:shadow-[0_0_5px_var(--shadow-color)] disabled:hover:shadow-none",
+        "flex cursor-pointer items-center justify-center p-0 text-sm font-medium select-none disabled:cursor-default",
+        "disabled:hover:shadow-none",
         VARIANT_STYLES[confirming ? confirmVariant : variant]
       )}
     >
