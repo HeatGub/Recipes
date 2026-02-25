@@ -16,7 +16,6 @@ export const ingredientItemSchema = z.object({
 })
 
 export const ingredientCategorySchema = z.object({
-  position: z.number(),
   title: z.string().nullable().optional(),
   items: z.array(ingredientItemSchema).min(0),
 })
@@ -61,7 +60,6 @@ export function RecipeForm() {
       },
       ingredients: [
         {
-          position: 1,
           title: "",
           items: [{ name: "", amount: undefined, unit: "", notes: null }],
         },
@@ -71,11 +69,26 @@ export function RecipeForm() {
   })
 
   const onSubmit = (data: RecipeFormData) => {
-    const stepsWithPosition = data.steps.map((step, index) => ({
-      ...step,
-      position: index + 1,
-    }))
-    console.log(stepsWithPosition)
+    const formattedData = {
+      ...data,
+
+      steps: data.steps.map((step, stepIndex) => ({
+        ...step,
+        position: stepIndex + 1,
+      })),
+
+      ingredients: data.ingredients.map((category, catIndex) => ({
+        ...category,
+        position: catIndex + 1,
+
+        items: category.items.map((item, itemIndex) => ({
+          ...item,
+          position: itemIndex + 1,
+        })),
+      })),
+    }
+    // console.log(...formattedData.ingredients[0].items)
+    console.log(formattedData)
   }
 
   return (

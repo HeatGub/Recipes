@@ -6,7 +6,7 @@ const VARIANT_STYLES = {
   primary: "bg-(--accent-primary) text-(--text-inverted)",
   secondary: "bg-(--bg-tertiary) text-(--text-primary)",
   tertiary: "bg-(--bg-secondary) text-(--text-primary)",
-  ghost: "bg-(--bg-primary) text-(--text-primary)",
+  ghost: "text-(--text-primary)",
   warning: "bg-(--bg-warning) text-(--text-inverted)",
   danger: "bg-(--bg-danger) text-(--text-primary) hover:text-(--text-inverted) hover:shadow-[0_0_5px_var(--bg-danger)] disabled:hover:text-(--text-primary)",
   success: "bg-(--accent-secondary) text-(--text-inverted)",
@@ -25,7 +25,7 @@ type DoubleClickButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 export function DoubleClickButton({
   variant = "ghost",
   confirmVariant = "ghost",
-  firstClickContent = <Trash2 className="h-4 w-4 text-(--text-warning) hover:h-5 hover:w-5" />,
+  firstClickContent = <Trash2 className="h-5 w-5 text-(--text-muted) hover:text-(--text-warning)" />,
   secondClickContent = <Trash2 className="h-5 w-5 text-(--text-danger) drop-shadow-[0_0_4px_var(--text-danger)]" />,
   confirmDelay = 1500,
   children,
@@ -51,10 +51,11 @@ export function DoubleClickButton({
 
   return (
     <button
+      type="button"
       {...props}
       onClick={handleClick}
       className={clsx(
-        "cursor-pointer rounded p-0.5 text-sm font-medium select-none disabled:cursor-default",
+        "flex cursor-pointer items-center justify-center rounded p-1 text-sm font-medium select-none disabled:cursor-default",
         "hover:shadow-[0_0_5px_var(--shadow-color)] disabled:hover:shadow-none",
         VARIANT_STYLES[confirming ? confirmVariant : variant]
       )}

@@ -6,6 +6,7 @@ import { DoubleClickButton } from "@/components/ui/DoubleClickButton"
 import { StepIndicator } from "@/components/common/StepIndicator"
 import { FormInput } from "@/components/ui/FormInput"
 import { Button } from "@/components/ui/Button"
+import { Plus, ArrowDown, ArrowUp, CirclePlus } from "lucide-react"
 
 interface Props {
   control: Control<RecipeFormData>
@@ -14,7 +15,7 @@ interface Props {
 }
 
 export function PreparationSectionForm({ control, register, errors }: Props) {
-  const { fields, remove, append, insert } = useFieldArray({
+  const { fields, remove, append, insert, move } = useFieldArray({
     control,
     name: "steps",
   })
@@ -24,16 +25,45 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
       <h2 className="text-xl font-semibold text-(--text-secondary)">Preparation</h2>
       <div className="mt-4 space-y-4">
         {fields.map((field, index) => (
-          <div key={field.id} className="relative border-b pb-4">
-            {/* Insert Button at bottom-left */}
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => insert(index + 1, { title: "", description: "" })}
-              className="absolute right-0 -bottom-3 rounded-full text-(--text-muted)! border border-(--border-muted)! px-1 py-0! text-sm hover:text-(--text-secondary)! hover:bg-(--bg-secondary)"
-            >
-              + step
-            </Button>
+          <div key={field.id} className="relative border-b border-(--border-muted)! pb-4">
+            <div className="absolute right-0 -bottom-2.5 left-0 flex items-center justify-between">
+              <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-(--border-muted) text-sm font-semibold text-(--text-inverted)">
+                {index + 1}
+              </span>
+
+              {/* Right: buttons */}
+              <div className="flex">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => move(index, index + 1)}
+                  disabled={index === fields.length - 1}
+                  className="rounded-full border border-(--border-muted)! px-2! py-0! text-(--text-muted)! hover:bg-(--bg-secondary) hover:text-(--accent-secondary)! disabled:text-(--text-faded)!"
+                >
+                  <ArrowDown className="h-4 w-4" />
+                </Button>
+
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => move(index, index - 1)}
+                  disabled={index === 0}
+                  className="rounded-full border border-(--border-muted)! px-2! py-0! text-(--text-muted)! hover:bg-(--bg-secondary) hover:text-(--accent-secondary)! disabled:text-(--text-faded)!"
+                >
+                  <ArrowUp className="h-4 w-4" />
+                </Button>
+
+                <Button
+                  type="button"
+                  title="Add step below"
+                  variant="ghost"
+                  onClick={() => insert(index + 1, { title: "", description: "" })}
+                  className="rounded-full border border-(--border-muted)! px-2! py-0! text-(--text-muted)! hover:bg-(--bg-secondary) hover:text-(--accent-secondary)!"
+                >
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
 
             {/* Title Row */}
             <div className="flex items-center gap-2">
@@ -46,7 +76,7 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
                 className="w-full text-lg font-medium text-(--accent-primary)"
                 wrapperClassName="flex-1 min-w-0"
               />
-              <DoubleClickButton type="button" onClick={() => remove(index)} className="absolute top-0 right-0" />
+              <DoubleClickButton title="Remove step" onClick={() => remove(index)} className="absolute top-0 right-0" />
             </div>
 
             {/* Description */}
@@ -70,9 +100,10 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
               description: "",
             })
           }}
-          className="mt-4 text-sm rounded-full text-(--accent-primary) hover:bg-(--accent-secondary)"
+          className="flex gap-2 justify-center items-center rounded-full text-sm text-(--accent-primary) hover:bg-(--accent-secondary)"
         >
-          + Add step
+          <CirclePlus/>
+          Step
         </Button>
       )}
     </section>
