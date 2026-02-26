@@ -73,6 +73,7 @@
     "VALIDATION": {
       "BLANK": "This field can't be blank",
       "REQUIRED": "This field is required",
+      "REQUIRED_SHORT" : "Required",
       "USERNAME_TOO_SHORT": "Username must be at least {{min}} characters long",
       "USERNAME_TOO_LONG": "Username can't exceed {{max}} characters",
       "USERNAME_INVALID_FORMAT": "Username can only include upper/lowercase letters, numbers, and these symbols: _ - + @ .",
@@ -82,7 +83,14 @@
       "INVALID_EMAIL": "Invalid e-mail",
       "USERNAME_TAKEN": "This username is already taken",
       "EMAIL_TAKEN": "This e-mail is in use",
-      "PASSWORD_SAME_AS_OLD": "This is the password you currently use"
+      "PASSWORD_SAME_AS_OLD": "This is the password you currently use",
+      "STRING_MIN" : "≥ {{min}} characters",
+      "STRING_MAX" : "≤ {{max}} characters",
+      "FORBIDDEN_CHARACTERS" : "Forbidden characters: {{chars}}",
+      "REQUIRED_NUMBER": "Number required",
+      "REQUIRED_INTEGER": "Integer required",
+      "NUMBER_MIN": "≥ {{min}}",
+      "NUMBER_MAX": "≤ {{max}}"
     },
     "AUTH_FAILED": {
       "INVALID_CREDENTIALS": "Invalid credentials",

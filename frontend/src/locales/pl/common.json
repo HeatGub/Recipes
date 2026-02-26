@@ -73,6 +73,7 @@
     "VALIDATION": {
       "BLANK": "To pole nie może być puste",
       "REQUIRED": "To pole jest wymagane",
+      "REQUIRED_SHORT": "Wymagane",
       "USERNAME_TOO_SHORT": "Nazwa użytkownika musi zawierać co najmniej {{min}} znaki",
       "USERNAME_TOO_LONG": "Nazwa użytkownika nie może przekraczać {{max}} znaków",
       "USERNAME_INVALID_FORMAT": "Nazwa użytkownika może zawierać tylko duże i małe liter, cyfry, oraz te znaki: _ - + @ .",
@@ -82,7 +83,14 @@
       "INVALID_EMAIL": "Nieprawidłowy format e-mail",
       "USERNAME_TAKEN": "Ten login jest już zajęty",
       "EMAIL_TAKEN": "Ten e-mail jest już zajęty",
-      "PASSWORD_SAME_AS_OLD": "To twoje aktualne hasło"
+      "PASSWORD_SAME_AS_OLD": "To twoje aktualne hasło",
+      "STRING_MIN" : "≥ {{min}} znaki",
+      "STRING_MAX" : "≤ {{max}} znaków",
+      "FORBIDDEN_CHARACTERS" : "Niedozwolone znaki: {{chars}}",
+      "REQUIRED_NUMBER": "Wymagana liczba",
+      "REQUIRED_INTEGER": "Wymagana liczba całkowita",
+      "NUMBER_MIN": "≥ {{min}}",
+      "NUMBER_MAX": "≤ {{max}}"
     },
     "AUTH_FAILED": {
       "INVALID_CREDENTIALS": "Nieprawidłowe dane logowania",

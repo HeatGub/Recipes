@@ -20,12 +20,12 @@ export function RecipeDetailsCardForm({ register, errors }: Props) {
       </div>
 
       <div className="flex flex-1 flex-col items-center space-y-1">
-        <p className="text-sm text-(--text-muted)">Portions</p>
+        <p className="text-sm text-(--text-muted)">Servings</p>
 
         <FormInput
           type="number"
-          {...register("details.portions", { valueAsNumber: true })}
-          error={errors?.portions}
+          {...register("details.servings", { valueAsNumber: true })}
+          error={errors?.servings}
           className="text-center outline-none"
         />
       </div>

@@ -17,7 +17,7 @@ export function FormInput({ label, error, wrapperClassName = "", className = "",
         {...props}
       />
       {error && (
-        <p className="text-xs text-(--text-danger)">
+        <p className="text-xs text-(--text-danger) flex justify-center text-center">
           <FormFieldError error={error} />
         </p>
       )}

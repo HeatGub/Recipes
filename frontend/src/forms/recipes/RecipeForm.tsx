@@ -7,6 +7,17 @@ import { RichButton } from "@/components/ui/RichButton"
 import { RecipeLayout } from "@/components/layout/RecipeLayout"
 import { FormTextArea } from "@/components/ui/FormTextArea"
 import { z } from "zod"
+import {
+  minString,
+  maxString,
+  stringRequired,
+  forbiddenCharacters,
+  numberRequired,
+  minNumber,
+  maxNumber,
+} from "@/forms/core/zodValidators"
+import { RECIPE } from "@/forms/core/constants"
+// import { rhfMessage } from "@/forms/core/apiErrors"
 
 export const ingredientItemSchema = z.object({
   name: z.string().min(0),
@@ -25,16 +36,38 @@ export const stepSchema = z.object({
   description: z.string().min(0),
 })
 
+export const detailsSchema = z.object({
+  author: z.string().optional(),
+  lastUpdated: z.string(),
+  servings: z
+    .preprocess((val) => {
+      if (val === "" || val === null || val === undefined) return undefined
+      const num = Number(val)
+      return isNaN(num) ? undefined : num
+    }, z.number().optional())
+    .superRefine(numberRequired())
+    .superRefine(minNumber(1))
+    .superRefine(maxNumber(100)),
+})
+
 export const recipeFormSchema = z.object({
   id: z.string().optional(),
-  title: z.string().min(0),
-  description: z.string().min(0),
-  details: z.object({
-    author: z.string().min(0),
-    portions: z.number().int().positive(),
-    lastUpdated: z.string(),
-  }),
-  ingredients: z.array(ingredientCategorySchema).min(0),
+  title: z
+    .string()
+    .optional() // just to avoid zod custom message
+    .superRefine(stringRequired())
+    .superRefine(minString(RECIPE.TITLE.MIN))
+    .superRefine(maxString(RECIPE.TITLE.MAX))
+    .superRefine(forbiddenCharacters(RECIPE.TITLE.FORBIDDEN_CHARS)),
+  description: z
+    .string()
+    .optional()
+    .superRefine(stringRequired())
+    .superRefine(minString(RECIPE.DESCRIPTION.MIN))
+    .superRefine(maxString(RECIPE.DESCRIPTION.MAX))
+    .superRefine(forbiddenCharacters(RECIPE.DESCRIPTION.FORBIDDEN_CHARS)),
+  details: detailsSchema,
+  ingredients: z.array(ingredientCategorySchema).min(1),
   steps: z.array(stepSchema).min(0),
 })
 
@@ -55,7 +88,7 @@ export function RecipeForm() {
       description: "",
       details: {
         author: "",
-        portions: undefined,
+        servings: undefined,
         lastUpdated: new Date().toISOString(),
       },
       ingredients: [
@@ -107,7 +140,7 @@ export function RecipeForm() {
                 <FormTextArea
                   {...register("description")}
                   placeholder="Recipe description"
-                  error={errors.title}
+                  error={errors.description}
                   className="w-full resize-none bg-transparent text-center text-(--text-secondary) outline-none"
                 />
               </div>
