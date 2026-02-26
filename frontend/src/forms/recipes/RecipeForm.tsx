@@ -22,24 +22,57 @@ import {
 import { RECIPE } from "@/forms/core/constants"
 
 export const ingredientItemSchema = z.object({
-  name: z.string().min(0),
+  name: z
+    .string()
+    .optional()  // just to avoid zod custom message
+    .superRefine(stringRequired()) // real required validation
+    .superRefine(minString(RECIPE.INGREDIENTS.ITEM.NAME.MIN))
+    .superRefine(maxString(RECIPE.INGREDIENTS.ITEM.NAME.MAX))
+    .superRefine(forbiddenCharacters(RECIPE.INGREDIENTS.ITEM.NAME.FORBIDDEN_CHARS)),
   amount: z
     .preprocess(preprocessNumber, z.number().optional())
     .superRefine(numberRequired())
     .superRefine(minNumber(RECIPE.INGREDIENTS.ITEM.AMOUNT.MIN))
     .superRefine(maxNumber(RECIPE.INGREDIENTS.ITEM.AMOUNT.MAX)),
-  unit: z.string().min(0),
-  notes: z.string().nullable().optional(),
+  unit: z
+    .string()
+    .optional()
+    .superRefine(stringRequired())
+    .superRefine(minString(RECIPE.INGREDIENTS.ITEM.UNIT.MIN))
+    .superRefine(maxString(RECIPE.INGREDIENTS.ITEM.UNIT.MAX))
+    .superRefine(forbiddenCharacters(RECIPE.INGREDIENTS.ITEM.UNIT.FORBIDDEN_CHARS)),
+  notes: z
+    .string()
+    .optional()
+    .superRefine(minString(RECIPE.INGREDIENTS.ITEM.NOTES.MIN))
+    .superRefine(maxString(RECIPE.INGREDIENTS.ITEM.NOTES.MAX))
+    .superRefine(forbiddenCharacters(RECIPE.INGREDIENTS.ITEM.UNIT.FORBIDDEN_CHARS)),
 })
 
 export const ingredientCategorySchema = z.object({
-  title: z.string().nullable().optional(),
-  items: z.array(ingredientItemSchema).min(0),
+  title: z
+    .string()
+    .optional()
+    .superRefine(minString(RECIPE.INGREDIENTS.CATEGORY.TITLE.MIN))
+    .superRefine(maxString(RECIPE.INGREDIENTS.CATEGORY.TITLE.MAX))
+    .superRefine(forbiddenCharacters(RECIPE.INGREDIENTS.CATEGORY.TITLE.FORBIDDEN_CHARS)),
+  items: z.array(ingredientItemSchema).min(1),
 })
 
 export const stepSchema = z.object({
-  title: z.string().optional(),
-  description: z.string().min(0),
+  title: z
+    .string()
+    .optional()
+    .superRefine(minString(RECIPE.PREPARATION_STEPS.TITLE.MIN))
+    .superRefine(maxString(RECIPE.PREPARATION_STEPS.TITLE.MAX))
+    .superRefine(forbiddenCharacters(RECIPE.PREPARATION_STEPS.TITLE.FORBIDDEN_CHARS)),
+  description: z
+    .string()
+    .optional()
+    .superRefine(stringRequired())
+    .superRefine(minString(RECIPE.PREPARATION_STEPS.DESCRIPTION.MIN))
+    .superRefine(maxString(RECIPE.PREPARATION_STEPS.DESCRIPTION.MAX))
+    .superRefine(forbiddenCharacters(RECIPE.PREPARATION_STEPS.DESCRIPTION.FORBIDDEN_CHARS)),
 })
 
 export const detailsSchema = z.object({
@@ -57,7 +90,7 @@ export const recipeFormSchema = z.object({
   id: z.string().optional(),
   title: z
     .string()
-    .optional() // just to avoid zod custom message
+    .optional()
     .superRefine(stringRequired())
     .superRefine(minString(RECIPE.TITLE.MIN))
     .superRefine(maxString(RECIPE.TITLE.MAX))
@@ -65,7 +98,6 @@ export const recipeFormSchema = z.object({
   description: z
     .string()
     .optional()
-    .superRefine(stringRequired())
     .superRefine(minString(RECIPE.DESCRIPTION.MIN))
     .superRefine(maxString(RECIPE.DESCRIPTION.MAX))
     .superRefine(forbiddenCharacters(RECIPE.DESCRIPTION.FORBIDDEN_CHARS)),
@@ -91,7 +123,7 @@ export function RecipeForm() {
       ingredients: [
         {
           title: "",
-          items: [{ name: "", amount: undefined, unit: "", notes: null }],
+          items: [{ name: "", amount: undefined, unit: "", notes: undefined }],
         },
       ],
       steps: [{ title: "", description: "" }],

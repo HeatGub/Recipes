@@ -153,7 +153,7 @@ export function IngredientCategoryFields({
             name: "",
             amount: undefined,
             unit: "",
-            notes: null,
+            notes: undefined,
           })
         }
         className="flex w-full items-center justify-center gap-2 bg-(--bg-primary) text-sm font-light! text-(--text-muted)! hover:text-(--accent-secondary)!"

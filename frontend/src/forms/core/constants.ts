@@ -4,23 +4,25 @@ export const MIN_PASSWORD_LEN = 3
 export const MAX_PASSWORD_LEN = 128
 export const USERNAME_REGEX = /^[\w.@+-]+$/
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+export const RECIPE_COMMON_REGEX = /[<>[\]{}|\\^~`$@]/
+
 export const RECIPE = {
-  TITLE: { MIN: 3, MAX: 50, FORBIDDEN_CHARS: /[<>[\]{}|\\^~`$%]/ },
-  DESCRIPTION: { MIN: 1, MAX: 500, FORBIDDEN_CHARS: /[<>[\]{}|\\^~`$%]/ },
+  TITLE: { MIN: 3, MAX: 50, FORBIDDEN_CHARS: RECIPE_COMMON_REGEX },
+  DESCRIPTION: { MIN: 3, MAX: 500, FORBIDDEN_CHARS: RECIPE_COMMON_REGEX },
   SERVINGS: { MIN: 1, MAX: 10000 },
   INGREDIENTS: {
     CATEGORY: {
-      TITLE: { MIN: 0, MAX: 50 },
+      TITLE: { MIN: 1, MAX: 50, FORBIDDEN_CHARS: RECIPE_COMMON_REGEX },
     },
     ITEM: {
       AMOUNT: { MIN: 0.01, MAX: 10000 },
-      UNIT: { MIN: 1, MAX: 10 },
-      NAME: { MIN: 2, MAX: 30 },
-      NOTES: { MIN: 2, MAX: 50 },
+      UNIT: { MIN: 1, MAX: 10, FORBIDDEN_CHARS: /[^A-Za-z0-9^]/ },
+      NAME: { MIN: 2, MAX: 30, FORBIDDEN_CHARS: RECIPE_COMMON_REGEX },
+      NOTES: { MIN: 2, MAX: 50, FORBIDDEN_CHARS: RECIPE_COMMON_REGEX },
     },
   },
   PREPARATION_STEPS: {
-    TITLE: { MIN: 0, MAX: 50 },
-    DESCRIPTION: { MIN: 5, MAX: 1000 },
+    TITLE: { MIN: 3, MAX: 70, FORBIDDEN_CHARS: RECIPE_COMMON_REGEX },
+    DESCRIPTION: { MIN: 5, MAX: 3000, FORBIDDEN_CHARS: RECIPE_COMMON_REGEX  },
   },
 }
