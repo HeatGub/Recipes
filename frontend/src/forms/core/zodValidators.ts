@@ -58,6 +58,13 @@ export function forbiddenCharacters(pattern: RegExp, code = "VALIDATION.FORBIDDE
   }
 }
 
+export function preprocessNumber(val: unknown) {
+  // convert empty / invalid input to undefined
+  if (val === "" || val === null || val === undefined) return undefined
+  const num = Number(val)
+  return isNaN(num) ? undefined : num
+}
+
 export function numberRequired(code = "VALIDATION.REQUIRED_NUMBER") {
   return (val: number | undefined, ctx: RefinementCtx) => {
     if (val === undefined || val === null) {
@@ -90,6 +97,19 @@ export function maxNumber(max: number, code = "VALIDATION.NUMBER_MAX") {
       ctx.addIssue({
         code: "custom",
         message: rhfMessage({ code, params: { max } }),
+      })
+    }
+  }
+}
+
+export function integerRequired(code = "VALIDATION.REQUIRED_INTEGER") {
+  return (val: number | undefined, ctx: RefinementCtx) => {
+    if (val === undefined) return // handled by numberRequired
+
+    if (!Number.isInteger(val)) {
+      ctx.addIssue({
+        code: "custom",
+        message: rhfMessage({ code }),
       })
     }
   }

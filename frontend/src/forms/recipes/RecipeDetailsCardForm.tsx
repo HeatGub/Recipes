@@ -1,6 +1,10 @@
 import type { FieldErrors, UseFormRegister } from "react-hook-form"
 import type { RecipeFormData } from "./RecipeForm"
 import { FormInput } from "@/components/ui/FormInput"
+import { FormNumberInput } from "@/components/ui/FormNumberInput"
+import { useFormContext } from "react-hook-form"
+import { RECIPE } from "@/forms/core/constants"
+
 
 interface Props {
   register: UseFormRegister<RecipeFormData>
@@ -8,6 +12,14 @@ interface Props {
 }
 
 export function RecipeDetailsCardForm({ register, errors }: Props) {
+  const { watch, setValue, trigger } = useFormContext<RecipeFormData>()
+  const servings = watch("details.servings") ?? 0
+
+  const handleChange = (val: number) => {
+    setValue("details.servings", val, { shouldValidate: true, shouldDirty: true })
+    trigger("details.servings") // make sure RHF re-runs validation immediately
+  }
+
   return (
     <div className="flex w-full flex-wrap justify-between gap-4 rounded-xl bg-(--bg-secondary) p-4 md:flex-nowrap">
       <div className="flex flex-1 flex-col items-center space-y-1">
@@ -21,10 +33,12 @@ export function RecipeDetailsCardForm({ register, errors }: Props) {
 
       <div className="flex flex-1 flex-col items-center space-y-1">
         <p className="text-sm text-(--text-muted)">Servings</p>
-
-        <FormInput
-          type="number"
-          {...register("details.servings", { valueAsNumber: true })}
+        <FormNumberInput
+          value={servings}
+          onChange={handleChange}
+          min={RECIPE.SERVINGS.MIN}
+          max={RECIPE.SERVINGS.MAX}
+          step={1}
           error={errors?.servings}
           className="text-center outline-none"
         />

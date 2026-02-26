@@ -7,6 +7,7 @@ import { RichButton } from "@/components/ui/RichButton"
 import { RecipeLayout } from "@/components/layout/RecipeLayout"
 import { FormTextArea } from "@/components/ui/FormTextArea"
 import { z } from "zod"
+import { FormProvider } from "react-hook-form"
 import {
   minString,
   maxString,
@@ -15,13 +16,18 @@ import {
   numberRequired,
   minNumber,
   maxNumber,
+  preprocessNumber,
+  integerRequired,
 } from "@/forms/core/zodValidators"
 import { RECIPE } from "@/forms/core/constants"
-// import { rhfMessage } from "@/forms/core/apiErrors"
 
 export const ingredientItemSchema = z.object({
   name: z.string().min(0),
-  amount: z.number().positive().optional(),
+  amount: z
+    .preprocess(preprocessNumber, z.number().optional())
+    .superRefine(numberRequired())
+    .superRefine(minNumber(RECIPE.INGREDIENTS.ITEM.AMOUNT.MIN))
+    .superRefine(maxNumber(RECIPE.INGREDIENTS.ITEM.AMOUNT.MAX)),
   unit: z.string().min(0),
   notes: z.string().nullable().optional(),
 })
@@ -40,14 +46,11 @@ export const detailsSchema = z.object({
   author: z.string().optional(),
   lastUpdated: z.string(),
   servings: z
-    .preprocess((val) => {
-      if (val === "" || val === null || val === undefined) return undefined
-      const num = Number(val)
-      return isNaN(num) ? undefined : num
-    }, z.number().optional())
+    .preprocess(preprocessNumber, z.number().optional())
     .superRefine(numberRequired())
-    .superRefine(minNumber(1))
-    .superRefine(maxNumber(100)),
+    .superRefine(integerRequired())
+    .superRefine(minNumber(RECIPE.SERVINGS.MIN))
+    .superRefine(maxNumber(RECIPE.SERVINGS.MAX)),
 })
 
 export const recipeFormSchema = z.object({
@@ -74,14 +77,8 @@ export const recipeFormSchema = z.object({
 export type RecipeFormData = z.infer<typeof recipeFormSchema>
 
 export function RecipeForm() {
-  const {
-    register,
-    control,
-    handleSubmit,
-    handleApiSubmit,
-    formState: { errors },
-  } = useFormWithApi<RecipeFormData>({
-    resolver: zodResolver(recipeFormSchema),
+  const methods = useFormWithApi<RecipeFormData>({
+    resolver: zodResolver(recipeFormSchema) as any, // as any to stop TS complaining about number().optional()
     mode: "onChange",
     defaultValues: {
       title: "",
@@ -100,6 +97,14 @@ export function RecipeForm() {
       steps: [{ title: "", description: "" }],
     },
   })
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    handleApiSubmit,
+    formState: { errors },
+  } = methods
 
   const onSubmit = (data: RecipeFormData) => {
     const formattedData = {
@@ -120,45 +125,49 @@ export function RecipeForm() {
         })),
       })),
     }
-    // console.log(...formattedData.ingredients[0].items)
     console.log(formattedData)
+    // console.log(...formattedData.ingredients[0].items)
+    // console.log(formattedData.details.servings)
+    // console.log(formattedData.ingredients[0].items[0].amount)
   }
 
   return (
-    <form onSubmit={handleSubmit(handleApiSubmit(onSubmit))} className="mx-auto max-w-5xl">
-      <RecipeLayout
-        header={
-          <div className="space-y-4 text-center">
-            <div className="flex flex-col gap-6">
-              <div className="space-y-3 text-center">
-                <FormTextArea
-                  {...register("title")}
-                  placeholder="Recipe Title"
-                  error={errors.title}
-                  className="text-center text-3xl font-bold outline-none"
-                />
-                <FormTextArea
-                  {...register("description")}
-                  placeholder="Recipe description"
-                  error={errors.description}
-                  className="w-full resize-none bg-transparent text-center text-(--text-secondary) outline-none"
-                />
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(handleApiSubmit(onSubmit))} className="mx-auto max-w-5xl">
+        <RecipeLayout
+          header={
+            <div className="space-y-4 text-center">
+              <div className="flex flex-col gap-6">
+                <div className="space-y-3 text-center">
+                  <FormTextArea
+                    {...register("title")}
+                    placeholder="Recipe Title"
+                    error={errors.title}
+                    className="text-center text-3xl font-bold outline-none"
+                  />
+                  <FormTextArea
+                    {...register("description")}
+                    placeholder="Recipe description"
+                    error={errors.description}
+                    className="w-full resize-none bg-transparent text-center text-(--text-secondary) outline-none"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        }
-        details={<RecipeDetailsCardForm register={register} errors={errors.details} />}
-        ingredients={<IngredientsSectionForm control={control} register={register} errors={errors.ingredients} />}
-        preparation={<PreparationSectionForm control={control} register={register} errors={errors.steps} />}
-        footer={
-          <div className="flex justify-center px-8 pb-8">
-            <RichButton type="submit" variant="primary" className="w-40">
-              Save recipe
-            </RichButton>
-          </div>
-        }
-        variant="edit"
-      />
-    </form>
+          }
+          details={<RecipeDetailsCardForm register={register} errors={errors.details} />}
+          ingredients={<IngredientsSectionForm control={control} register={register} errors={errors.ingredients} />}
+          preparation={<PreparationSectionForm control={control} register={register} errors={errors.steps} />}
+          footer={
+            <div className="flex justify-center px-8 pb-8">
+              <RichButton type="submit" variant="primary" className="w-40">
+                Save recipe
+              </RichButton>
+            </div>
+          }
+          variant="edit"
+        />
+      </form>
+    </FormProvider>
   )
 }

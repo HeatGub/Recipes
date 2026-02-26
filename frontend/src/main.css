@@ -109,3 +109,19 @@ select:read-only {
   border-color: var(--border-muted);
   opacity: 1; /* prevent browser default fade */
 }
+
+/* Remove default number input arrows */
+
+/* Chrome, Edge, Safari */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  appearance: none;
+  -webkit-appearance: none; /* for Safari/Chrome */
+  -moz-appearance: textfield; /* for Firefox */
+}

@@ -78,6 +78,8 @@ export function IngredientCategoryFields({
               {...register(`ingredients.${catIndex}.items.${itemIndex}.amount`, {
                 valueAsNumber: true,
               })}
+              type="number"
+              step="any"
               placeholder="amount"
               className="text-center"
               wrapperClassName="max-w-15"
