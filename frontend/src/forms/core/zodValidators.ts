@@ -114,3 +114,35 @@ export function integerRequired(code = "VALIDATION.REQUIRED_INTEGER") {
     }
   }
 }
+
+export function minArrayLength(min: number, code: string = "VALIDATION.ARRAY_MIN") {
+  return <T>(val: T[] | undefined, ctx: RefinementCtx) => {
+    if (!val) return
+
+    if (val.length < min) {
+      ctx.addIssue({
+        code: "custom",
+        message: rhfMessage({
+          code,
+          params: { min },
+        }),
+      })
+    }
+  }
+}
+
+export function maxArrayLength(max: number, code = "VALIDATION.ARRAY_MAX") {
+  return <T>(val: T[] | undefined, ctx: RefinementCtx) => {
+    if (!val) return
+
+    if (val.length > max) {
+      ctx.addIssue({
+        code: "custom",
+        message: rhfMessage({
+          code,
+          params: { max },
+        }),
+      })
+    }
+  }
+}

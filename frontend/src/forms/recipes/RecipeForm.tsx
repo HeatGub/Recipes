@@ -18,13 +18,15 @@ import {
   maxNumber,
   preprocessNumber,
   integerRequired,
+  minArrayLength,
+  maxArrayLength,
 } from "@/forms/core/zodValidators"
 import { RECIPE } from "@/forms/core/constants"
 
 export const ingredientItemSchema = z.object({
   name: z
     .string()
-    .optional()  // just to avoid zod custom message
+    .optional() // just to avoid zod custom message
     .superRefine(stringRequired()) // real required validation
     .superRefine(minString(RECIPE.INGREDIENTS.ITEM.NAME.MIN))
     .superRefine(maxString(RECIPE.INGREDIENTS.ITEM.NAME.MAX))
@@ -56,7 +58,7 @@ export const ingredientCategorySchema = z.object({
     .superRefine(minString(RECIPE.INGREDIENTS.CATEGORY.TITLE.MIN))
     .superRefine(maxString(RECIPE.INGREDIENTS.CATEGORY.TITLE.MAX))
     .superRefine(forbiddenCharacters(RECIPE.INGREDIENTS.CATEGORY.TITLE.FORBIDDEN_CHARS)),
-  items: z.array(ingredientItemSchema).min(1),
+  items: z.array(ingredientItemSchema).min(0),
 })
 
 export const stepSchema = z.object({
@@ -102,8 +104,17 @@ export const recipeFormSchema = z.object({
     .superRefine(maxString(RECIPE.DESCRIPTION.MAX))
     .superRefine(forbiddenCharacters(RECIPE.DESCRIPTION.FORBIDDEN_CHARS)),
   details: detailsSchema,
-  ingredients: z.array(ingredientCategorySchema).min(1),
-  steps: z.array(stepSchema).min(0),
+  ingredients: z.array(ingredientCategorySchema).min(0),
+  // ingredients: z
+  //   .array(stepSchema)
+  //   .optional()
+  //   .superRefine(minArrayLength(RECIPE.INGREDIENTS.CATEGORY.MIN, "VALIDATION.INGREDIENTS_CATEGORIES_MIN"))
+  //   .superRefine(maxArrayLength(RECIPE.INGREDIENTS.CATEGORY.MAX, "VALIDATION.INGREDIENTS_CATEGORY_MAX")),
+  steps: z
+    .array(stepSchema)
+    .optional()
+    .superRefine(minArrayLength(RECIPE.PREPARATION_STEPS.MIN, "VALIDATION.PREPARATION_STEPS_MIN"))
+    .superRefine(maxArrayLength(RECIPE.PREPARATION_STEPS.MAX, "VALIDATION.PREPARATION_STEPS_MAX")),
 })
 
 export type RecipeFormData = z.infer<typeof recipeFormSchema>
@@ -142,7 +153,7 @@ export function RecipeForm() {
     const formattedData = {
       ...data,
 
-      steps: data.steps.map((step, stepIndex) => ({
+      steps: data.steps?.map((step, stepIndex) => ({
         ...step,
         position: stepIndex + 1,
       })),
@@ -191,7 +202,7 @@ export function RecipeForm() {
           ingredients={<IngredientsSectionForm control={control} register={register} errors={errors.ingredients} />}
           preparation={<PreparationSectionForm control={control} register={register} errors={errors.steps} />}
           footer={
-            <div className="flex justify-center px-8 pb-8">
+            <div className="-mt-2 flex justify-center px-8 pb-8">
               <RichButton type="submit" variant="gradientPrimary" className="w-40">
                 Save recipe
               </RichButton>

@@ -148,6 +148,7 @@ export function IngredientCategoryFields({
       {/* Add item button */}
       <Button
         type="button"
+        variant="ghost"
         onClick={() =>
           append({
             name: "",

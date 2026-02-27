@@ -90,7 +90,13 @@
       "REQUIRED_NUMBER": "Wymagana liczba",
       "REQUIRED_INTEGER": "Wymagana liczba całkowita",
       "NUMBER_MIN": "≥ {{min}}",
-      "NUMBER_MAX": "≤ {{max}}"
+      "NUMBER_MAX": "≤ {{max}}",
+      "ARRAY_MIN": "Wymagane minimum {{min}} elementów",
+      "ARRAY_MAX": "Maksymalnie {{max}} elementów",
+      "PREPARATION_STEPS_MIN": "Wymagany minimum {{min}} krok",
+      "PREPARATION_STEPS_MAX": "Maksymalnie {{max}} kroków",
+      "INGREDIENTS_CATEGORIES_MIN": "Wymagana minimum {{min}} kategoria",
+      "INGREDIENTS_CATEGORIES_MAX": "Maksymalnie {{max}} kategorii"
     },
     "AUTH_FAILED": {
       "INVALID_CREDENTIALS": "Nieprawidłowe dane logowania",

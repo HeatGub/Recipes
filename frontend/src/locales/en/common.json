@@ -73,7 +73,7 @@
     "VALIDATION": {
       "BLANK": "This field can't be blank",
       "REQUIRED": "This field is required",
-      "REQUIRED_SHORT" : "Required",
+      "REQUIRED_SHORT": "Required",
       "USERNAME_TOO_SHORT": "Username must be at least {{min}} characters long",
       "USERNAME_TOO_LONG": "Username can't exceed {{max}} characters",
       "USERNAME_INVALID_FORMAT": "Username can only include upper/lowercase letters, numbers, and these symbols: _ - + @ .",
@@ -84,13 +84,19 @@
       "USERNAME_TAKEN": "This username is already taken",
       "EMAIL_TAKEN": "This e-mail is in use",
       "PASSWORD_SAME_AS_OLD": "This is the password you currently use",
-      "STRING_MIN" : "≥ {{min}} characters",
-      "STRING_MAX" : "≤ {{max}} characters",
-      "FORBIDDEN_CHARACTERS" : "Forbidden characters: {{chars}}",
+      "STRING_MIN": "≥ {{min}} characters",
+      "STRING_MAX": "≤ {{max}} characters",
+      "FORBIDDEN_CHARACTERS": "Forbidden characters: {{chars}}",
       "REQUIRED_NUMBER": "Number required",
       "REQUIRED_INTEGER": "Integer required",
       "NUMBER_MIN": "≥ {{min}}",
-      "NUMBER_MAX": "≤ {{max}}"
+      "NUMBER_MAX": "≤ {{max}}",
+      "ARRAY_MIN": "At least {{min}} element(s) required",
+      "ARRAY_MAX": "At most {{max}} elements",
+      "PREPARATION_STEPS_MIN": "At least {{min}} preparation step required",
+      "PREPARATION_STEPS_MAX": "At most {{max}} preparation steps",
+      "INGREDIENTS_CATEGORIES_MIN": "At least {{min}} categories required",
+      "INGREDIENTS_CATEGORIES_MAX": "At most {{max}} categories"
     },
     "AUTH_FAILED": {
       "INVALID_CREDENTIALS": "Invalid credentials",

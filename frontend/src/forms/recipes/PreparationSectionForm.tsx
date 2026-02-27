@@ -7,6 +7,8 @@ import { StepIndicator } from "@/components/common/StepIndicator"
 import { FormInput } from "@/components/ui/FormInput"
 import { Button } from "@/components/ui/Button"
 import { Trash2, Plus, ArrowDown, ArrowUp, CirclePlus } from "lucide-react"
+import { FormFieldError } from "@/forms/core/FormErrors"
+import { useFormContext } from "react-hook-form"
 
 interface Props {
   control: Control<RecipeFormData>
@@ -20,10 +22,12 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
     name: "steps",
   })
 
+  const { trigger } = useFormContext<RecipeFormData>()
+
   return (
     <section>
       <h2 className="text-xl font-semibold text-(--text-secondary)">Preparation</h2>
-      <div className="mt-2 space-y-4">
+      <div className="my-2 space-y-4">
         {fields.map((field, index) => (
           <div key={field.id} className="relative border-b border-(--border-muted)! pt-4 pb-4">
             <div className="absolute top-2 right-4">
@@ -61,7 +65,10 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
                       <Trash2 className="h-4 w-4 text-(--text-danger) drop-shadow-[0_0_4px_var(--text-danger)]" />
                     </div>
                   }
-                  onClick={() => remove(index)}
+                  onClick={() => {
+                    remove(index)
+                    trigger("steps")
+                  }}
                   className="absolute top-0 right-0"
                 />
               </div>
@@ -94,7 +101,7 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
               title="Add step below"
               variant="ghost"
               onClick={() => insert(index + 1, { title: "", description: "" })}
-              className="absolute -bottom-2.5 right-0 rounded-full border border-(--border-muted)! px-2! py-0! text-(--text-muted)! hover:bg-(--bg-secondary) hover:text-(--accent-secondary)! active:scale-95 hover:scale-110"
+              className="absolute right-0 -bottom-2.5 rounded-full border border-(--border-muted)! px-2! py-0! text-(--text-muted)! hover:scale-110 hover:bg-(--bg-secondary) hover:text-(--accent-secondary)! active:scale-95"
             >
               <Plus className="h-4 w-4" />
             </Button>
@@ -110,12 +117,19 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
               title: "",
               description: "",
             })
+            trigger("steps")
           }}
           className="flex items-center justify-center gap-2 rounded-full text-sm text-(--accent-primary) hover:bg-(--accent-secondary)"
         >
           <CirclePlus />
           Step
         </Button>
+      )}
+
+      {errors?.root && (
+        <p className="flex justify-center text-center text-xs text-(--text-danger)">
+          <FormFieldError error={errors?.root} />
+        </p>
       )}
     </section>
   )
