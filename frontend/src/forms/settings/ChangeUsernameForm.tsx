@@ -113,7 +113,7 @@ export function ChangeUsernameForm() {
         <Button type="button" variant="ghost" onClick={() => reset()}>
           Cancel
         </Button>
-        <Button type="submit" variant="primary" className="hover:bg-(--accent-secondary)">
+        <Button type="submit" variant="primary">
           {t("account.settings.change_username")}
         </Button>
       </div>

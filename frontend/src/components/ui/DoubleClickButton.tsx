@@ -19,7 +19,9 @@ type DoubleClickButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 export function DoubleClickButton({
   variant = "default",
   confirmVariant = "default",
-  firstClickContent = <Trash2 className="h-5 w-5 rounded text-(--text-muted) hover:text-(--text-warning) hover:drop-shadow-[0_0_4px_var(--text-warning)]" />,
+  firstClickContent = (
+    <Trash2 className="h-5 w-5 rounded text-(--text-muted) hover:text-(--text-warning) hover:drop-shadow-[0_0_4px_var(--text-warning)]" />
+  ),
   secondClickContent = (
     <Trash2 className="h-5 w-5 rounded text-(--text-danger) drop-shadow-[0_0_4px_var(--text-danger)]" />
   ),
@@ -53,6 +55,9 @@ export function DoubleClickButton({
       className={clsx(
         "flex cursor-pointer items-center justify-center p-0 text-sm font-medium select-none disabled:cursor-default",
         "disabled:hover:shadow-none",
+        "active:scale-95",
+        "hover:scale-110",
+        "transition-transform duration-150",
         VARIANT_STYLES[confirming ? confirmVariant : variant]
       )}
     >

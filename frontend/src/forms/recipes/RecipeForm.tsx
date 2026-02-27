@@ -192,7 +192,7 @@ export function RecipeForm() {
           preparation={<PreparationSectionForm control={control} register={register} errors={errors.steps} />}
           footer={
             <div className="flex justify-center px-8 pb-8">
-              <RichButton type="submit" variant="primary" className="w-40">
+              <RichButton type="submit" variant="gradientPrimary" className="w-40">
                 Save recipe
               </RichButton>
             </div>

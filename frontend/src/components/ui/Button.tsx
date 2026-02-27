@@ -1,7 +1,7 @@
 import clsx from "clsx"
 
 const VARIANT_STYLES = {
-  primary: "bg-(--accent-primary) text-(--text-inverted)",
+  primary: "bg-(--accent-primary) text-(--text-inverted) hover:bg-[linear-gradient(20deg,var(--accent-primary)_0%,var(--accent-primary)_65%,var(--accent-secondary)_120%)] text-(--text-inverted)",
   secondary: "bg-(--bg-tertiary) text-(--text-primary)",
   tertiary: "bg-(--bg-secondary) text-(--text-primary)",
   ghost: "bg-(--bg-primary) text-(--text-primary)",
@@ -22,6 +22,7 @@ export function Button({ variant = "primary", className, ...props }: ButtonProps
       className={clsx(
         "text-base rounded px-3 py-1 font-medium select-none cursor-pointer disabled:cursor-default disabled:pointer-events-none",
         "enabled:hover:shadow-[0_0_5px_var(--shadow-color)]",
+        "active:scale-96",
         VARIANT_STYLES[variant],
         className
       )}

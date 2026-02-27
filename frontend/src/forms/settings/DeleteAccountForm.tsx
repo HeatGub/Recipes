@@ -127,7 +127,7 @@ export function DeleteAccountForm() {
           <Button type="button" variant="ghost" onClick={() => reset()}>
             {t("general.cancel")}
           </Button>
-          <Button type="submit" variant="danger" className="hover:text-(--text-inverted)">
+          <Button type="submit" variant="danger">
             {t("account.settings.delete_account")}
           </Button>
         </div>

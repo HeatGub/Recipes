@@ -94,10 +94,9 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
               title="Add step below"
               variant="ghost"
               onClick={() => insert(index + 1, { title: "", description: "" })}
-              className="absolute -bottom-2.5 right-0 rounded-full border border-(--border-muted)! px-2! py-0! text-(--text-muted)! hover:bg-(--bg-secondary) hover:text-(--accent-secondary)!"
+              className="absolute -bottom-2.5 right-0 rounded-full border border-(--border-muted)! px-2! py-0! text-(--text-muted)! hover:bg-(--bg-secondary) hover:text-(--accent-secondary)! active:scale-95 hover:scale-110"
             >
               <Plus className="h-4 w-4" />
-              {/* <CirclePlus className="h-4 w-4"/> */}
             </Button>
           </div>
         ))}
