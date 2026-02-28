@@ -5,12 +5,13 @@ import { FormInput } from "@/components/ui/FormInput"
 import { Button } from "@/components/ui/Button"
 import { DoubleClickButton } from "@/components/ui/DoubleClickButton"
 import { CirclePlus, ArrowDown, ArrowUp } from "lucide-react"
+import { FormFieldError } from "@/forms/core/FormErrors"
 
 interface CategoryProps {
   control: Control<RecipeFormData>
   register: UseFormRegister<RecipeFormData>
   catIndex: number
-  errors?: FieldErrors<RecipeFormData["ingredients"][number]>
+  errors?: FieldErrors<NonNullable<RecipeFormData["ingredients"]>[number]>
   onRemoveCategory: () => void
   onMoveUp: () => void
   onMoveDown: () => void
@@ -27,7 +28,7 @@ export function IngredientCategoryFields({
   onMoveUp,
   onMoveDown,
   isFirst,
-  isLast
+  isLast,
 }: CategoryProps) {
   const { fields, append, move, remove } = useFieldArray({
     control,
@@ -50,9 +51,9 @@ export function IngredientCategoryFields({
           variant="ghost"
           onClick={onMoveDown}
           disabled={isLast}
-          className="bg-transparent! text-xs text-(--text-muted) disabled:opacity-40 px-1! py-0!"
+          className="bg-transparent! px-1! py-0! text-xs text-(--text-muted) disabled:opacity-40"
         >
-          <ArrowDown className="w-4 h-4"/>
+          <ArrowDown className="h-4 w-4" />
         </Button>
 
         <Button
@@ -60,12 +61,12 @@ export function IngredientCategoryFields({
           variant="ghost"
           onClick={onMoveUp}
           disabled={isFirst}
-          className="bg-transparent! text-xs text-(--text-muted) disabled:opacity-40  px-1! py-0!"
+          className="bg-transparent! px-1! py-0! text-xs text-(--text-muted) disabled:opacity-40"
         >
-          <ArrowUp className="w-4 h-4"/>
+          <ArrowUp className="h-4 w-4" />
         </Button>
 
-        <DoubleClickButton onClick={onRemoveCategory}/>
+        <DoubleClickButton onClick={onRemoveCategory} />
       </div>
 
       {/* Ingredient items */}
@@ -162,6 +163,12 @@ export function IngredientCategoryFields({
         <CirclePlus className="h-4 w-4" />
         Ingredient
       </Button>
+
+      {errors?.items?.root && (
+        <p className="flex justify-center text-center text-xs text-(--text-danger)">
+          <FormFieldError error={errors.items.root} />
+        </p>
+      )}
     </div>
   )
 }

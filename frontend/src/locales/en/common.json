@@ -95,8 +95,10 @@
       "ARRAY_MAX": "At most {{max}} elements",
       "PREPARATION_STEPS_MIN": "At least {{min}} preparation step required",
       "PREPARATION_STEPS_MAX": "At most {{max}} preparation steps",
-      "INGREDIENTS_CATEGORIES_MIN": "At least {{min}} categories required",
-      "INGREDIENTS_CATEGORIES_MAX": "At most {{max}} categories"
+      "INGREDIENTS_CATEGORIES_MIN": "At least {{min}} category required",
+      "INGREDIENTS_CATEGORIES_MAX": "At most {{max}} categories",
+      "INGREDIENTS_ITEMS_MIN": "At least {{min}} ingredient in a category required",
+      "INGREDIENTS_ITEMS_MAX": "At most {{max}} ingredients in a category"
     },
     "AUTH_FAILED": {
       "INVALID_CREDENTIALS": "Invalid credentials",

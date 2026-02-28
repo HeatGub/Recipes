@@ -5,6 +5,7 @@ import { IngredientCategoryFields } from "./IngredientCategoryFields"
 import type { FieldErrors } from "react-hook-form"
 import { Button } from "@/components/ui/Button"
 import { CirclePlus } from "lucide-react"
+import { FormFieldError } from "@/forms/core/FormErrors"
 
 interface Props {
   control: Control<RecipeFormData>
@@ -19,7 +20,7 @@ export function IngredientsSectionForm({ control, register, errors }: Props) {
   })
 
   return (
-    <section className="mx-2 my-4 rounded-2xl bg-(--bg-secondary) px-2 py-4 sm:mx-4 md:px-4 md:mx-8 lg:mx-16">
+    <section className="mx-2 my-4 rounded-2xl bg-(--bg-secondary) px-2 py-4 sm:mx-4 md:mx-8 md:px-4 lg:mx-16">
       <h2 className="border-b pb-1 text-center text-xl font-semibold text-(--text-secondary)">Ingredients</h2>
 
       {fields.map((category, catIndex) => (
@@ -29,7 +30,9 @@ export function IngredientsSectionForm({ control, register, errors }: Props) {
           register={register}
           catIndex={catIndex}
           errors={errors?.[catIndex]}
-          onRemoveCategory={() => remove(catIndex)}
+          onRemoveCategory={() => {
+            remove(catIndex)
+          }}
           onMoveUp={() => move(catIndex, catIndex - 1)}
           onMoveDown={() => move(catIndex, catIndex + 1)}
           isFirst={catIndex === 0}
@@ -40,18 +43,24 @@ export function IngredientsSectionForm({ control, register, errors }: Props) {
       <Button
         type="button"
         variant="ghost"
-        onClick={() =>
+        onClick={() => {
           append({
             title: "",
-            items: [],
+            items: [{ name: "", amount: undefined, unit: "", notes: undefined }],
           })
-        }
+        }}
         className="items-left mt-2 w-full bg-transparent p-0! text-(--text-muted)! hover:text-(--accent-secondary)!"
       >
         <div className="flex items-center gap-2 pl-2">
           <CirclePlus className="h-5 w-5" /> Category
         </div>
       </Button>
+
+      {errors?.root && (
+        <p className="flex justify-center text-center text-xs text-(--text-danger)">
+          <FormFieldError error={errors?.root} />
+        </p>
+      )}
     </section>
   )
 }

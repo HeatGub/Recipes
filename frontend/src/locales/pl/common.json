@@ -96,7 +96,9 @@
       "PREPARATION_STEPS_MIN": "Wymagany minimum {{min}} krok",
       "PREPARATION_STEPS_MAX": "Maksymalnie {{max}} kroków",
       "INGREDIENTS_CATEGORIES_MIN": "Wymagana minimum {{min}} kategoria",
-      "INGREDIENTS_CATEGORIES_MAX": "Maksymalnie {{max}} kategorii"
+      "INGREDIENTS_CATEGORIES_MAX": "Maksymalnie {{max}} kategorii",
+      "INGREDIENTS_ITEMS_MIN": "Wymagany minimum {{min}} składnik w kategorii",
+      "INGREDIENTS_ITEMS_MAX": "Maksymalnie {{max}} składników w kategorii"
     },
     "AUTH_FAILED": {
       "INVALID_CREDENTIALS": "Nieprawidłowe dane logowania",

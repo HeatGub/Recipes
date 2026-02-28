@@ -58,7 +58,11 @@ export const ingredientCategorySchema = z.object({
     .superRefine(minString(RECIPE.INGREDIENTS.CATEGORY.TITLE.MIN))
     .superRefine(maxString(RECIPE.INGREDIENTS.CATEGORY.TITLE.MAX))
     .superRefine(forbiddenCharacters(RECIPE.INGREDIENTS.CATEGORY.TITLE.FORBIDDEN_CHARS)),
-  items: z.array(ingredientItemSchema).min(0),
+  items: z
+    .array(ingredientItemSchema)
+    .optional()
+    .superRefine(minArrayLength(RECIPE.INGREDIENTS.ITEM.MIN, "VALIDATION.INGREDIENTS_ITEMS_MIN"))
+    .superRefine(maxArrayLength(RECIPE.INGREDIENTS.ITEM.MAX, "VALIDATION.INGREDIENTS_ITEMS_MAX")),
 })
 
 export const stepSchema = z.object({
@@ -104,12 +108,11 @@ export const recipeFormSchema = z.object({
     .superRefine(maxString(RECIPE.DESCRIPTION.MAX))
     .superRefine(forbiddenCharacters(RECIPE.DESCRIPTION.FORBIDDEN_CHARS)),
   details: detailsSchema,
-  ingredients: z.array(ingredientCategorySchema).min(0),
-  // ingredients: z
-  //   .array(stepSchema)
-  //   .optional()
-  //   .superRefine(minArrayLength(RECIPE.INGREDIENTS.CATEGORY.MIN, "VALIDATION.INGREDIENTS_CATEGORIES_MIN"))
-  //   .superRefine(maxArrayLength(RECIPE.INGREDIENTS.CATEGORY.MAX, "VALIDATION.INGREDIENTS_CATEGORY_MAX")),
+  ingredients: z
+    .array(ingredientCategorySchema)
+    .optional()
+    .superRefine(minArrayLength(RECIPE.INGREDIENTS.CATEGORY.MIN, "VALIDATION.INGREDIENTS_CATEGORIES_MIN"))
+    .superRefine(maxArrayLength(RECIPE.INGREDIENTS.CATEGORY.MAX, "VALIDATION.INGREDIENTS_CATEGORIES_MAX")),
   steps: z
     .array(stepSchema)
     .optional()
@@ -150,6 +153,7 @@ export function RecipeForm() {
   } = methods
 
   const onSubmit = (data: RecipeFormData) => {
+    // console.log(data)
     const formattedData = {
       ...data,
 
@@ -158,11 +162,11 @@ export function RecipeForm() {
         position: stepIndex + 1,
       })),
 
-      ingredients: data.ingredients.map((category, catIndex) => ({
+      ingredients: data.ingredients?.map((category, catIndex) => ({
         ...category,
         position: catIndex + 1,
 
-        items: category.items.map((item, itemIndex) => ({
+        items: category?.items?.map((item, itemIndex) => ({
           ...item,
           position: itemIndex + 1,
         })),
