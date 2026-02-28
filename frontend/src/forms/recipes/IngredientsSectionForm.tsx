@@ -6,6 +6,7 @@ import type { FieldErrors } from "react-hook-form"
 import { Button } from "@/components/ui/Button"
 import { CirclePlus } from "lucide-react"
 import { FormFieldError } from "@/forms/core/FormErrors"
+import { RECIPE } from "@/forms/core/constants"
 
 interface Props {
   control: Control<RecipeFormData>
@@ -40,21 +41,23 @@ export function IngredientsSectionForm({ control, register, errors }: Props) {
         />
       ))}
 
-      <Button
-        type="button"
-        variant="ghost"
-        onClick={() => {
-          append({
-            title: "",
-            items: [{ name: "", amount: undefined, unit: "", notes: undefined }],
-          })
-        }}
-        className="items-left mt-2 w-full bg-transparent p-0! text-(--text-muted)! hover:text-(--accent-secondary)!"
-      >
-        <div className="flex items-center gap-2 pl-2">
-          <CirclePlus className="h-5 w-5" /> Category
-        </div>
-      </Button>
+      {fields.length < RECIPE.INGREDIENTS.CATEGORY.MAX && (
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={() => {
+            append({
+              title: "",
+              items: [{ name: "", amount: undefined, unit: "", notes: undefined }],
+            })
+          }}
+          className="items-left mt-2 w-full bg-transparent p-0! text-(--text-muted)! hover:text-(--accent-secondary)!"
+        >
+          <div className="flex items-center gap-2 pl-2">
+            <CirclePlus className="h-5 w-5" /> Category
+          </div>
+        </Button>
+      )}
 
       {errors?.root && (
         <p className="flex justify-center text-center text-xs text-(--text-danger)">

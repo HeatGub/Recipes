@@ -8,7 +8,7 @@ import { FormInput } from "@/components/ui/FormInput"
 import { Button } from "@/components/ui/Button"
 import { Trash2, Plus, ArrowDown, ArrowUp, CirclePlus } from "lucide-react"
 import { FormFieldError } from "@/forms/core/FormErrors"
-import { useFormContext } from "react-hook-form"
+import { RECIPE } from "@/forms/core/constants"
 
 interface Props {
   control: Control<RecipeFormData>
@@ -22,15 +22,13 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
     name: "steps",
   })
 
-  const { trigger } = useFormContext<RecipeFormData>()
-
   return (
     <section>
       <h2 className="text-xl font-semibold text-(--text-secondary)">Preparation</h2>
       <div className="my-2 space-y-4">
         {fields.map((field, index) => (
           <div key={field.id} className="relative border-b border-(--border-muted)! pt-4 pb-4">
-            <div className="absolute top-2 right-4">
+            <div className="absolute top-1.75 right-4">
               {/* Right: buttons */}
               <div className="flex">
                 <Button
@@ -53,6 +51,7 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
                   <ArrowUp className="h-4 w-4" />
                 </Button>
 
+                {fields.length > 1 && 
                 <DoubleClickButton
                   title="Remove step"
                   firstClickContent={
@@ -67,10 +66,8 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
                   }
                   onClick={() => {
                     remove(index)
-                    trigger("steps")
                   }}
-                  className="absolute top-0 right-0"
-                />
+                />}
               </div>
             </div>
 
@@ -95,7 +92,7 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
               rows={1}
               className="mt-3 w-full resize-none border border-dashed border-(--border-muted)! bg-transparent p-2 outline-none"
             />
-
+            {fields.length < RECIPE.PREPARATION_STEPS.MAX && 
             <Button
               type="button"
               title="Add step below"
@@ -105,11 +102,12 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
             >
               <Plus className="h-4 w-4" />
             </Button>
+}
           </div>
         ))}
       </div>
 
-      {fields.length > 0 ? null : (
+      {fields.length == 0 && (
         <Button
           type="button"
           onClick={() => {
@@ -117,7 +115,6 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
               title: "",
               description: "",
             })
-            trigger("steps")
           }}
           className="flex items-center justify-center gap-2 rounded-full text-sm text-(--accent-primary) hover:bg-(--accent-secondary)"
         >

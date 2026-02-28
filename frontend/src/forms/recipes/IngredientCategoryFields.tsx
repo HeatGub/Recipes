@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/Button"
 import { DoubleClickButton } from "@/components/ui/DoubleClickButton"
 import { CirclePlus, ArrowDown, ArrowUp } from "lucide-react"
 import { FormFieldError } from "@/forms/core/FormErrors"
+import { RECIPE } from "@/forms/core/constants"
 
 interface CategoryProps {
   control: Control<RecipeFormData>
@@ -66,7 +67,7 @@ export function IngredientCategoryFields({
           <ArrowUp className="h-4 w-4" />
         </Button>
 
-        <DoubleClickButton onClick={onRemoveCategory} />
+        {!(isFirst && isLast) && <DoubleClickButton onClick={onRemoveCategory} />}
       </div>
 
       {/* Ingredient items */}
@@ -133,36 +134,40 @@ export function IngredientCategoryFields({
                 ↓
               </Button>
 
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={() => remove(itemIndex)}
-                className="text-xs hover:text-(--text-danger)!"
-              >
-                ✕
-              </Button>
+              {fields.length > 1 && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => remove(itemIndex)}
+                  className="text-xs hover:text-(--text-danger)!"
+                >
+                  ✕
+                </Button>
+              )}
             </div>
           </div>
         )
       })}
 
       {/* Add item button */}
-      <Button
-        type="button"
-        variant="ghost"
-        onClick={() =>
-          append({
-            name: "",
-            amount: undefined,
-            unit: "",
-            notes: undefined,
-          })
-        }
-        className="flex w-full items-center justify-center gap-2 bg-(--bg-primary) text-sm font-light! text-(--text-muted)! hover:text-(--accent-secondary)!"
-      >
-        <CirclePlus className="h-4 w-4" />
-        Ingredient
-      </Button>
+      {fields.length < RECIPE.INGREDIENTS.ITEM.MAX && (
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={() =>
+            append({
+              name: "",
+              amount: undefined,
+              unit: "",
+              notes: undefined,
+            })
+          }
+          className="flex w-full items-center justify-center gap-2 bg-(--bg-primary) text-sm font-light! text-(--text-muted)! hover:text-(--accent-secondary)!"
+        >
+          <CirclePlus className="h-4 w-4" />
+          Ingredient
+        </Button>
+      )}
 
       {errors?.items?.root && (
         <p className="flex justify-center text-center text-xs text-(--text-danger)">
