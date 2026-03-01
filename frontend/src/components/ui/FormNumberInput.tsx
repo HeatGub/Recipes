@@ -13,6 +13,7 @@ interface FormNumberInputProps {
   className?: string
   placeholder?: string
   disabled?: boolean
+  required?: boolean
 }
 
 export function FormNumberInput({
@@ -25,6 +26,7 @@ export function FormNumberInput({
   label,
   wrapperClassName = "",
   className = "",
+  required,
   ...props
 }: FormNumberInputProps) {
   const round = (num: number) => Math.floor(num)
@@ -41,17 +43,23 @@ export function FormNumberInput({
     onChange(next)
   }
 
-  return (
+  const isEmpty = value === undefined || value === null || Number.isNaN(value) || (min !== undefined && value < min)
+
+  const showRequiredStyle = required && isEmpty
+
+return (
     <div className={`flex flex-col ${wrapperClassName} relative`}>
       {label && <label className="mb-1">{label}</label>}
 
-      <div className="relative flex items-center w-full">
+      <div className="relative flex items-center">
         <input
           type="number"
-          step="any" // keep this"any" to turn amazing browser errors off. Same with min/max
+          step="any"
           value={value}
           onChange={(e) => onChange(Number(e.target.value))}
-          className={`w-full rounded border-dashed border border-(--border-muted)! bg-transparent px-6 ${className}`}
+          className={`rounded bg-transparent px-6 outline-none ${
+            showRequiredStyle ? "border border-dashed border-(--border-muted)!" : ""
+          } ${className} `}
           {...props}
         />
 
@@ -59,7 +67,7 @@ export function FormNumberInput({
         <button
           type="button"
           onClick={decrement}
-          className="absolute left-1 h-full w-6 flex items-center justify-center text-gray-500 hover:text-gray-800"
+          className="absolute px-2 left-0 flex h-full max-w-6 items-center justify-center text-(--text-muted) hover:text-(--text-secondary)"
         >
           −
         </button>
@@ -68,14 +76,14 @@ export function FormNumberInput({
         <button
           type="button"
           onClick={increment}
-          className="absolute right-1 h-full w-6 flex items-center justify-center text-gray-500 hover:text-gray-800"
+          className="absolute px-2 right-0 flex h-full max-w-6 items-center justify-center text-(--text-muted) hover:text-(--text-secondary)"
         >
           +
         </button>
       </div>
 
       {error && (
-        <p className="text-xs text-(--text-danger) flex justify-center text-center mt-1">
+        <p className="mt-1 flex justify-center text-center text-xs text-(--text-danger)">
           <FormFieldError error={error} />
         </p>
       )}

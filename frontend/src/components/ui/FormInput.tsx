@@ -1,23 +1,40 @@
 import type { FieldError } from "react-hook-form"
+import { useFormContext, useWatch } from "react-hook-form"
 import { FormFieldError } from "@/forms/core/FormErrors"
 
-interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface FormInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "name"> {
+  name: string
   error?: FieldError
   label?: string
-  wrapperClassName?: string 
+  wrapperClassName?: string
 }
 
-export function FormInput({ label, error, wrapperClassName = "", className = "", ...props }: FormInputProps) {
+export function FormInput({ name, error, wrapperClassName = "", className = "", required, ...props }: FormInputProps) {
+  const { control } = useFormContext()
+
+  const value = useWatch({
+    control,
+    name,
+  })
+
+  const isEmpty =
+    value === undefined || value === null || value === "" || (typeof value === "number" && Number.isNaN(value))
+
+  const showRequiredStyle = required && isEmpty
+
   return (
     <div className={`flex flex-col ${wrapperClassName}`}>
-      {label && <label className="mb-1">{label}</label>}
       <input
-        className={`w-full rounded border-dashed border border-(--border-muted)! bg-transparent px-1 ${className}`}
-        // ${error ? "border-red-500!" : "border-(--border-muted)!"}
         {...props}
+        name={name}
+        required={required}
+        className={`w-full rounded bg-transparent px-1 ${
+          showRequiredStyle ? "border border-dashed border-(--border-muted)!" : ""
+        } ${className} `}
       />
+
       {error && (
-        <p className="text-xs text-(--text-danger) flex justify-center text-center">
+        <p className="flex justify-center text-center text-xs text-(--text-danger)">
           <FormFieldError error={error} />
         </p>
       )}

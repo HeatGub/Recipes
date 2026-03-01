@@ -34,13 +34,14 @@ export function RecipeDetailsCardForm({ register, errors }: Props) {
       <div className="flex flex-1 flex-col items-center space-y-1">
         <p className="text-sm text-(--text-muted)">Servings</p>
         <FormNumberInput
+          required
           value={servings}
           onChange={handleChange}
           min={RECIPE.SERVINGS.MIN}
           max={RECIPE.SERVINGS.MAX}
           step={1}
           error={errors?.servings}
-          className="text-center outline-none"
+          className="text-center max-w-30"
         />
       </div>
     </div>

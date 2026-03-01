@@ -46,7 +46,8 @@ export function IngredientCategoryFields({
           wrapperClassName="flex-1"
           error={errors?.title}
         />
-
+        {!(isFirst && isLast) && (
+          <>
         <Button
           type="button"
           variant="ghost"
@@ -67,7 +68,7 @@ export function IngredientCategoryFields({
           <ArrowUp className="h-4 w-4" />
         </Button>
 
-        {!(isFirst && isLast) && <DoubleClickButton onClick={onRemoveCategory} />}
+        <DoubleClickButton onClick={onRemoveCategory} /></>)}
       </div>
 
       {/* Ingredient items */}
@@ -80,6 +81,7 @@ export function IngredientCategoryFields({
               {...register(`ingredients.${catIndex}.items.${itemIndex}.amount`, {
                 valueAsNumber: true,
               })}
+              required
               type="number"
               step="any"
               placeholder="amount"
@@ -90,6 +92,7 @@ export function IngredientCategoryFields({
 
             <FormInput
               {...register(`ingredients.${catIndex}.items.${itemIndex}.unit`)}
+              required
               placeholder="unit"
               wrapperClassName="max-w-20"
               className="text-center italic"
@@ -98,6 +101,7 @@ export function IngredientCategoryFields({
 
             <FormInput
               {...register(`ingredients.${catIndex}.items.${itemIndex}.name`)}
+              required
               placeholder="ingredient"
               className="text-center font-medium"
               wrapperClassName="flex-1"

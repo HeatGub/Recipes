@@ -28,9 +28,10 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
       <div className="my-2 space-y-4">
         {fields.map((field, index) => (
           <div key={field.id} className="relative border-b border-(--border-muted)! pt-4 pb-4">
-            <div className="absolute top-1.75 right-4">
+            <div className="absolute -bottom-2.5">
               {/* Right: buttons */}
-              <div className="flex">
+              {fields.length > 1 && 
+              (<div className="flex">
                 <Button
                   type="button"
                   variant="ghost"
@@ -51,7 +52,6 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
                   <ArrowUp className="h-4 w-4" />
                 </Button>
 
-                {fields.length > 1 && 
                 <DoubleClickButton
                   title="Remove step"
                   firstClickContent={
@@ -67,19 +67,19 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
                   onClick={() => {
                     remove(index)
                   }}
-                />}
-              </div>
+                />
+              </div>)}
             </div>
 
             {/* Title Row */}
-            <div className="flex items-center gap-2">
-              <StepIndicator>{index + 1}</StepIndicator>
+            <div className="flex items-top gap-2">
+              <StepIndicator className="mt-1.5" >{index + 1}</StepIndicator>
 
               <FormInput
                 {...register(`steps.${index}.title`)}
                 error={errors?.[index]?.title}
                 placeholder="Step title"
-                className="w-full p-2 text-lg font-medium text-(--accent-primary)"
+                className="w-full p-1 text-lg font-medium text-(--accent-primary)"
                 wrapperClassName="flex-1 min-w-0"
               />
             </div>
@@ -87,10 +87,11 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
             {/* Description */}
             <FormTextArea
               {...register(`steps.${index}.description`)}
+              required
               placeholder="Step description"
               error={errors?.[index]?.description}
               rows={1}
-              className="mt-3 w-full resize-none border border-dashed border-(--border-muted)! bg-transparent p-2 outline-none"
+              className="mt-1 mb-2 px-2 py-1"
             />
             {fields.length < RECIPE.PREPARATION_STEPS.MAX && 
             <Button

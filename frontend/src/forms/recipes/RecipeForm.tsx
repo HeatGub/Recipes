@@ -172,7 +172,8 @@ export function RecipeForm() {
         })),
       })),
     }
-    console.log(formattedData)
+    // console.log(formattedData)
+    console.log(JSON.stringify(formattedData, null, 2))
     // console.log(...formattedData.ingredients[0].items)
     // console.log(formattedData.details.servings)
     // console.log(formattedData.ingredients[0].items[0].amount)
@@ -180,7 +181,7 @@ export function RecipeForm() {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(handleApiSubmit(onSubmit))} className="mx-auto max-w-5xl">
+      <form noValidate onSubmit={handleSubmit(handleApiSubmit(onSubmit))} className="mx-auto max-w-5xl">
         <RecipeLayout
           header={
             <div className="space-y-4 text-center">
@@ -188,15 +189,16 @@ export function RecipeForm() {
                 <div className="space-y-3 text-center">
                   <FormTextArea
                     {...register("title")}
+                    required
                     placeholder="Recipe Title"
                     error={errors.title}
-                    className="text-center text-3xl font-bold outline-none"
+                    className="text-center text-3xl font-bold"
                   />
                   <FormTextArea
                     {...register("description")}
                     placeholder="Recipe description"
                     error={errors.description}
-                    className="w-full resize-none bg-transparent text-center text-(--text-secondary) outline-none"
+                    className="text-center text-(--text-secondary)"
                   />
                 </div>
               </div>
