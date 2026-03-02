@@ -1,13 +1,14 @@
 import type { FieldError } from "react-hook-form"
-import { FormFieldError } from "@/forms/core/FormErrors"
 import { useFormContext, useWatch } from "react-hook-form"
+import { InputError } from "@/components/ui/InputError"
 
 interface TextAreaProps extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "name"> {
   name: string
   error?: FieldError
+  attachError?: boolean
 }
 
-export function FormTextArea({ error, className, required, name, ...props }: TextAreaProps) {
+export function FormTextArea({ error, className, required, name, attachError=true, ...props }: TextAreaProps) {
   const { control } = useFormContext()
 
   const value = useWatch({
@@ -35,10 +36,8 @@ export function FormTextArea({ error, className, required, name, ...props }: Tex
         } ${className} `}
       />
 
-      {error && (
-        <p className="mt-1 flex justify-center text-center text-xs text-(--text-danger)">
-          <FormFieldError error={error} />
-        </p>
+      {attachError && error && (
+        <InputError error={error} className="mt-1"/>
       )}
     </div>
   )

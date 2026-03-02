@@ -1,15 +1,16 @@
 import type { FieldError } from "react-hook-form"
 import { useFormContext, useWatch } from "react-hook-form"
-import { FormFieldError } from "@/forms/core/FormErrors"
+import { InputError } from "@/components/ui/InputError"
 
 interface FormInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "name"> {
   name: string
   error?: FieldError
   label?: string
   wrapperClassName?: string
+  attachError?: boolean
 }
 
-export function FormInput({ name, error, wrapperClassName = "", className = "", required, ...props }: FormInputProps) {
+export function FormInput({ name, error, wrapperClassName = "", className = "", required, attachError=true, ...props }: FormInputProps) {
   const { control } = useFormContext()
 
   const value = useWatch({
@@ -33,10 +34,8 @@ export function FormInput({ name, error, wrapperClassName = "", className = "", 
         } ${className} `}
       />
 
-      {error && (
-        <p className="flex justify-center text-center text-xs text-(--text-danger)">
-          <FormFieldError error={error} />
-        </p>
+      {attachError && error && (
+        <InputError error={error} />
       )}
     </div>
   )

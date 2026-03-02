@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/Button"
 import { Trash2, Plus, ArrowDown, ArrowUp, CirclePlus } from "lucide-react"
 import { FormFieldError } from "@/forms/core/FormErrors"
 import { RECIPE } from "@/forms/core/constants"
+import { InputError } from "@/components/ui/InputError"
 
 interface Props {
   control: Control<RecipeFormData>
@@ -25,9 +26,9 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
   return (
     <section>
       <h2 className="text-xl font-semibold text-(--text-secondary)">Preparation</h2>
-      <div className="my-2 space-y-4">
+      <div className="mb-2 space-y-4">
         {fields.map((field, index) => (
-          <div key={field.id} className="relative border-b border-(--border-muted)! pt-4 pb-4">
+          <div key={field.id} className="relative border-b border-(--border-muted)! pt-2 pb-6">
             <div className="absolute -bottom-2.5">
               {/* Right: buttons */}
               {fields.length > 1 && 
@@ -91,8 +92,12 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
               placeholder="Step description"
               error={errors?.[index]?.description}
               rows={1}
-              className="mt-1 mb-2 px-2 py-1"
+              className="mt-1 px-2 py-1"
+              attachError={false}
             />
+
+            <div><InputError className="mt-1 -mb-4" error={errors?.[index]?.description}/></div>
+            
             {fields.length < RECIPE.PREPARATION_STEPS.MAX && 
             <Button
               type="button"
