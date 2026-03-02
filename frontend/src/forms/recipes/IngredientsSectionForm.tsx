@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button"
 import { CirclePlus } from "lucide-react"
 import { FormFieldError } from "@/forms/core/FormErrors"
 import { RECIPE } from "@/forms/core/constants"
+import { useTranslation } from "react-i18next"
 
 interface Props {
   control: Control<RecipeFormData>
@@ -20,9 +21,11 @@ export function IngredientsSectionForm({ control, register, errors }: Props) {
     name: "ingredients",
   })
 
+  const { t } = useTranslation()
+
   return (
     <section className="mx-2 my-4 rounded-2xl bg-(--bg-secondary) px-2 py-4 sm:mx-4 md:mx-8 md:px-4 lg:mx-16">
-      <h2 className="border-b pb-1 text-center text-xl font-semibold text-(--text-secondary)">Ingredients</h2>
+      <h2 className="border-b pb-1 text-center text-xl font-semibold text-(--text-secondary)">{t("recipe.ingredients.title")}</h2>
 
       {fields.map((category, catIndex) => (
         <IngredientCategoryFields
@@ -44,6 +47,7 @@ export function IngredientsSectionForm({ control, register, errors }: Props) {
       {fields.length < RECIPE.INGREDIENTS.CATEGORY.MAX && (
         <Button
           type="button"
+          title={t("recipe.button.title.category.add")}
           variant="ghost"
           onClick={() => {
             append({
@@ -54,7 +58,7 @@ export function IngredientsSectionForm({ control, register, errors }: Props) {
           className="items-left mt-2 w-full bg-transparent p-0! text-(--text-muted)! hover:text-(--accent-secondary)!"
         >
           <div className="flex items-center gap-2 pl-2">
-            <CirclePlus className="h-5 w-5" /> Category
+            <CirclePlus className="h-5 w-5" /> {t("recipe.ingredients.category")}
           </div>
         </Button>
       )}

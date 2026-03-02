@@ -10,6 +10,7 @@ import { Trash2, Plus, ArrowDown, ArrowUp, CirclePlus } from "lucide-react"
 import { FormFieldError } from "@/forms/core/FormErrors"
 import { RECIPE } from "@/forms/core/constants"
 import { InputError } from "@/components/ui/InputError"
+import { useTranslation } from "react-i18next"
 
 interface Props {
   control: Control<RecipeFormData>
@@ -23,9 +24,11 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
     name: "steps",
   })
 
+  const { t } = useTranslation()
+
   return (
     <section>
-      <h2 className="text-xl font-semibold text-(--text-secondary)">Preparation</h2>
+      <h2 className="text-xl font-semibold text-(--text-secondary)">{t("recipe.preparation.title")}</h2>
       <div className="mb-2 space-y-4">
         {fields.map((field, index) => (
           <div key={field.id} className="group relative border-b border-(--border-muted)! pt-2 pb-6">
@@ -33,6 +36,7 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
               <div className="pointer-events-none absolute -bottom-2.5 flex opacity-0 transition-opacity duration-150 group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100">
                 <Button
                   type="button"
+                  title={t("recipe.button.title.preparation_step.down")}
                   variant="ghost"
                   onClick={() => move(index, index + 1)}
                   disabled={index === fields.length - 1}
@@ -43,6 +47,7 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
 
                 <Button
                   type="button"
+                  title={t("recipe.button.title.preparation_step.up")}
                   variant="ghost"
                   onClick={() => move(index, index - 1)}
                   disabled={index === 0}
@@ -52,7 +57,7 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
                 </Button>
 
                 <DoubleClickButton
-                  title="Remove step"
+                  title={t("recipe.button.title.preparation_step.delete")}
                   firstClickContent={
                     <div className="rounded-full border border-(--border-muted)! bg-(--bg-primary) px-2! py-0!">
                       <Trash2 className="h-4 w-4 text-(--text-muted) hover:text-(--text-warning) hover:drop-shadow-[0_0_4px_var(--text-warning)]" />
@@ -75,7 +80,7 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
               <FormInput
                 {...register(`steps.${index}.title`)}
                 error={errors?.[index]?.title}
-                placeholder="Step title"
+                placeholder={t("recipe.preparation.step.title")}
                 className="w-full p-1 text-lg font-medium text-(--accent-primary)"
                 wrapperClassName="flex-1 min-w-0"
               />
@@ -85,7 +90,7 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
             <FormTextArea
               {...register(`steps.${index}.description`)}
               required
-              placeholder="Step description"
+              placeholder={t("recipe.preparation.step.description")}
               error={errors?.[index]?.description}
               rows={1}
               className="mt-1 px-2 py-1"
@@ -99,7 +104,7 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
             {fields.length < RECIPE.PREPARATION_STEPS.MAX && (
               <Button
                 type="button"
-                title="Add step below"
+                title={t("recipe.button.title.preparation_step.add")}
                 variant="ghost"
                 onClick={() => insert(index + 1, { title: "", description: "" })}
                 className="absolute right-0 -bottom-2.5 rounded-full border border-(--border-muted)! px-2! py-0! text-(--text-muted)! hover:scale-110 hover:bg-(--bg-secondary) hover:text-(--accent-secondary)! active:scale-95"
@@ -123,7 +128,7 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
           className="flex items-center justify-center gap-2 rounded-full text-sm text-(--accent-primary) hover:bg-(--accent-secondary)"
         >
           <CirclePlus />
-          Step
+          {t("recipe.button.title.preparation_step.add")}
         </Button>
       )}
 

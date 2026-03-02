@@ -8,6 +8,8 @@ import { CirclePlus, ArrowDown, ArrowUp } from "lucide-react"
 import { FormFieldError } from "@/forms/core/FormErrors"
 import { RECIPE } from "@/forms/core/constants"
 import { InputError } from "@/components/ui/InputError"
+import { useTranslation } from "react-i18next"
+
 
 interface CategoryProps {
   control: Control<RecipeFormData>
@@ -37,13 +39,15 @@ export function IngredientCategoryFields({
     name: `ingredients.${catIndex}.items`,
   })
 
+  const { t } = useTranslation()
+
   return (
     <div className="mt-4 space-y-2">
       {/* Category title */}
       <div className="flex w-full gap-2">
         <FormInput
           {...register(`ingredients.${catIndex}.title`)}
-          placeholder="Category title"
+          placeholder={`${t("recipe.ingredients.category")} ${catIndex + 1}`}
           wrapperClassName="flex-1"
           error={errors?.title}
         />
@@ -51,6 +55,7 @@ export function IngredientCategoryFields({
           <>
             <Button
               type="button"
+              title={t("recipe.button.title.category.down")}
               variant="ghost"
               onClick={onMoveDown}
               disabled={isLast}
@@ -61,6 +66,7 @@ export function IngredientCategoryFields({
 
             <Button
               type="button"
+              title={t("recipe.button.title.category.up")}
               variant="ghost"
               onClick={onMoveUp}
               disabled={isFirst}
@@ -69,7 +75,7 @@ export function IngredientCategoryFields({
               <ArrowUp className="h-4 w-4" />
             </Button>
 
-            <DoubleClickButton onClick={onRemoveCategory} />
+            <DoubleClickButton title={t("recipe.button.title.category.delete")} onClick={onRemoveCategory} />
           </>
         )}
       </div>
@@ -88,9 +94,9 @@ export function IngredientCategoryFields({
                 required
                 type="number"
                 step="any"
-                placeholder="amount"
+                placeholder={t("recipe.ingredients.items.amount")}
                 className="text-center"
-                wrapperClassName="min-w-15 bg-(--bg-primary) rounded-l px-0.5 py-0.75"
+                wrapperClassName="min-w-17 bg-(--bg-primary) rounded-l px-0.5 py-0.75"
                 error={itemErrors?.amount}
                 attachError={false}
               />
@@ -98,7 +104,7 @@ export function IngredientCategoryFields({
               <FormInput
                 {...register(`ingredients.${catIndex}.items.${itemIndex}.unit`)}
                 required
-                placeholder="unit"
+                placeholder={t("recipe.ingredients.items.unit")}
                 wrapperClassName="min-w-20 bg-(--bg-primary) px-0.5 py-0.75"
                 className="text-center italic"
                 error={itemErrors?.unit}
@@ -108,16 +114,16 @@ export function IngredientCategoryFields({
               <FormInput
                 {...register(`ingredients.${catIndex}.items.${itemIndex}.name`)}
                 required
-                placeholder="ingredient"
+                placeholder={t("recipe.ingredients.items.name")}
                 className="text-center font-medium"
-                wrapperClassName="bg-(--bg-primary) px-0.5 py-0.75"
+                wrapperClassName="bg-(--bg-primary) px-0.5 py-0.75 min-w-20"
                 error={itemErrors?.name}
                 attachError={false}
               />
 
               <FormInput
                 {...register(`ingredients.${catIndex}.items.${itemIndex}.notes`)}
-                placeholder="notes"
+                placeholder={t("recipe.ingredients.items.notes")}
                 className="p-0.5 text-xs font-semibold text-(--text-secondary) italic"
                 wrapperClassName="bg-(--bg-primary) px-0.5 py-0.75"
                 error={itemErrors?.notes}
@@ -126,18 +132,10 @@ export function IngredientCategoryFields({
 
               {/* action column */}
               <div className="flex items-center justify-center px-0.5 gap-x-1 bg-(--bg-primary) rounded-r">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  onClick={() => move(itemIndex, itemIndex - 1)}
-                  disabled={itemIndex === 0}
-                  className="text-xs text-(--text-muted) disabled:opacity-40"
-                >
-                  ↑
-                </Button>
 
                 <Button
                   type="button"
+                  title={t("recipe.button.title.ingredient.down")}
                   variant="ghost"
                   onClick={() => move(itemIndex, itemIndex + 1)}
                   disabled={itemIndex === fields.length - 1}
@@ -146,9 +144,21 @@ export function IngredientCategoryFields({
                   ↓
                 </Button>
 
+                <Button
+                  type="button"
+                  title={t("recipe.button.title.ingredient.up")}
+                  variant="ghost"
+                  onClick={() => move(itemIndex, itemIndex - 1)}
+                  disabled={itemIndex === 0}
+                  className="text-xs text-(--text-muted) disabled:opacity-40"
+                >
+                  ↑
+                </Button>
+
                 {fields.length > 1 && (
                   <Button
                     type="button"
+                    title={t("recipe.button.title.ingredient.delete")}
                     variant="ghost"
                     onClick={() => remove(itemIndex)}
                     className="text-xs hover:text-(--text-danger)!"
@@ -175,6 +185,7 @@ export function IngredientCategoryFields({
       {fields.length < RECIPE.INGREDIENTS.ITEM.MAX && (
         <Button
           type="button"
+          title={t("recipe.button.title.ingredient.add")}
           variant="ghost"
           onClick={() =>
             append({
@@ -187,7 +198,7 @@ export function IngredientCategoryFields({
           className="flex w-full items-center justify-center -mt-1.25 gap-2 bg-(--bg-primary) text-sm font-light! text-(--text-muted)! hover:text-(--accent-secondary)!"
         >
           <CirclePlus className="h-4 w-4" />
-          Ingredient
+          {t("recipe.ingredients.ingredient")}
         </Button>
       )}
 

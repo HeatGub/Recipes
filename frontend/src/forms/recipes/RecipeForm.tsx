@@ -22,6 +22,7 @@ import {
   maxArrayLength,
 } from "@/forms/core/zodValidators"
 import { RECIPE } from "@/forms/core/constants"
+import { useTranslation } from "react-i18next"
 
 export const ingredientItemSchema = z.object({
   name: z
@@ -123,6 +124,8 @@ export const recipeFormSchema = z.object({
 export type RecipeFormData = z.infer<typeof recipeFormSchema>
 
 export function RecipeForm() {
+  const { t } = useTranslation()
+
   const methods = useFormWithApi<RecipeFormData>({
     resolver: zodResolver(recipeFormSchema) as any, // as any to stop TS complaining about number().optional()
     mode: "onChange",
@@ -190,13 +193,13 @@ export function RecipeForm() {
                   <FormTextArea
                     {...register("title")}
                     required
-                    placeholder="Recipe Title"
+                    placeholder={t("recipe.title")}
                     error={errors.title}
                     className="text-center text-3xl font-bold"
                   />
                   <FormTextArea
                     {...register("description")}
-                    placeholder="Recipe description"
+                    placeholder={t("recipe.description")}
                     error={errors.description}
                     className="text-center text-(--text-secondary)"
                   />
@@ -210,7 +213,7 @@ export function RecipeForm() {
           footer={
             <div className="-mt-2 flex justify-center px-8 pb-8">
               <RichButton type="submit" variant="gradientPrimary" className="w-40">
-                Save recipe
+                {t("recipe.publish_recipe")}
               </RichButton>
             </div>
           }

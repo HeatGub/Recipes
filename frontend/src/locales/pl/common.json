@@ -58,6 +58,53 @@
       }
     }
   },
+  "recipe": {
+    "title": "Tytuł przepisu",
+    "description": "Opis przepisu",
+    "author": "Autor",
+    "servings": "Ilość porcji",
+    "publish_recipe": "Opublikuj przepis",
+    "ingredients": {
+      "title": "Składniki",
+      "category": "Kategoria",
+      "ingredient": "Składnik",
+      "items": {
+        "amount": "ilość",
+        "unit": "jednostka",
+        "name": "składnik",
+        "notes": "notatka"
+      }
+    },
+    "preparation": {
+      "title": "Przygotowanie",
+      "step": {
+        "title": "Tytuł kroku",
+        "description": "Opis kroku"
+      }
+    },
+    "button": {
+      "title": {
+        "category": {
+          "down": "Przenieś kategorię niżej",
+          "up": "Przenieś kategorię wyżej",
+          "add": "Dodaj nową kategorię",
+          "delete": "Usuń kategorię wraz z całą zawartością"
+        },
+        "ingredient": {
+          "down": "Przenieś składnik niżej",
+          "up": "Przenieś składnik wyżej",
+          "add": "Dodaj nowy składnik",
+          "delete": "Usuń składnik"
+        },
+        "preparation_step": {
+          "down": "Przenieś niżej",
+          "up": "Przenieś wyżej",
+          "add": "Dodaj nowy krok",
+          "delete": "Usuń krok wraz z całą zawartością"
+        }
+      }
+    }
+  },
   "notFound": {
     "title": "404 - Strona nie znaleziona",
     "message": "Strona, której szukasz, nie istnieje"
@@ -84,9 +131,9 @@
       "USERNAME_TAKEN": "Ten login jest już zajęty",
       "EMAIL_TAKEN": "Ten e-mail jest już zajęty",
       "PASSWORD_SAME_AS_OLD": "To twoje aktualne hasło",
-      "STRING_MIN" : "≥ {{min}} znaki",
-      "STRING_MAX" : "≤ {{max}} znaków",
-      "FORBIDDEN_CHARACTERS" : "Niedozwolone znaki: {{chars}}",
+      "STRING_MIN": "≥ {{min}} znaki",
+      "STRING_MAX": "≤ {{max}} znaków",
+      "FORBIDDEN_CHARACTERS": "Niedozwolone znaki: {{chars}}",
       "REQUIRED_NUMBER": "Wymagana liczba",
       "REQUIRED_INTEGER": "Wymagana liczba całkowita",
       "NUMBER_MIN": "≥ {{min}}",

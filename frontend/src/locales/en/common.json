@@ -58,6 +58,53 @@
       }
     }
   },
+  "recipe": {
+    "title": "Recipe title",
+    "description": "Recipe description",
+    "author": "Author",
+    "servings": "Number of servings",
+    "publish_recipe": "Publish recipe",
+    "ingredients": {
+      "title": "Ingredients",
+      "category": "Category",
+      "ingredient": "Ingredient",
+      "items": {
+        "amount": "amount",
+        "unit": "unit",
+        "name": "ingredient",
+        "notes": "notes"
+      }
+    },
+    "preparation": {
+      "title": "Preparation",
+      "step": {
+        "title": "Step title",
+        "description": "Step description"
+      }
+    },
+    "button": {
+      "title": {
+        "category": {
+          "down": "Move category down",
+          "up": "Move category up",
+          "add": "Add new category",
+          "delete": "Delete category and all its ingredients"
+        },
+        "ingredient": {
+          "down": "Move ingredient down",
+          "up": "Move ingredient up",
+          "add": "Add new ingredient",
+          "delete": "Delete ingredient"
+        },
+        "preparation_step": {
+          "down": "Move step down",
+          "up": "Move step up",
+          "add": "Add new step",
+          "delete": "Delete step and its content"
+        }
+      }
+    }
+  },
   "notFound": {
     "title": "404 - Page Not Found",
     "message": "The page you are looking for does not exist"
