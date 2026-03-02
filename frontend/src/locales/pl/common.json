@@ -28,7 +28,8 @@
     "password": "Hasło",
     "password_confirm": "Potwierdź Hasło",
     "create_account": "Stwórz Konto",
-    "account_settings": "Ustawienia Konta",
+    "account_settings": "Ustawienia",
+    "config": "Konfiguracja",
     "settings": {
       "change_username": "Zmień Login",
       "change_email": "Zmień Email",

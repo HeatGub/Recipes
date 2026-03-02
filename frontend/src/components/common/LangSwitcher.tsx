@@ -19,7 +19,6 @@ export const LangSwitcher = () => {
         gap-1
         px-2 py-0
         rounded
-        bg-(--bg-secondary)
         text-s
         leading-none
         transition-colors duration-300

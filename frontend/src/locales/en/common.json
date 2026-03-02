@@ -28,7 +28,8 @@
     "password": "Password",
     "password_confirm": "Confirm Password",
     "create_account": "Create Account",
-    "account_settings": "Account Settings",
+    "account_settings": "Settings",
+    "config": "Config",
     "settings": {
       "change_username": "Change Username",
       "change_email": "Change E-mail",
