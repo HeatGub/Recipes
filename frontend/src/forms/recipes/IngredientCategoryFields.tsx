@@ -125,7 +125,7 @@ export function IngredientCategoryFields({
               />
 
               {/* action column */}
-              <div className="flex items-center justify-center gap-x-1 bg-(--bg-primary) rounded-r">
+              <div className="flex items-center justify-center px-0.5 gap-x-1 bg-(--bg-primary) rounded-r">
                 <Button
                   type="button"
                   variant="ghost"

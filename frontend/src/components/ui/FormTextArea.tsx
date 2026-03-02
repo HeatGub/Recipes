@@ -17,7 +17,7 @@ export function FormTextArea({ error, className, required, name, attachError=tru
   })
 
   const isEmpty = value === undefined || value === null || value === ""
-  const showRequiredStyle = required && isEmpty
+  const showRequiredStyle = (required && isEmpty) || error
 
   return (
     <div className="flex min-w-0 flex-1 flex-col">

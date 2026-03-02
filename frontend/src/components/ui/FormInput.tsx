@@ -21,7 +21,7 @@ export function FormInput({ name, error, wrapperClassName = "", className = "", 
   const isEmpty =
     value === undefined || value === null || value === "" || (typeof value === "number" && Number.isNaN(value))
 
-  const showRequiredStyle = required && isEmpty
+  const showRequiredStyle = (required && isEmpty) || error
 
   return (
     <div className={`flex flex-col ${wrapperClassName}`}>
