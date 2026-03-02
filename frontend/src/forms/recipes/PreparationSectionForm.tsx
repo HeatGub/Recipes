@@ -28,11 +28,9 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
       <h2 className="text-xl font-semibold text-(--text-secondary)">Preparation</h2>
       <div className="mb-2 space-y-4">
         {fields.map((field, index) => (
-          <div key={field.id} className="relative border-b border-(--border-muted)! pt-2 pb-6">
-            <div className="absolute -bottom-2.5">
-              {/* Right: buttons */}
-              {fields.length > 1 && 
-              (<div className="flex">
+          <div key={field.id} className="group relative border-b border-(--border-muted)! pt-2 pb-6">
+            {fields.length > 1 && (
+              <div className="pointer-events-none absolute -bottom-2.5 flex opacity-0 transition-opacity duration-150 group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100">
                 <Button
                   type="button"
                   variant="ghost"
@@ -65,16 +63,14 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
                       <Trash2 className="h-4 w-4 text-(--text-danger) drop-shadow-[0_0_4px_var(--text-danger)]" />
                     </div>
                   }
-                  onClick={() => {
-                    remove(index)
-                  }}
+                  onClick={() => remove(index)}
                 />
-              </div>)}
-            </div>
+              </div>
+            )}
 
             {/* Title Row */}
-            <div className="flex items-top gap-2">
-              <StepIndicator className="mt-1.5" >{index + 1}</StepIndicator>
+            <div className="items-top flex gap-2">
+              <StepIndicator className="mt-1.5">{index + 1}</StepIndicator>
 
               <FormInput
                 {...register(`steps.${index}.title`)}
@@ -96,19 +92,21 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
               attachError={false}
             />
 
-            <div><InputError className="mt-1 -mb-4" error={errors?.[index]?.description}/></div>
-            
-            {fields.length < RECIPE.PREPARATION_STEPS.MAX && 
-            <Button
-              type="button"
-              title="Add step below"
-              variant="ghost"
-              onClick={() => insert(index + 1, { title: "", description: "" })}
-              className="absolute right-0 -bottom-2.5 rounded-full border border-(--border-muted)! px-2! py-0! text-(--text-muted)! hover:scale-110 hover:bg-(--bg-secondary) hover:text-(--accent-secondary)! active:scale-95"
-            >
-              <Plus className="h-4 w-4" />
-            </Button>
-}
+            <div>
+              <InputError className="mt-1 -mb-4" error={errors?.[index]?.description} />
+            </div>
+
+            {fields.length < RECIPE.PREPARATION_STEPS.MAX && (
+              <Button
+                type="button"
+                title="Add step below"
+                variant="ghost"
+                onClick={() => insert(index + 1, { title: "", description: "" })}
+                className="absolute right-0 -bottom-2.5 rounded-full border border-(--border-muted)! px-2! py-0! text-(--text-muted)! hover:scale-110 hover:bg-(--bg-secondary) hover:text-(--accent-secondary)! active:scale-95"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            )}
           </div>
         ))}
       </div>
