@@ -2,7 +2,7 @@ import type { IngredientCategory } from "@/types/recipe"
 
 export function RecipeIngredientsSection({ ingredients }: { ingredients: IngredientCategory[] }) {
   return (
-    <section className="rounded-2xl bg-(--bg-secondary) p-3 outline-28 outline-(--bg-primary)">
+    <section className="rounded-2xl bg-(--bg-secondary) p-3 outline-28 outline-(--bg-primary) mb-2 sm:mb-0">
       <h2 className="border-b border-(--border-muted)! pb-1 text-center text-xl font-semibold">Ingredients</h2>
 
       <table className="w-full border-separate border-spacing-y-1 text-sm">

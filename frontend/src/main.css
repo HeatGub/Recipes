@@ -3,7 +3,7 @@
 /* Light theme variables */
 :root {
   --bg-primary: #d6d4d4;
-  --bg-secondary: #c7c7c7;
+  --bg-secondary: #cacaca;
   --bg-tertiary: #a8a8a8;
   --bg-inverted: #2d2d2e;
   --bg-warning: #ffb70f;
@@ -34,7 +34,7 @@
   --bg-warning: #ecab13;
   --bg-danger: #c21007;
   --text-primary: #f0f0f0;
-  --text-secondary: #cecece;
+  --text-secondary: #dddddd;
   --text-inverted: #111827;
   --text-muted: #585858;
   --text-faded: #252525;

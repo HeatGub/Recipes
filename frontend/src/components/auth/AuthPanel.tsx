@@ -7,7 +7,7 @@ import { RichButton } from "../ui/RichButton"
 import { useAuthPanel } from "../../auth/AuthPanelContext"
 import { useNavigate } from "react-router-dom"
 import { ROUTES } from "@/router"
-import { UserPlus, LogIn, LogOut, Settings } from "lucide-react"
+import { UserPlus, LogIn, LogOut, UserRoundCog } from "lucide-react"
 
 export function AuthPanel() {
   const { login, logout, register, user } = useAuth()
@@ -29,7 +29,7 @@ export function AuthPanel() {
 
   const { t } = useTranslation()
 
-  const panelStyles: Record<"login" | "register" | "logout" | "settings", { selected: string; hover: string }> = {
+  const panelStyles: Record<"login" | "register" | "logout" | "account_settings", { selected: string; hover: string }> = {
     login: {
       selected: "bg-(--accent-primary) text-(--text-inverted) scale-110  z-2",
       hover: "hover:bg-(--accent-primary) hover:text-(--text-inverted) bg-(--bg-secondary) hover:scale-110",
@@ -42,20 +42,20 @@ export function AuthPanel() {
       selected: "bg-(--bg-warning) text-(--text-inverted) scale-110  z-2",
       hover: "hover:bg-(--bg-warning) hover:text-(--text-inverted) bg-(--bg-secondary) hover:scale-110",
     },
-    settings: {
+    account_settings: {
       selected: "bg-(--accent-primary) text-(--text-inverted) scale-110  z-2",
       hover: "hover:bg-(--accent-primary) hover:text-(--text-inverted) bg-(--bg-secondary) hover:scale-110",
     },
   }
 
-  const getButtonClasses = (panel: "login" | "register" | "logout" | "settings") =>
+  const getButtonClasses = (panel: "login" | "register" | "logout" | "account_settings") =>
     clsx(
-      "flex cursor-pointer items-center gap-1 pl-2 pr-6 h-6 text-s leading-none border-1 rounded-full transition w-fit whitespace-nowrap",
+      "flex cursor-pointer items-center gap-1 pl-2 pr-6 h-6 text-s leading-none border-1 border-(--border-muted)! rounded-full transition w-fit whitespace-nowrap",
       currentPanel === panel ? panelStyles[panel].selected : panelStyles[panel].hover
     )
 
   return (
-    <div className="relative inline-flex items-center ml-1">
+    <div className="relative inline-flex items-center mx-1">
       <div className="mr-5.5 flex h-10 flex-col items-end justify-center">
         {!isLoggedIn && (
           <>
@@ -77,8 +77,8 @@ export function AuthPanel() {
               <LogOut className="h-4 w-4" />
               {t("account.log_out")}
             </button>
-            <button className={getButtonClasses("settings")} onClick={() => togglePanel("account_settings")}>
-              <Settings className="h-4 w-4" />
+            <button className={getButtonClasses("account_settings")} onClick={() => togglePanel("account_settings")}>
+              <UserRoundCog className="h-4 w-4" />
               {t("account.config")}
             </button>
           </>

@@ -19,7 +19,7 @@ export function RecipeLayout({ header, details, ingredients, preparation, footer
         </header>
 
         <div className="px-2 min-[420px]:px-4 sm:px-8 lg:px-16 py-4 sm:py-8">
-          <div className={`w-full float-left mr-8 mb-4 sm:mb-4 ${variant === "view" ? "md:w-85" : ""}`}>
+          <div className={`w-full float-left mr-8 mb-3 sm:mb-8 ${variant === "view" ? "md:w-85" : ""}`}>
             {ingredients}
           </div>
 

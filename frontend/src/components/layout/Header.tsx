@@ -9,7 +9,7 @@ import { ChevronRight, ChevronLeft, PanelLeft } from "lucide-react"
 export function Header({ sidebarOpen, onToggleSidebar }: { sidebarOpen: boolean; onToggleSidebar: () => void }) {
   const { t } = useTranslation()
   return (
-    <header className="relative flex items-center border-b border-(--border-muted)! bg-(--bg-primary) px-2 py-1.5 shadow-[0_2px_6px_var(--shadow-color)] md:sticky md:top-0">
+    <header className="relative flex items-center border-b border-(--border-muted)! bg-(--bg-primary) px-0.5 sm:px-2 md:px-3 py-1.5 shadow-[0_1px_4px_var(--shadow-color)] md:sticky md:top-0">
       {/* Left: Sidebar toggle */}
       <Button
         variant="ghost"
