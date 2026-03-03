@@ -1,10 +1,12 @@
 import type { Step } from "@/types/recipe"
 import { StepIndicator } from "@/components/common/StepIndicator"
+import { useTranslation } from "react-i18next"
 
 export function RecipePreparationSection({ steps }: { steps: Step[] }) {
+  const { t } = useTranslation()
   return (
     <section>
-      <h2 className="text-xl font-semibold">Preparation</h2>
+      <h2 className="text-xl font-semibold">{t("recipe.ingredients.title")}</h2>
 
       <ol className="space-y-2">
         {steps.map((step, index) => (

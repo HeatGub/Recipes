@@ -64,6 +64,8 @@
     "description": "Opis przepisu",
     "author": "Autor",
     "servings": "Ilość porcji",
+    "rating": "Wyśmienitość",
+    "last_update": "Aktualizacja",
     "publish_recipe": "Opublikuj przepis",
     "ingredients": {
       "title": "Składniki",

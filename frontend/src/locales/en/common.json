@@ -63,7 +63,9 @@
     "title": "Recipe title",
     "description": "Recipe description",
     "author": "Author",
-    "servings": "Number of servings",
+    "servings": "Servings",
+    "rating": "Rating",
+    "last_update": "Updated",
     "publish_recipe": "Publish recipe",
     "ingredients": {
       "title": "Ingredients",

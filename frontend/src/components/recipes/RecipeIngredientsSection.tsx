@@ -1,9 +1,11 @@
 import type { IngredientCategory } from "@/types/recipe"
+import { useTranslation } from "react-i18next"
 
 export function RecipeIngredientsSection({ ingredients }: { ingredients: IngredientCategory[] }) {
+  const { t } = useTranslation()
   return (
-    <section className="rounded-2xl bg-(--bg-secondary) p-3 outline-28 outline-(--bg-primary) mb-2 sm:mb-0">
-      <h2 className="border-b border-(--border-muted)! pb-1 text-center text-xl font-semibold">Ingredients</h2>
+    <section className="mb-2 rounded-2xl bg-(--bg-secondary) p-3 outline-28 outline-(--bg-primary) sm:mb-0">
+      <h2 className="border-b border-(--border-muted)! pb-1 text-center text-xl font-semibold">{t("recipe.ingredients.title")}</h2>
 
       <table className="w-full border-separate border-spacing-y-1 text-sm">
         {ingredients.map((category) => (
