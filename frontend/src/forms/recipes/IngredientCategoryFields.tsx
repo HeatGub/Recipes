@@ -81,7 +81,8 @@ export function IngredientCategoryFields({
       </div>
 
       {/* Ingredient items */}
-      <div className="grid w-full grid-cols-[min-content_min-content_1fr_1fr_min-content] text-sm gap-y-0.75">
+      <div className="grid w-full text-sm gap-y-0.75 grid-cols-[minmax(2.5rem,0.8fr)_minmax(2.5rem,1fr)_minmax(4.5rem,1.8fr)_2fr_min-content]">
+
         {fields.map((item, itemIndex) => {
           const itemErrors = errors?.items?.[itemIndex]
 
@@ -96,7 +97,7 @@ export function IngredientCategoryFields({
                 step="any"
                 placeholder={t("recipe.ingredients.items.amount")}
                 className="text-center"
-                wrapperClassName="min-w-17 bg-(--bg-primary) rounded-l px-0.5 py-0.75"
+                wrapperClassName="bg-(--bg-primary) rounded-l px-0.5 py-0.75"
                 error={itemErrors?.amount}
                 attachError={false}
               />
@@ -105,7 +106,7 @@ export function IngredientCategoryFields({
                 {...register(`ingredients.${catIndex}.items.${itemIndex}.unit`)}
                 required
                 placeholder={t("recipe.ingredients.items.unit")}
-                wrapperClassName="min-w-20 bg-(--bg-primary) px-0.5 py-0.75"
+                wrapperClassName="bg-(--bg-primary) px-0.5 py-0.75"
                 className="text-center italic"
                 error={itemErrors?.unit}
                 attachError={false}
@@ -116,7 +117,7 @@ export function IngredientCategoryFields({
                 required
                 placeholder={t("recipe.ingredients.items.name")}
                 className="text-center font-medium"
-                wrapperClassName="bg-(--bg-primary) px-0.5 py-0.75 min-w-20"
+                wrapperClassName="bg-(--bg-primary) px-0.5 py-0.75"
                 error={itemErrors?.name}
                 attachError={false}
               />
@@ -124,14 +125,14 @@ export function IngredientCategoryFields({
               <FormInput
                 {...register(`ingredients.${catIndex}.items.${itemIndex}.notes`)}
                 placeholder={t("recipe.ingredients.items.notes")}
-                className="p-0.5 text-xs font-semibold text-(--text-secondary) italic"
+                className="p-0.5 text-xs font-semibold text-(--text-secondary) italic min-w-6"
                 wrapperClassName="bg-(--bg-primary) px-0.5 py-0.75"
                 error={itemErrors?.notes}
                 attachError={false}
               />
 
               {/* action column */}
-              <div className="flex items-center justify-center px-0.5 gap-x-1 bg-(--bg-primary) rounded-r">
+              <div className="flex items-center justify-center px-0.5 sm:gap-x-1 bg-(--bg-primary) rounded-r">
 
                 <Button
                   type="button"
@@ -139,7 +140,7 @@ export function IngredientCategoryFields({
                   variant="ghost"
                   onClick={() => move(itemIndex, itemIndex + 1)}
                   disabled={itemIndex === fields.length - 1}
-                  className="text-xs text-(--text-muted) disabled:opacity-40"
+                  className="text-xs text-(--text-muted) disabled:opacity-40 px-2! min-[360px]:px-3!"
                 >
                   ↓
                 </Button>
@@ -150,7 +151,7 @@ export function IngredientCategoryFields({
                   variant="ghost"
                   onClick={() => move(itemIndex, itemIndex - 1)}
                   disabled={itemIndex === 0}
-                  className="text-xs text-(--text-muted) disabled:opacity-40"
+                  className="text-xs text-(--text-muted) disabled:opacity-40 px-2! min-[360px]:px-3!"
                 >
                   ↑
                 </Button>
@@ -161,7 +162,7 @@ export function IngredientCategoryFields({
                     title={t("recipe.button.title.ingredient.delete")}
                     variant="ghost"
                     onClick={() => remove(itemIndex)}
-                    className="text-xs hover:text-(--text-danger)!"
+                    className="text-xs hover:text-(--text-danger)! px-2! min-[360px]:px-3!"
                   >
                     ✕
                   </Button>
@@ -169,7 +170,7 @@ export function IngredientCategoryFields({
               </div>
 
               {/* Errors row*/}
-              <div className="contents text-center">
+              <div className="contents text-center break-all">
                 <div><InputError className="-mt-0.5" error={itemErrors?.amount}/></div>
                 <div><InputError className="-mt-0.5" error={itemErrors?.unit}/></div>
                 <div><InputError className="-mt-0.5" error={itemErrors?.name}/></div>

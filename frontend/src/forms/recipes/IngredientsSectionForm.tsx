@@ -24,7 +24,7 @@ export function IngredientsSectionForm({ control, register, errors }: Props) {
   const { t } = useTranslation()
 
   return (
-    <section className="mx-2 my-4 rounded-2xl bg-(--bg-secondary) px-2 py-4 sm:mx-4 md:mx-8 md:px-4 lg:mx-16">
+    <section className="rounded-2xl bg-(--bg-secondary) px-1 md:px-4 py-2 sm:py-4 sm:mx-2 md:mx-8 lg:mx-16 mb-2 sm:mb-0 sm:my-4">
       <h2 className="border-b pb-1 text-center text-xl font-semibold text-(--text-secondary)">{t("recipe.ingredients.title")}</h2>
 
       {fields.map((category, catIndex) => (

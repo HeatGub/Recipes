@@ -64,7 +64,7 @@ export function AccountSettings() {
 
   return (
     <div className="mx-auto max-w-5xl">
-      <ProfileHeader />
+      <ProfileHeader/>
       <div className="mb-3 flex w-full flex-col gap-2 border-b pb-3 md:flex-row md:flex-wrap">
         {tabs.map((tab) => (
           <button

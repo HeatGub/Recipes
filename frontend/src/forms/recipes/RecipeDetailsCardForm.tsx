@@ -34,7 +34,7 @@ export function RecipeDetailsCardForm({ register, errors }: Props) {
       </div>
 
       <div className="flex flex-1 flex-col items-center space-y-1">
-        <p className="text-sm text-(--text-muted)">{t("recipe.servings")}</p>
+        <p className="text-sm text-(--text-muted) text-center">{t("recipe.servings")}</p>
         <FormNumberInput
           required
           value={servings}
@@ -43,7 +43,7 @@ export function RecipeDetailsCardForm({ register, errors }: Props) {
           max={RECIPE.SERVINGS.MAX}
           step={1}
           error={errors?.servings}
-          className="text-center max-w-30"
+          className="text-center max-w-20 md:max-w-30"
         />
       </div>
     </div>

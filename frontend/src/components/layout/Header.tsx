@@ -31,12 +31,12 @@ export function Header({ sidebarOpen, onToggleSidebar }: { sidebarOpen: boolean;
       </Button>
 
       {/* Title */}
-      <h1 className="flex-1 truncate text-center text-xl font-bold lg:absolute lg:top-1/2 lg:left-1/2 lg:max-w-[calc(100%-8rem)] lg:-translate-x-1/2 lg:-translate-y-1/2">
+      <h1 className="hidden min-[460px]:block flex-1 truncate text-center text-xl font-bold md:absolute md:top-1/2 md:left-1/2 md:max-w-[calc(100%-8rem)] md:-translate-x-1/2 md:-translate-y-1/2">
         {t("header.title")}
       </h1>
 
       {/* Right controls */}
-      <div className="z-10 ml-auto flex items-center gap-2 md:gap-3 lg:gap-4">
+      <div className="z-10 ml-auto flex items-center gap-2 sm:gap-2 md:gap-3 lg:gap-4">
         <LangSwitcher />
         <ThemeToggle />
         <AuthPanel />

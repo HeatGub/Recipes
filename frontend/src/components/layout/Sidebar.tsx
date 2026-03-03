@@ -14,11 +14,11 @@ export function Sidebar({ sidebarOpen }: SidebarProps) {
   const { isAuthenticated } = useAuth()
 
   const SECTIONS: { path: string; label: string; icon: React.ReactNode; visible: boolean }[] = [
-    { path: ROUTES.home, label: t("sidebar.home"), icon: <HomeIcon className="h-6 w-6" />, visible: true },
+    { path: ROUTES.home, label: t("sidebar.home"), icon: <HomeIcon className="h-6 w-6 shrink-0" />, visible: true },
     {
       path: ROUTES.accountSettings,
       label: t("sidebar.account_settings"),
-      icon: <UserRoundCog className="h-6 w-6" />,
+      icon: <UserRoundCog className="h-6 w-6 shrink-0" />,
       visible: isAuthenticated,
     },
   ]

@@ -41,7 +41,7 @@ export function AppLayout() {
             sidebarOpen={sidebarOpen}
             onToggleSidebar={() => setSidebarOpen((v) => !v)}
           />
-          <main className="overflow-y-hidden p-4 md:p-6 bg-(--bg-primary)">
+          <main className="overflow-y-hidden p-1 sm:p-4 md:p-6 bg-(--bg-primary)">
             <Outlet />
           </main>
         </div>

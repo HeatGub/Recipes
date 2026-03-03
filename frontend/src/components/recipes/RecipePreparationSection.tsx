@@ -8,7 +8,7 @@ export function RecipePreparationSection({ steps }: { steps: Step[] }) {
 
       <ol className="space-y-2">
         {steps.map((step, index) => (
-          <li key={step.position} className="rounded-br-2xl border-b border-(--border-muted)! py-6 pr-6">
+          <li key={step.position} className="rounded-br-2xl border-b border-(--border-muted)! px-2 sm:px-0 py-3 sm:py-4 lg:py-6">
             <StepIndicator>{index + 1}</StepIndicator>
             <span className="text-lg ml-3">
               {step.title && <span className="mr-3 text-lg text-(--accent-primary)">{step.title}</span>}

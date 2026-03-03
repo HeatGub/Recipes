@@ -10,7 +10,7 @@ export function ProfileHeader() {
   const avatarLetter = isLoggedIn ? user?.username.charAt(0) : "?"
 
   return (
-    <div className="pl-6 flex h-16 mb-8 w-full rounded bg-linear-to-r from-(--accent-primary) to-(--accent-secondary)">
+    <div className="mt-3 sm:mt-0 pl-3 sm:pl-6 flex h-16 mb-8 w-full rounded bg-linear-to-r from-(--accent-primary) to-(--accent-secondary)">
       <div
         className={clsx(
           "flex h-20 w-20 items-center justify-center rounded-full text-5xl font-semibold select-none",
