@@ -6,7 +6,7 @@ export function RecipePreparationSection({ steps }: { steps: Step[] }) {
   const { t } = useTranslation()
   return (
     <section>
-      <h2 className="text-xl font-semibold">{t("recipe.ingredients.title")}</h2>
+      <h2 className="text-xl font-semibold">{t("recipe.preparation.title")}</h2>
 
       <ol className="space-y-2">
         {steps.map((step, index) => (
