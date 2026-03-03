@@ -31,19 +31,19 @@ export function AuthPanel() {
 
   const panelStyles: Record<"login" | "register" | "logout" | "settings", { selected: string; hover: string }> = {
     login: {
-      selected: "bg-(--accent-primary) text-(--text-inverted) hover:scale-110",
+      selected: "bg-(--accent-primary) text-(--text-inverted) scale-110  z-2",
       hover: "hover:bg-(--accent-primary) hover:text-(--text-inverted) bg-(--bg-secondary) hover:scale-110",
     },
     register: {
-      selected: "bg-(--accent-secondary) text-(--text-inverted) hover:scale-110",
+      selected: "bg-(--accent-secondary) text-(--text-inverted) scale-110  z-2",
       hover: "hover:bg-(--accent-secondary) hover:text-(--text-inverted) bg-(--bg-secondary) hover:scale-110",
     },
     logout: {
-      selected: "bg-(--bg-warning) text-(--text-inverted) hover:scale-110",
+      selected: "bg-(--bg-warning) text-(--text-inverted) scale-110  z-2",
       hover: "hover:bg-(--bg-warning) hover:text-(--text-inverted) bg-(--bg-secondary) hover:scale-110",
     },
     settings: {
-      selected: "bg-(--accent-primary) text-(--text-inverted) hover:scale-110",
+      selected: "bg-(--accent-primary) text-(--text-inverted) scale-110  z-2",
       hover: "hover:bg-(--accent-primary) hover:text-(--text-inverted) bg-(--bg-secondary) hover:scale-110",
     },
   }

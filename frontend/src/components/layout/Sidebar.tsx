@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next"
 import clsx from "clsx"
 import { ROUTES } from "@/router"
 import { useAuth } from "../../auth/useAuth"
-import { HomeIcon, Wrench } from "lucide-react"
+import { HomeIcon, UserRoundCog } from "lucide-react"
 
 interface SidebarProps {
   sidebarOpen: boolean
@@ -18,21 +18,21 @@ export function Sidebar({ sidebarOpen }: SidebarProps) {
     {
       path: ROUTES.accountSettings,
       label: t("sidebar.account_settings"),
-      icon: <Wrench className="h-6 w-6" />,
+      icon: <UserRoundCog className="h-6 w-6" />,
       visible: isAuthenticated,
     },
   ]
 
   return (
-    <nav className="flex flex-col space-y-1 p-2">
+    <nav className="flex flex-col space-y-2 p-2 overflow-x-hidden">
       {SECTIONS.filter((section) => section.visible).map((section) => (
         <NavLink
           key={section.path}
           to={section.path}
           className={({ isActive }) =>
             clsx(
-              "flex items-center gap-3 rounded-md p-3 transition-colors",
-              isActive ? "bg-(--accent-primary) text-(--text-inverted)" : "text-text-primary hover:bg-(--bg-secondary)"
+              "flex items-center rounded-md p-3 gap-3 transition-colors",
+              isActive ? "bg-(--accent-primary) text-(--text-inverted)" : "text-text-primary hover:bg-(--bg-tertiary)"
             )
           }
           title={!sidebarOpen ? section.label : undefined} // Tooltip when collapsed

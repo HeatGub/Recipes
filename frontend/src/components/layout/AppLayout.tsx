@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Sidebar } from "./Sidebar"
 import { Header } from "./Header"
 import { Outlet } from "react-router-dom"
+import { clsx } from "clsx"
 
 export function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -17,7 +18,7 @@ export function AppLayout() {
               className="absolute inset-0 bg-black/40"
               onClick={() => setSidebarOpen(false)}
             />
-            <aside className="absolute top-0 left-0 h-full w-64 border-r bg-(--bg-primary) shadow-lg transition-transform duration-200">
+            <aside className="absolute top-0 left-0 h-full w-64 border-r bg-(--bg-primary) shadow-lg transition-transform duration-300">
               <Sidebar sidebarOpen={sidebarOpen}/>
             </aside>
           </div>
@@ -25,9 +26,11 @@ export function AppLayout() {
 
         {/* Desktop / tablet sidebar */}
         <aside
-          className={`hidden md:flex md:flex-col border-r bg-(--bg-primary) transition-[width] duration-300 ease-in-out ${
-            sidebarOpen ? "w-64" : "w-16"
-          }`}
+          className={clsx(
+            "hidden md:flex md:flex-col border-r-2 border-(--border-default)! bg-(--bg-primary) transition-[width] duration-300 ease-in-out",
+            sidebarOpen ? "w-64" : "w-16",
+            "md:sticky md:top-0 md:h-screen md:shrink-0"
+          )}
         >
           <Sidebar sidebarOpen={sidebarOpen}/>
         </aside>

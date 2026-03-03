@@ -22,6 +22,7 @@ export const LangSwitcher = () => {
         text-s
         leading-none
         transition-colors duration-300
+        bg-(--bg-primary)
         hover:bg-(--accent-primary)
         hover:text-(--text-inverted)
       "
