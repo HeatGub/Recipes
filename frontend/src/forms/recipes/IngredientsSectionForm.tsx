@@ -5,9 +5,9 @@ import { IngredientCategoryFields } from "./IngredientCategoryFields"
 import type { FieldErrors } from "react-hook-form"
 import { Button } from "@/components/ui/Button"
 import { CirclePlus } from "lucide-react"
-import { FormFieldError } from "@/forms/core/FormErrors"
 import { RECIPE } from "@/forms/core/constants"
 import { useTranslation } from "react-i18next"
+import { InputError } from "@/components/ui/InputError"
 
 interface Props {
   control: Control<RecipeFormData>
@@ -64,9 +64,7 @@ export function IngredientsSectionForm({ control, register, errors }: Props) {
       )}
 
       {errors?.root && (
-        <p className="flex justify-center text-center text-xs text-(--text-danger)">
-          <FormFieldError error={errors?.root} />
-        </p>
+        <InputError error={errors?.root} />
       )}
     </section>
   )

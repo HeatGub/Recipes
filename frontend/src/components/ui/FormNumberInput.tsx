@@ -1,5 +1,5 @@
 import type { FieldError } from "react-hook-form"
-import { FormFieldError } from "@/forms/core/FormErrors"
+import { InputError } from "@/components/ui/InputError"
 
 interface FormNumberInputProps {
   value: number
@@ -47,7 +47,7 @@ export function FormNumberInput({
 
   const showRequiredStyle = required && isEmpty
 
-return (
+  return (
     <div className={`flex flex-col ${wrapperClassName} relative`}>
       {label && <label className="mb-1">{label}</label>}
 
@@ -67,7 +67,7 @@ return (
         <button
           type="button"
           onClick={decrement}
-          className="absolute px-2 left-0 flex h-full max-w-6 items-center justify-center text-(--text-muted) hover:text-(--text-secondary)"
+          className="absolute left-0 flex h-full max-w-6 items-center justify-center px-2 text-(--text-muted) hover:text-(--text-secondary)"
         >
           −
         </button>
@@ -76,17 +76,13 @@ return (
         <button
           type="button"
           onClick={increment}
-          className="absolute px-2 right-0 flex h-full max-w-6 items-center justify-center text-(--text-muted) hover:text-(--text-secondary)"
+          className="absolute right-0 flex h-full max-w-6 items-center justify-center px-2 text-(--text-muted) hover:text-(--text-secondary)"
         >
           +
         </button>
       </div>
 
-      {error && (
-        <p className="mt-1 flex justify-center text-center text-xs text-(--text-danger)">
-          <FormFieldError error={error} />
-        </p>
-      )}
+      {error && <InputError className="mt-1" error={error} />}
     </div>
   )
 }

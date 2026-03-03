@@ -7,7 +7,6 @@ import { StepIndicator } from "@/components/common/StepIndicator"
 import { FormInput } from "@/components/ui/FormInput"
 import { Button } from "@/components/ui/Button"
 import { Trash2, Plus, ArrowDown, ArrowUp, CirclePlus } from "lucide-react"
-import { FormFieldError } from "@/forms/core/FormErrors"
 import { RECIPE } from "@/forms/core/constants"
 import { InputError } from "@/components/ui/InputError"
 import { useTranslation } from "react-i18next"
@@ -133,9 +132,7 @@ export function PreparationSectionForm({ control, register, errors }: Props) {
       )}
 
       {errors?.root && (
-        <p className="flex justify-center text-center text-xs text-(--text-danger)">
-          <FormFieldError error={errors?.root} />
-        </p>
+        <InputError error={errors?.root} />
       )}
     </section>
   )
