@@ -6,7 +6,9 @@
   "sidebar": {
     "home": "Home",
     "account_settings": "Account Settings",
-    "recipes": "Recipes"
+    "recipes": "Recipes",
+    "create_recipe": "Create Recipe",
+    "view_recipe": "Recipe View"
   },
   "general": {
     "cancel": "Cancel",

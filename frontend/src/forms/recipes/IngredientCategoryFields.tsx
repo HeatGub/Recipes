@@ -169,7 +169,7 @@ export function IngredientCategoryFields({
               </div>
 
               {/* Errors row*/}
-              <div className="contents text-center break-all">
+              <div className="contents text-center break-all sm:break-normal">
                 <div><InputError className="-mt-0.5" error={itemErrors?.amount}/></div>
                 <div><InputError className="-mt-0.5" error={itemErrors?.unit}/></div>
                 <div><InputError className="-mt-0.5" error={itemErrors?.name}/></div>

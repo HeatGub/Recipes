@@ -6,7 +6,9 @@
   "sidebar": {
     "home": "Strona Główna",
     "account_settings": "Ustawienia Konta",
-    "recipes": "Przepisy"
+    "recipes": "Przepisy",
+    "create_recipe": "Dodaj Przepis",
+    "view_recipe": " Zobacz Przepis"
   },
   "general": {
     "cancel": "Anuluj",

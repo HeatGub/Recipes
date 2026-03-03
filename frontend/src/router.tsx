@@ -13,8 +13,8 @@ import { RecipeForm } from "@/forms/recipes/RecipeForm"
 export const ROUTES = {
   home: "/",
   accountSettings: "/account-settings",
-  recipeDetails: "/recipe",
-  recipeCreate: "/recipe/create"
+  recipeDetails: "/recipe/1",
+  recipeCreate: "/recipe/create",
 }
 
 export const router = createBrowserRouter([
@@ -34,13 +34,17 @@ export const router = createBrowserRouter([
       },
 
       {
-        path: ROUTES.recipeDetails,
-        element: <RecipePage recipe={recipeLongSteps} />,
-      },
-
-      {
-        path: ROUTES.recipeCreate,
-        element: <RecipeForm/>,
+        path: "recipe",
+        children: [
+          {
+            path: "create",
+            element: <RecipeForm />,
+          },
+          {
+            path: ":id",
+            element: <RecipePage recipe={recipeLongSteps} />,
+          },
+        ],
       },
 
       { path: "*", element: <NotFound /> },
