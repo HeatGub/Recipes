@@ -9,7 +9,13 @@ import { ChevronRight, ChevronLeft, PanelLeft } from "lucide-react"
 export function Header({ sidebarOpen, onToggleSidebar }: { sidebarOpen: boolean; onToggleSidebar: () => void }) {
   const { t } = useTranslation()
   return (
-    <header className="relative flex items-center border-b border-(--border-muted)! bg-(--bg-primary) px-0.5 sm:px-2 md:px-3 py-1.5 shadow-[0_1px_4px_var(--shadow-color)] md:sticky md:top-0">
+    <header className="
+      sticky top-0 flex items-center 
+      border-b border-(--border-muted)! bg-(--bg-primary) 
+      px-0.5 sm:px-2 md:px-3 py-1 sm:py-1.5 
+      shadow-[0_1px_4px_var(--shadow-color)] 
+      z-20 md:z-40"
+    >
       {/* Left: Sidebar toggle */}
       <Button
         variant="ghost"
@@ -31,12 +37,19 @@ export function Header({ sidebarOpen, onToggleSidebar }: { sidebarOpen: boolean;
       </Button>
 
       {/* Title */}
-      <h1 className="hidden min-[460px]:block flex-1 truncate text-center text-xl font-bold md:absolute md:top-1/2 md:left-1/2 md:max-w-[calc(100%-8rem)] md:-translate-x-1/2 md:-translate-y-1/2">
+      <h1 className={`
+          flex-1 truncate text-center text-xl font-bold
+          lg:max-w-[calc(100%-8rem)]
+          hidden min-[520px]:block
+          ${sidebarOpen && "opacity-0 sm:opacity-100 scale-80 sm:scale-90 lg:scale-100"}
+          transition-all duration-500 ease-in-out
+        `}
+      >
         {t("header.title")}
       </h1>
 
       {/* Right controls */}
-      <div className="z-10 ml-auto flex items-center gap-2 sm:gap-2 md:gap-3 lg:gap-4">
+      <div className="ml-auto bg-(--bg-primary) flex items-center gap-2 sm:gap-2 md:gap-3 lg:gap-4">
         <LangSwitcher />
         <ThemeToggle />
         <AuthPanel />

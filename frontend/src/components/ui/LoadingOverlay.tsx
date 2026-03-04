@@ -12,7 +12,7 @@ export function LoadingOverlay({
   loader: Loader = SyncLoader,
 }: LoadingOverlayProps) {
   return (
-    <div className="absolute inset-0 z-10 flex items-center justify-center">
+    <div className="absolute inset-0 z-100 flex items-center justify-center">
       <Loader size={size} color={color} />
     </div>
   )

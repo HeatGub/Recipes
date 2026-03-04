@@ -73,7 +73,7 @@ function NavItem({ section, sidebarOpen }: NavItemProps) {
       to={section.path}
       className={({ isActive }) =>
         clsx(
-          "flex items-center gap-3 rounded-md p-3 transition-colors",
+          "flex items-center gap-3 rounded-md p-2 min-[420px]:p-3 transition-colors",
           isActive ? "bg-(--accent-primary) text-(--text-inverted)" : "text-text-primary hover:bg-(--bg-tertiary)"
         )
       }
