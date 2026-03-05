@@ -49,7 +49,7 @@ export const ingredientItemSchema = z.object({
     .optional()
     .superRefine(minString(RECIPE.INGREDIENTS.ITEM.NOTES.MIN))
     .superRefine(maxString(RECIPE.INGREDIENTS.ITEM.NOTES.MAX))
-    .superRefine(forbiddenCharacters(RECIPE.INGREDIENTS.ITEM.UNIT.FORBIDDEN_CHARS)),
+    .superRefine(forbiddenCharacters(RECIPE.INGREDIENTS.ITEM.NOTES.FORBIDDEN_CHARS)),
 })
 
 export const ingredientCategorySchema = z.object({
