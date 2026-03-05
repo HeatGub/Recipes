@@ -1,5 +1,5 @@
 import { useForm, type UseFormProps, type FieldValues, type SubmitHandler } from "react-hook-form"
-import { applyApiErrorsToForm } from "./applyApiErrors"
+import { applyApiErrorsToForm } from "../forms/core/applyApiErrors"
 import { showToast } from "@/components/ui/Toasts"
 import { useTranslation } from "react-i18next"
 

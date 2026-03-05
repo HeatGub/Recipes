@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next"
-import { useAuth } from "../../auth/useAuth"
+import { useAuth } from "../../hooks/useAuth"
 import { LoginForm } from "../../forms/auth/LoginForm"
 import { RegisterForm } from "../../forms/auth/RegisterForm"
 import clsx from "clsx"

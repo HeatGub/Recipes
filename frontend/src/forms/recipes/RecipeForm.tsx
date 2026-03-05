@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useFormWithApi } from "@/forms/core/useFormWithApi"
+import { useFormWithApi } from "@/hooks/useFormWithApi"
 import { IngredientsSectionForm } from "./IngredientsSectionForm"
 import { PreparationSectionForm } from "./PreparationSectionForm"
 import { RecipeDetailsCardForm } from "./RecipeDetailsCardForm"

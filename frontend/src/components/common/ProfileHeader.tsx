@@ -1,4 +1,4 @@
-import { useAuth } from "@/auth/useAuth"
+import { useAuth } from "@/hooks/useAuth"
 import { clsx } from "clsx"
 import { useTranslation } from "react-i18next"
 

@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next"
 import { z } from "zod"
 import { LoadingOverlay } from "@/components/ui/LoadingOverlay"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useFormWithApi } from "@/forms/core/useFormWithApi"
+import { useFormWithApi } from "@/hooks/useFormWithApi"
 import { FormGlobalError } from "@/forms/core/FormErrors"
 import { rhfMessage } from "@/forms/core/apiErrors"
 import {

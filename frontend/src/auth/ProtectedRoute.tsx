@@ -1,4 +1,4 @@
-import { useAuth } from "./useAuth"
+import { useAuth } from "../hooks/useAuth"
 import { useAuthPanel } from "./AuthPanelContext"
 import { useEffect } from "react"
 

@@ -1,4 +1,4 @@
-import { useAuth } from "../../auth/useAuth"
+import { useAuth } from "../../hooks/useAuth"
 import { api } from "../../api/client"
 import { useAuthPanel } from "../../auth/AuthPanelContext"
 
