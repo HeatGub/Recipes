@@ -1,32 +1,39 @@
-import { useState } from "react"
+import { useEffect } from "react"
 import { SunMoon } from "lucide-react"
+import { useLocalStorage } from "@/hooks/useLocalStorage"
 
 export function ThemeToggle() {
-  const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains("dark"))
+  const [theme, setTheme] = useLocalStorage<"dark" | "light">("theme", "dark")
 
-const toggleTheme = () => {
-  const root = document.documentElement
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light")
+  }
 
-  root.classList.add("no-theme-transition")
-  root.classList.toggle("dark")
+  useEffect(() => {
+    const root = document.documentElement
 
-  requestAnimationFrame(() => {
-    root.classList.remove("no-theme-transition")
-  })
+    root.classList.add("no-theme-transition")
 
-  setIsDark(!isDark)
-}
+    if (theme === "dark") {
+      root.classList.add("dark")
+    } else {
+      root.classList.remove("dark")
+    }
+
+    requestAnimationFrame(() => {
+      root.classList.remove("no-theme-transition")
+    })
+  }, [theme])
+
   return (
-      <button
-        onClick={toggleTheme}
-        className="flex items-center justify-center 
-        p-0.5
-        border border-(--border-muted)!
-        cursor-pointer rounded bg-(--bg-secondary) 
-        transition-colors duration-300 
-        hover:bg-(--bg-inverted) hover:text-(--text-inverted)"
-      >
-        <SunMoon className="h-7 w-7"/>
-      </button>
+    <button
+      onClick={toggleTheme}
+      className="flex cursor-pointer items-center justify-center 
+      rounded border border-(--border-muted)! bg-(--bg-secondary) 
+      p-0.5 transition-colors duration-300 
+      hover:bg-(--bg-inverted) hover:text-(--text-inverted)"
+    >
+      <SunMoon className="h-7 w-7" />
+    </button>
   )
 }

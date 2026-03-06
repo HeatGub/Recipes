@@ -1,12 +1,18 @@
 import { useTranslation } from "react-i18next";
 import { Earth } from "lucide-react"
+import { useLocalStorage } from "@/hooks/useLocalStorage"
+import { useEffect } from "react"
 
 export const LangSwitcher = () => {
-  const { i18n } = useTranslation();
+  const { i18n } = useTranslation()
+  const [language, setLanguage] = useLocalStorage<"en" | "pl">("language", "en")
+
+  useEffect(() => {
+     i18n.changeLanguage(language)
+  }, [language, i18n]);
 
   const toggleLang = () => {
-    const newLang = i18n.language === "pl" ? "en" : "pl";
-    i18n.changeLanguage(newLang);
+    setLanguage(language === "pl" ? "en" : "pl")
   };
 
   return (
@@ -28,7 +34,7 @@ export const LangSwitcher = () => {
       "
     >
     <Earth className="h-4 w-4"/>
-    {i18n.language === "pl" ? "PL" : "EN"}
+    {language === "pl" ? "PL" : "EN"}
     </button>
   );
 };

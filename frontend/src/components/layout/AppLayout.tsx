@@ -1,11 +1,11 @@
-import { useState } from "react"
 import { Sidebar } from "./Sidebar"
 import { Header } from "./Header"
 import { Outlet } from "react-router-dom"
 import { clsx } from "clsx"
+import { useLocalStorage } from "@/hooks/useLocalStorage"
 
 export function AppLayout() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useLocalStorage("sidebarOpen", true)
 
   return (
     <div className="min-h-screen flex flex-col">
