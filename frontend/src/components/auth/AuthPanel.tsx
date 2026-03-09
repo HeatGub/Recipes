@@ -8,6 +8,7 @@ import { useAuthPanel } from "../../auth/AuthPanelContext"
 import { useNavigate } from "react-router-dom"
 import { ROUTES } from "@/router"
 import { UserPlus, LogIn, LogOut, UserRoundCog } from "lucide-react"
+import { showToast } from "@/components/ui/Toasts"
 
 export function AuthPanel() {
   const { login, logout, register, user } = useAuth()
@@ -102,8 +103,9 @@ export function AuthPanel() {
           {currentPanel === "login" && (
             <LoginForm
               onSubmit={async ({ identifier, password }) => {
-                await login(identifier, password)
+                const loggedInUser = await login(identifier, password)
                 closePanel()
+                showToast("success", t("success.logged_in", { username: loggedInUser.username }))
               }}
             />
           )}
@@ -111,8 +113,9 @@ export function AuthPanel() {
           {currentPanel === "register" && (
             <RegisterForm
               onSubmit={async (registerPayload) => {
-                await register(registerPayload)
+                const registeredUser = await register(registerPayload)
                 closePanel()
+                showToast("success", t("success.logged_in", { username: registeredUser.username }))
               }}
             />
           )}

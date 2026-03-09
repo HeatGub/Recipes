@@ -35,12 +35,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     initAuth()
   }, [])
 
-  const login = async (identifier: string, password: string) => {
+  const login = async (identifier: string, password: string): Promise<User> => {
     setAuthInProgress(true)
     try {
       const res = await authApi.login(identifier, password)
       setIsAuthenticated(true)
       setUser(res.payload.user)
+      return res.payload.user
     } finally {
       setAuthInProgress(false)
     }
@@ -63,6 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const res = await authApi.register(data)
       setIsAuthenticated(true)
       setUser(res.payload.user)
+      return res.payload.user
     } finally {
       setAuthInProgress(false)
     }

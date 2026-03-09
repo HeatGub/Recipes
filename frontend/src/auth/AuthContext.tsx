@@ -18,9 +18,9 @@ export type AuthContextType = {
   isAuthenticated: boolean
   authInitFinished: boolean
   authInProgress: boolean
-  login: (identifier: string, password: string) => Promise<void>
+  login: (identifier: string, password: string) => Promise<User>
   logout: () => Promise<void>
-  register: (data:RegisterPayload) => Promise<void>
+  register: (data:RegisterPayload) => Promise<User>
   deleteAccount: (password: string) => Promise<void>
   updateMe: () => Promise<void>
 }

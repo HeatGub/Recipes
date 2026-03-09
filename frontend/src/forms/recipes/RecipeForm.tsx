@@ -23,6 +23,7 @@ import {
 } from "@/forms/core/zodValidators"
 import { RECIPE } from "@/forms/core/constants"
 import { useTranslation } from "react-i18next"
+import { showToast } from "@/components/ui/Toasts"
 
 export const ingredientItemSchema = z.object({
   name: z
@@ -180,6 +181,7 @@ export function RecipeForm() {
     // console.log(...formattedData.ingredients[0].items)
     // console.log(formattedData.details.servings)
     // console.log(formattedData.ingredients[0].items[0].amount)
+    showToast("success", t("success.recipe_created"))
   }
 
   return (

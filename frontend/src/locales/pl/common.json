@@ -118,7 +118,9 @@
     "account_deleted": "Konto zostało usunięte!",
     "password_changed": "Hasło zostało zmienione! Zaloguj się ponownie.",
     "username_changed": "Login został zmieniony!",
-    "email_changed": "E-mail has been changed!"
+    "email_changed": "E-mail has been changed!",
+    "logged_in": "Witaj, {{username}}!",
+    "recipe_created": "Twój przepis został opublikowany! Otwórz konsolę jeśli chciałbyś zobaczyć strukturę JSON."
   },
   "errors": {
     "SOMETHING_WENT_WRONG": "Coś poszło nie tak, spróbuj ponownie.",
