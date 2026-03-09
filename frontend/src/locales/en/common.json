@@ -111,8 +111,18 @@
     }
   },
   "notFound": {
-    "title": "404 - Page Not Found",
-    "message": "The page you are looking for does not exist"
+    "title": "Page not found",
+    "message": "The page you are looking for does not exist",
+    "visit_homepage": "Visit Home Page"
+  },
+  "loginRequired": {
+    "title": "Login Required",
+    "message": "You need to be logged in to access this page",
+    "visit_homepage": "Visit Home Page"
+  },
+  "loading": {
+    "title": "Loading...",
+    "message": "Please wait for the data to load"
   },
   "success": {
     "account_deleted": "Account has been deleted!",

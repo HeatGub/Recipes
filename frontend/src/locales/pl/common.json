@@ -111,8 +111,18 @@
     }
   },
   "notFound": {
-    "title": "404 - Strona nie znaleziona",
-    "message": "Strona, której szukasz, nie istnieje"
+    "title": "Strona nie znaleziona",
+    "message": "Strona, której szukasz, nie istnieje",
+    "visit_homepage": "Przejdź do Strony Głównej"
+  },
+  "loginRequired": {
+    "title": "Logowanie Wymagane",
+    "message": "Musisz być zalogowany, aby uzyskać dostęp do tej strony",
+    "visit_homepage": "Przejdź do Strony Głównej"
+  },
+  "loading": {
+    "title": "Ładowanie...",
+    "message": "Proszę czekać, trwa wczytywanie danych"
   },
   "success": {
     "account_deleted": "Konto zostało usunięte!",

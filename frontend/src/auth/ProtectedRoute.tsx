@@ -1,6 +1,9 @@
 import { useAuth } from "../hooks/useAuth"
 import { useAuthPanel } from "./AuthPanelContext"
 import { useEffect } from "react"
+import { LoginRequired } from "@/pages/LoginRequired"
+import { LoadingPage } from "@/pages/LoadingPage"
+
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, authInitFinished } = useAuth()
@@ -14,12 +17,12 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
   // ⏳
   if (!authInitFinished) {
-    return <div className="mt-15 text-center font-bold">Loading...</div>
+    return <LoadingPage/>
   }
 
   // ❌ Not logged in
   if (!isAuthenticated) {
-    return <div className="mt-15 text-center font-bold">Log in to see the content of this page...</div> // block rendering protected page
+    return <LoginRequired/>
   }
 
   // ✅ Logged in
