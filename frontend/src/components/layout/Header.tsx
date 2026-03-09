@@ -38,9 +38,9 @@ export function Header({ sidebarOpen, onToggleSidebar }: { sidebarOpen: boolean;
 
       {/* Title */}
       <h1 className={`
-          flex-1 truncate text-center text-xl font-bold
-          lg:max-w-[calc(100%-8rem)]
-          hidden min-[520px]:block
+          hidden min-[520px]:flex flex-1 justify-center 
+          lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2
+          text-center text-xl font-bold
           ${sidebarOpen && "opacity-0 sm:opacity-100 scale-80 sm:scale-90 lg:scale-100"}
           transition-all duration-500 ease-in-out
         `}
@@ -49,7 +49,7 @@ export function Header({ sidebarOpen, onToggleSidebar }: { sidebarOpen: boolean;
       </h1>
 
       {/* Right controls */}
-      <div className="ml-auto bg-(--bg-primary) flex items-center gap-2 sm:gap-2 md:gap-3 lg:gap-4">
+      <div className="ml-auto bg-(--bg-primary) z-15 flex items-center gap-2 sm:gap-2 md:gap-3 lg:gap-4">
         <LangSwitcher />
         <ThemeToggle />
         <AuthPanel />

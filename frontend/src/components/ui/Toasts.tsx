@@ -1,5 +1,6 @@
 import { toast, Toaster } from "react-hot-toast"
 import { Check, CircleAlert, X } from "lucide-react"
+import { useState, useEffect } from "react"
 
 const MAX_TOAST_LEN = 200
 
@@ -17,7 +18,15 @@ const variantConfig = {
 type ToastVariant = "success" | "error"
 
 export function ToasterSetup() {
-  return <Toaster position="bottom-left" />
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768)
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  return <Toaster position="bottom-left" containerStyle={isMobile ? undefined : { bottom: "4.2rem" }} />
 }
 
 export const showToast = (variant: ToastVariant, msg: string) => {

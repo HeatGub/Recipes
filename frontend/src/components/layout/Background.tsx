@@ -51,39 +51,65 @@ const ICONS_POOL = [
   Wheat,
 ]
 
+type Breakpoint = "sm" | "md" | "lg"
+
+function useBreakpoint(): Breakpoint {
+  function getBreakpoint(width: number): Breakpoint {
+    if (width < 640) return "sm"
+    if (width < 1024) return "md"
+    return "lg"
+  }
+
+  const [breakpoint, setBreakpoint] = useState<Breakpoint>(() => getBreakpoint(window.innerWidth))
+
+  useEffect(() => {
+    const handleResize = () => {
+      const next = getBreakpoint(window.innerWidth)
+
+      setBreakpoint((prev) => (prev === next ? prev : next))
+    }
+
+    window.addEventListener("resize", handleResize)
+
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  return breakpoint
+}
+
+function useWindowSize() {
+  const [size, setSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  })
+
+  useEffect(() => {
+    const handleResize = () => {
+      setSize({ width: window.innerWidth, height: window.innerHeight })
+    }
+
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  return size
+}
+
 export function Background() {
   const [icons, setIcons] = useState<IconItem[]>([])
+  const breakpoint = useBreakpoint()
+  const { width, height } = useWindowSize() // new
 
-  const MAX_ATTEMPTS = 100
+  const ANIMATE = breakpoint === "lg"
 
-  const ANIMATE = window.innerWidth > 1024
-
-  useEffect(() => { // checks screen size once
+  useEffect(() => {
     const placed: IconItem[] = []
 
-    const MAX_ICONS = (() => {
-      if (window.innerWidth < 640) return 10
-      if (window.innerWidth < 1024) return 15
-      return 20
-    })()
-
-    const MIN_SIZE = (() => {
-      if (window.innerWidth < 640) return 100
-      if (window.innerWidth < 1024) return 70
-      return 50
-    })()
-
-    const MAX_SIZE = (() => {
-      if (window.innerWidth < 640) return 200
-      if (window.innerWidth < 1024) return 250
-      return 300
-    })()
-
-    const PADDING = (() => {
-      if (window.innerWidth < 640) return 100
-      if (window.innerWidth < 1024) return 50
-      return 20
-    })()
+    const MAX_ICONS = breakpoint === "sm" ? 10 : breakpoint === "md" ? 12 : 20
+    const MIN_SIZE = breakpoint === "sm" ? 75 : breakpoint === "md" ? 75 : 50
+    const MAX_SIZE = breakpoint === "sm" ? 150 : breakpoint === "md" ? 200 : 300
+    const PADDING = breakpoint === "sm" ? 50 : breakpoint === "md" ? 100 : 150
+    const MAX_ATTEMPTS = breakpoint === "sm" ? 100 : breakpoint === "md" ? 250 : 500
 
     let attempts = 0
 
@@ -91,30 +117,30 @@ export function Background() {
       attempts++
 
       const size = Math.random() * (MAX_SIZE - MIN_SIZE) + MIN_SIZE
-      const x = Math.random() * 100
-      const y = Math.random() * 100
 
+      // generate pixel positions for calculation
+      const xPx = Math.random() * width
+      const yPx = Math.random() * height
       const radius = size / 2
 
       const tooClose = placed.some((icon) => {
-        const dx = x - icon.x
-        const dy = y - icon.y
+        const dx = xPx - (icon.x / 100) * width
+        const dy = yPx - (icon.y / 100) * height
         const distance = Math.sqrt(dx * dx + dy * dy)
-
         const minDist = radius + icon.size / 2 + PADDING
-        return distance * 10 < minDist
+        return distance < minDist
       })
-
       if (tooClose) continue
 
       const sizeRatio = (size - MIN_SIZE) / (MAX_SIZE - MIN_SIZE)
       const opacity = 0.25 - sizeRatio * 0.2
       const blur = 1 + 3 * (1 - sizeRatio)
 
+      // store positions as percentages
       placed.push({
         Icon: ICONS_POOL[Math.floor(Math.random() * ICONS_POOL.length)],
-        x,
-        y,
+        x: (xPx / width) * 100,
+        y: (yPx / height) * 100,
         size,
         opacity,
         blur,
@@ -123,8 +149,9 @@ export function Background() {
         direction: Math.random() > 0.5 ? 1 : -1,
       })
     }
+
     setIcons(placed)
-  }, [])
+  }, [breakpoint, width, height]) // regenerate on size change
 
   return (
     <div className="pointer-events-none fixed inset-0 z-0">
@@ -133,7 +160,7 @@ export function Background() {
           key={i}
           className="absolute"
           style={{
-            left: `${item.x}%`,
+            left: `${item.x}%`, // now percentages
             top: `${item.y}%`,
             transform: `translate(-50%, -50%) rotate(${item.initialRotation}deg)`,
           }}
@@ -146,7 +173,11 @@ export function Background() {
               willChange: "transform",
               filter: `blur(${item.blur}px)`,
               color: "var(--text-muted)",
-              animation: ANIMATE ? `spin ${item.duration}s linear infinite` : undefined,
+
+              animationName: ANIMATE ? "spin" : undefined,
+              animationDuration: ANIMATE ? `${item.duration}s` : undefined,
+              animationTimingFunction: ANIMATE ? "linear" : undefined,
+              animationIterationCount: ANIMATE ? "infinite" : undefined,
               animationDirection: ANIMATE ? (item.direction === 1 ? "normal" : "reverse") : undefined,
             }}
           />

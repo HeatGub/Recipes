@@ -42,7 +42,7 @@
       "delete_account": "Usuń Konto",
       "current_username": "Obecny Login",
       "new_username": "Nowy Login",
-      "new_email": "Nowe E-mail",
+      "new_email": "Nowy E-mail",
       "description": {
         "change_username": "Wybierz unikalny login który będzie widoczny dla innych użytkowników",
         "change_email": "Zaktualizuj swój adres e-mail. Może być używany do logowania i resetowania hasła.",
