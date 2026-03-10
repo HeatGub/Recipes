@@ -1,10 +1,10 @@
 # Recipes Master
 
-A **full-stack web application** for storing, organizing, and sharing recipes between users.
+### A **full-stack web application** for storing, organizing, and sharing recipes between users.
 
-The project focuses on building a **modern, scalable architecture** with a structured API, reusable frontend components, and internationalization support.
+#### The project focuses on building a **modern, scalable architecture** with a structured API, reusable frontend components, and internationalization support.
 
-## 👉 **Live frontend demo:** [GitHub Pages](https://) 👈
+## 👉 **Live frontend demo:** [GitHub Pages](https://heatgub.github.io/Recipes/) 👈
 
 ## Tech Stack
 
@@ -24,7 +24,7 @@ The project focuses on building a **modern, scalable architecture** with a struc
 ## Project Status
 
 The application is **currently under active development**.  
-New features and improvements are added regularly as the project evolves. Please **check the GitHub page for current progress**.
+New features and improvements are added regularly as the project evolves. Please **check the [GitHub Page](https://heatgub.github.io/Recipes/) for current progress**.
 
 The full application will eventually be hosted as a complete production deployment.
 
@@ -34,7 +34,7 @@ The full application will eventually be hosted as a complete production deployme
 The project aims to provide:
 
 - Recipe creation and management
-- Ingredient-based search
+- Recipe content and ingredient-based search
 - Shopping list generation
-- Recipe sharing between users
+- Recipe and shopping list sharing between users
 - Internationalization support
