@@ -3,6 +3,7 @@ import type { ReactNode } from "react"
 import { AuthContext } from "./AuthContext"
 import type { AuthContextType, User, RegisterPayload } from "./AuthContext"
 import * as authApi from "../api/auth"
+import { DEMO_MODE } from "@/constants"
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
@@ -10,9 +11,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [authInitFinished, setAuthInitFinished] = useState(false)
   const [authInProgress, setAuthInProgress] = useState(false)
 
+  const fakeDelay = (ms: number) => new Promise((res) => setTimeout(res, ms))
+  const MOCK_USER = {
+    id: 1337,
+    username: "Demo User",
+    email: "demo@email.com",
+  }
+
   // 🔁 Run once on app start
   useEffect(() => {
     const initAuth = async () => {
+      if (DEMO_MODE) {
+        setAuthInitFinished(true)
+        return
+      }
       try {
         const newAccessToken = await authApi.authInit()
         if (newAccessToken) {
@@ -36,37 +48,68 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const login = async (identifier: string, password: string): Promise<User> => {
-    setAuthInProgress(true)
-    try {
-      const res = await authApi.login(identifier, password)
+    if (DEMO_MODE) {
+      setAuthInProgress(true)
+      await fakeDelay(700)
       setIsAuthenticated(true)
-      setUser(res.payload.user)
-      return res.payload.user
-    } finally {
+      const loggedInUser = { ...MOCK_USER, username: identifier }
+      setUser(loggedInUser)
       setAuthInProgress(false)
+      return loggedInUser
+    } else {
+      setAuthInProgress(true)
+      try {
+        const res = await authApi.login(identifier, password)
+        setIsAuthenticated(true)
+        setUser(res.payload.user)
+        return res.payload.user
+      } finally {
+        setAuthInProgress(false)
+      }
     }
   }
 
   const logout = async () => {
-    setAuthInProgress(true)
-    try {
-      await authApi.logout()
+    if (DEMO_MODE) {
+      setAuthInProgress(true)
       setIsAuthenticated(false)
       setUser(null)
-    } finally {
       setAuthInProgress(false)
+    } else {
+      setAuthInProgress(true)
+      try {
+        await authApi.logout()
+        setIsAuthenticated(false)
+        setUser(null)
+      } finally {
+        setAuthInProgress(false)
+      }
     }
   }
 
   const register = async (data: RegisterPayload) => {
-    setAuthInProgress(true)
-    try {
-      const res = await authApi.register(data)
+    if (DEMO_MODE) {
+      setAuthInProgress(true)
+      await fakeDelay(700)
+      const user = {
+        id: 1337,
+        username: data.username,
+        email: data.email ? data.email : "",
+      }
       setIsAuthenticated(true)
-      setUser(res.payload.user)
-      return res.payload.user
-    } finally {
+      setUser(user)
       setAuthInProgress(false)
+      return user
+    } else {
+      setAuthInProgress(true)
+      try {
+        const res = await authApi.register(data)
+        setIsAuthenticated(true)
+        setUser(res.payload.user)
+        return res.payload.user
+      } finally {
+        setAuthInProgress(false)
+      }
     }
   }
 

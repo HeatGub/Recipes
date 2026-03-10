@@ -13,7 +13,8 @@
   "general": {
     "cancel": "Cancel",
     "confirm": "Confirm",
-    "close": "Close"
+    "close": "Close",
+    "demo_mode_message": "Demo mode - data is mocked! Try registering or logging in with any credentials."
   },
   "account": {
     "login": "Login",

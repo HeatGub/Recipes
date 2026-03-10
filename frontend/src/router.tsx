@@ -1,5 +1,5 @@
 import { AppLayout } from "@/components/layout/AppLayout"
-import { createBrowserRouter } from "react-router-dom"
+import { createBrowserRouter, createHashRouter } from "react-router-dom"
 import { Home } from "@/pages/Home"
 import { ProtectedRoute } from "@/auth/ProtectedRoute"
 import { AccountSettings } from "@/pages/AccountSettings"
@@ -9,6 +9,7 @@ import { RecipePage } from "./pages/RecipePage"
 import recipeLongSteps from "./pages/recipeLongSteps.json"
 // import recipeManySteps from "./pages/recipeManySteps.json"
 import { RecipeForm } from "@/forms/recipes/RecipeForm"
+import { DEMO_MODE } from "@/constants"
 
 export const ROUTES = {
   home: "/",
@@ -17,7 +18,9 @@ export const ROUTES = {
   recipeCreate: "/recipe/create",
 }
 
-export const router = createBrowserRouter([
+const selectedRouter = DEMO_MODE? createHashRouter : createBrowserRouter
+
+export const router = selectedRouter([
   {
     path: "/",
     element: <AppLayout />,

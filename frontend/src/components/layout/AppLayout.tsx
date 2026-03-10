@@ -4,9 +4,12 @@ import { Outlet } from "react-router-dom"
 import { clsx } from "clsx"
 import { useLocalStorage } from "@/hooks/useLocalStorage"
 import { Background } from "./Background"
+import { useTranslation } from "react-i18next"
+import { DEMO_MODE } from "@/constants"
 
 export function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useLocalStorage("sidebarOpen", true)
+  const { t } = useTranslation()
 
   return (
     <>
@@ -37,6 +40,11 @@ export function AppLayout() {
           {/* Main content */}
           <div className="flex min-w-0 flex-1 flex-col">
             <Header sidebarOpen={sidebarOpen} onToggleSidebar={() => setSidebarOpen((v) => !v)} />
+            {DEMO_MODE && (
+              <div className="py-0.2 w-full bg-(--bg-warning) text-center text-xs text-(--text-inverted)">
+                {t("general.demo_mode_message")}
+              </div>
+            )}
             <main className="relative overflow-hidden p-1 sm:p-2 md:p-6">
               <Outlet />
             </main>

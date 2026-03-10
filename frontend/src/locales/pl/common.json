@@ -13,7 +13,8 @@
   "general": {
     "cancel": "Anuluj",
     "confirm": "Potwierdź",
-    "close": "Zamknij"
+    "close": "Zamknij",
+    "demo_mode_message": "Tryb demonstracyjny — możesz zarejestrować się lub zalogować, używając dowolnych danych."
   },
   "account": {
     "login": "Logowanie",
