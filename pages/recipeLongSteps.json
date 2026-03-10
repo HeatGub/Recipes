@@ -1,0 +1,64 @@
+{
+  "myNote": "PRZY UPDACIE PRZEPISU ZMIENIAC CALE INGREDIENTS/STEPS? WTEDY ID NIEPOTRZEBNE",
+  "id": "a1b2c3d4-5678-4e9f-90ab-1234567890ef / recipe_long_steps_test",
+  "title": "Garlic Cream Chicken Pasta Deluxe",
+  "description": "A luxurious and creamy garlic chicken pasta recipe designed to test long steps and multi-line text wrapping. The combination of tender chicken, roasted garlic, fresh vegetables, and silky cream sauce makes for an indulgent dish perfect for any occasion, and this version is written with extremely long preparation steps to stress-test text wrapping in the interface.",
+  "details": {
+    "author": "Jon Sno Mo",
+    "baseServings": 4,
+    "lastUpdated": "2026-02-21T15:30:00Z",
+    "rating": {
+      "value": 9.0,
+      "requesterVoted": false,
+      "votes": 88
+    }
+  },
+  "ingredients": [
+    {
+      "position": 1,
+      "title": "For the chicken",
+      "items": [
+        { "name": "Chicken breast", "amount": 4, "unit": "pcs", "notes": "boneless, skinless" },
+        { "name": "Garlic", "amount": 6, "unit": "cloves", "notes": "minced" },
+        { "name": "Olive oil", "amount": 3, "unit": "tbsp", "notes": null },
+        { "name": "Salt", "amount": 1, "unit": "tsp", "notes": null },
+        { "name": "Black pepper", "amount": 0.5, "unit": "tsp", "notes": "freshly ground" }
+      ]
+    },
+    {
+      "position": 2,
+      "title": "For the pasta & sauce",
+      "items": [
+        { "name": "Pasta", "amount": 400, "unit": "g", "notes": "fettuccine or spaghetti" },
+        { "name": "Heavy cream", "amount": 250, "unit": "ml", "notes": null },
+        { "name": "Parmesan cheese", "amount": 80, "unit": "g", "notes": "grated" },
+        { "name": "Butter", "amount": 2, "unit": "tbsp", "notes": null },
+        { "name": "Italian herbs", "amount": 1, "unit": "tsp", "notes": "dried basil, oregano" }
+      ]
+    },
+     {
+      "position": 3,
+      "title": "",
+      "items": [
+        { "name": "Pasta", "amount": 400, "unit": "g", "notes": "fettuccine or spaghetti" },
+        { "name": "Italian herbs", "amount": 1, "unit": "tsp", "notes": "dried basil, oregano" }
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "position": 1,
+      "title": "Begin by seasoning the chicken breasts thoroughly on all sides with freshly ground black pepper",
+      "description": "Begin by seasoning the chicken breasts thoroughly on all sides with freshly ground black pepper and a pinch of salt, ensuring that each piece is evenly coated. Heat a large skillet over medium-high heat and add the olive oil, swirling to coat the bottom. Place the chicken breasts in the skillet and sear for several minutes until each side develops a golden brown crust. While searing, make sure not to overcrowd the pan, as this will cause the chicken to steam instead of sear. Once golden brown, remove the chicken and set it aside on a plate lined with paper towels to rest, allowing the juices to redistribute while keeping the meat tender and flavorful."
+    },
+    {
+      "position": 2,
+      "description": "In the same skillet, add butter and let it melt completely over medium heat. Add the finely minced garlic and stir constantly to avoid burning, allowing the aroma to fill the kitchen. Then, add the heavy cream gradually while stirring, creating a smooth, velvety base for the sauce. Sprinkle in the Italian herbs and continue stirring, letting the flavors blend together for a few minutes. At this stage, if you want additional depth, you may add a small splash of chicken stock or a pinch of nutmeg to enhance the creamy texture. Once the sauce begins to thicken slightly, taste and adjust the seasoning with additional salt and pepper, balancing the richness with a hint of sharpness. In the same skillet, add butter and let it melt completely over medium heat. Add the finely minced garlic and stir constantly to avoid burning, allowing the aroma to fill the kitchen. Then, add the heavy cream gradually while stirring, creating a smooth, velvety base for the sauce. Sprinkle in the Italian herbs and continue stirring, letting the flavors blend together for a few minutes. At this stage, if you want additional depth, you may add a small splash of chicken stock or a pinch of nutmeg to enhance the creamy texture. Once the sauce begins to thicken slightly, taste and adjust the seasoning with additional salt and pepper, balancing the richness with a hint of sharpness."
+    },
+    {
+      "position": 3,
+      "title": "Meanwhile, cook the pasta in a large pot of boiling salted water",
+      "description": "Meanwhile, cook the pasta in a large pot of boiling salted water, following package instructions to achieve the perfect al dente texture. Once the pasta is ready, drain it carefully, reserving a small cup of pasta water to adjust the consistency of the sauce if necessary. Return the chicken to the skillet, allowing it to warm gently in the sauce, ensuring each piece is thoroughly coated. Add the drained pasta to the skillet, tossing carefully to ensure every strand is enveloped by the creamy garlic sauce. Sprinkle the grated Parmesan cheese evenly over the top and stir until melted and fully incorporated. Finally, plate the pasta immediately, optionally garnishing with freshly chopped parsley and a light pinch of crushed red pepper, serving hot for maximum flavor and presentation."
+    }
+  ]
+}
