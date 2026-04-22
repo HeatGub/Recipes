@@ -1,6 +1,6 @@
 import type { Control, UseFormRegister } from "react-hook-form"
 import { useFieldArray } from "react-hook-form"
-import type { RecipeFormData } from "./RecipeForm"
+import type { RecipeFormData, AvailableLangs } from "./RecipeForm"
 import { IngredientCategoryFields } from "./IngredientCategoryFields"
 import type { FieldErrors } from "react-hook-form"
 import { Button } from "@/components/ui/Button"
@@ -13,9 +13,10 @@ interface Props {
   control: Control<RecipeFormData>
   register: UseFormRegister<RecipeFormData>
   errors?: FieldErrors<RecipeFormData>["ingredients"]
+  formLang: AvailableLangs
 }
 
-export function IngredientsSectionForm({ control, register, errors }: Props) {
+export function IngredientsSectionForm({ control, register, errors, formLang }: Props) {
   const { fields, append, remove, move } = useFieldArray({
     control,
     name: "ingredients",
@@ -24,8 +25,10 @@ export function IngredientsSectionForm({ control, register, errors }: Props) {
   const { t } = useTranslation()
 
   return (
-    <section className="rounded-2xl bg-(--bg-secondary) px-1 md:px-4 py-2 sm:py-4 sm:mx-2 md:mx-8 lg:mx-16 mb-2 sm:mb-0 sm:my-4">
-      <h2 className="border-b pb-1 text-center text-xl font-semibold text-(--text-secondary)">{t("recipe.ingredients.title")}</h2>
+    <section className="mb-2 rounded-2xl bg-(--bg-secondary) px-1 py-2 sm:mx-2 sm:my-4 sm:mb-0 sm:py-4 md:mx-8 md:px-4 lg:mx-16">
+      <h2 className="border-b pb-1 text-center text-xl font-semibold text-(--text-secondary)">
+        {t("recipe.ingredients.title")}
+      </h2>
 
       {fields.map((category, catIndex) => (
         <IngredientCategoryFields
@@ -41,6 +44,7 @@ export function IngredientsSectionForm({ control, register, errors }: Props) {
           onMoveDown={() => move(catIndex, catIndex + 1)}
           isFirst={catIndex === 0}
           isLast={catIndex === fields.length - 1}
+          formLang={formLang}
         />
       ))}
 
@@ -51,8 +55,27 @@ export function IngredientsSectionForm({ control, register, errors }: Props) {
           variant="ghost"
           onClick={() => {
             append({
-              title: "",
-              items: [{ name: "", amount: undefined, unit: "", notes: undefined }],
+              title: {
+                en: "",
+                pl: "",
+              },
+              items: [
+                {
+                  name: {
+                    en: "",
+                    pl: "",
+                  },
+                  amount: undefined,
+                  unit: {
+                    en: "",
+                    pl: "",
+                  },
+                  notes: {
+                    en: "",
+                    pl: "",
+                  },
+                },
+              ],
             })
           }}
           className="items-left mt-2 w-full bg-transparent p-0! text-(--text-muted)! hover:text-(--accent-secondary)!"
@@ -63,9 +86,7 @@ export function IngredientsSectionForm({ control, register, errors }: Props) {
         </Button>
       )}
 
-      {errors?.root && (
-        <InputError error={errors?.root} />
-      )}
+      {errors?.root && <InputError error={errors?.root} />}
     </section>
   )
 }

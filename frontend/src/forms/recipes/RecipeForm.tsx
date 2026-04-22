@@ -4,6 +4,7 @@ import { IngredientsSectionForm } from "./IngredientsSectionForm"
 import { PreparationSectionForm } from "./PreparationSectionForm"
 import { RecipeDetailsCardForm } from "./RecipeDetailsCardForm"
 import { RichButton } from "@/components/ui/RichButton"
+import { Button } from "@/components/ui/Button"
 import { RecipeLayout } from "@/components/layout/RecipeLayout"
 import { FormTextArea } from "@/components/ui/FormTextArea"
 import { z } from "zod"
@@ -24,64 +25,44 @@ import {
 import { RECIPE } from "@/forms/core/constants"
 import { useTranslation } from "react-i18next"
 import { showToast } from "@/components/ui/Toasts"
+import { useState, useMemo } from "react"
 
-export const ingredientItemSchema = z.object({
-  name: z
-    .string()
-    .optional() // just to avoid zod custom message
-    .superRefine(stringRequired()) // real required validation
-    .superRefine(minString(RECIPE.INGREDIENTS.ITEM.NAME.MIN))
-    .superRefine(maxString(RECIPE.INGREDIENTS.ITEM.NAME.MAX))
-    .superRefine(forbiddenCharacters(RECIPE.INGREDIENTS.ITEM.NAME.FORBIDDEN_CHARS)),
-  amount: z
-    .preprocess(preprocessNumber, z.number().optional())
-    .superRefine(numberRequired())
-    .superRefine(minNumber(RECIPE.INGREDIENTS.ITEM.AMOUNT.MIN))
-    .superRefine(maxNumber(RECIPE.INGREDIENTS.ITEM.AMOUNT.MAX)),
-  unit: z
-    .string()
-    .optional()
-    .superRefine(stringRequired())
-    .superRefine(minString(RECIPE.INGREDIENTS.ITEM.UNIT.MIN))
-    .superRefine(maxString(RECIPE.INGREDIENTS.ITEM.UNIT.MAX))
-    .superRefine(forbiddenCharacters(RECIPE.INGREDIENTS.ITEM.UNIT.FORBIDDEN_CHARS)),
-  notes: z
-    .string()
-    .optional()
-    .superRefine(minString(RECIPE.INGREDIENTS.ITEM.NOTES.MIN))
-    .superRefine(maxString(RECIPE.INGREDIENTS.ITEM.NOTES.MAX))
-    .superRefine(forbiddenCharacters(RECIPE.INGREDIENTS.ITEM.NOTES.FORBIDDEN_CHARS)),
-})
+export type AvailableLangs = "en" | "pl"
 
-export const ingredientCategorySchema = z.object({
-  title: z
-    .string()
-    .optional()
-    .superRefine(minString(RECIPE.INGREDIENTS.CATEGORY.TITLE.MIN))
-    .superRefine(maxString(RECIPE.INGREDIENTS.CATEGORY.TITLE.MAX))
-    .superRefine(forbiddenCharacters(RECIPE.INGREDIENTS.CATEGORY.TITLE.FORBIDDEN_CHARS)),
-  items: z
-    .array(ingredientItemSchema)
-    .optional()
-    .superRefine(minArrayLength(RECIPE.INGREDIENTS.ITEM.MIN, "VALIDATION.INGREDIENTS_ITEMS_MIN"))
-    .superRefine(maxArrayLength(RECIPE.INGREDIENTS.ITEM.MAX, "VALIDATION.INGREDIENTS_ITEMS_MAX")),
-})
+type SingleLanguageSchemaArgs = {
+  required?: boolean
+  forbiddenChars: RegExp | null
+  min: number
+  max: number
+}
 
-export const stepSchema = z.object({
-  title: z
-    .string()
-    .optional()
-    .superRefine(minString(RECIPE.PREPARATION_STEPS.TITLE.MIN))
-    .superRefine(maxString(RECIPE.PREPARATION_STEPS.TITLE.MAX))
-    .superRefine(forbiddenCharacters(RECIPE.PREPARATION_STEPS.TITLE.FORBIDDEN_CHARS)),
-  description: z
-    .string()
-    .optional()
-    .superRefine(stringRequired())
-    .superRefine(minString(RECIPE.PREPARATION_STEPS.DESCRIPTION.MIN))
-    .superRefine(maxString(RECIPE.PREPARATION_STEPS.DESCRIPTION.MAX))
-    .superRefine(forbiddenCharacters(RECIPE.PREPARATION_STEPS.DESCRIPTION.FORBIDDEN_CHARS)),
-})
+type MultilangualObjectSchema = {
+  langPrimary: SingleLanguageSchemaArgs
+  langSecondary: SingleLanguageSchemaArgs
+}
+
+function createSingleLanguageSchema({ required = false, forbiddenChars = null, min, max }: SingleLanguageSchemaArgs) {
+  let schema = z.string().optional() // optional just to avoid zod custom message
+
+  if (required) {
+    // real required validation
+    schema = schema.superRefine(stringRequired())
+  }
+
+  if (forbiddenChars) {
+    schema = schema.superRefine(forbiddenCharacters(forbiddenChars))
+  }
+
+  return schema.superRefine(minString(min)).superRefine(maxString(max))
+}
+
+function createLocalizedStringSchema(config: MultilangualObjectSchema, primaryLang: AvailableLangs) {
+  return z.object({
+    en: createSingleLanguageSchema(primaryLang === "en" ? config.langPrimary : config.langSecondary),
+
+    pl: createSingleLanguageSchema(primaryLang === "pl" ? config.langPrimary : config.langSecondary),
+  })
+}
 
 export const detailsSchema = z.object({
   author: z.string().optional(),
@@ -94,45 +75,125 @@ export const detailsSchema = z.object({
     .superRefine(maxNumber(RECIPE.SERVINGS.MAX)),
 })
 
-export const recipeFormSchema = z.object({
-  id: z.string().optional(),
-  title: z
-    .string()
-    .optional()
-    .superRefine(stringRequired())
-    .superRefine(minString(RECIPE.TITLE.MIN))
-    .superRefine(maxString(RECIPE.TITLE.MAX))
-    .superRefine(forbiddenCharacters(RECIPE.TITLE.FORBIDDEN_CHARS)),
-  description: z
-    .string()
-    .optional()
-    .superRefine(minString(RECIPE.DESCRIPTION.MIN))
-    .superRefine(maxString(RECIPE.DESCRIPTION.MAX))
-    .superRefine(forbiddenCharacters(RECIPE.DESCRIPTION.FORBIDDEN_CHARS)),
-  details: detailsSchema,
-  ingredients: z
-    .array(ingredientCategorySchema)
-    .optional()
-    .superRefine(minArrayLength(RECIPE.INGREDIENTS.CATEGORY.MIN, "VALIDATION.INGREDIENTS_CATEGORIES_MIN"))
-    .superRefine(maxArrayLength(RECIPE.INGREDIENTS.CATEGORY.MAX, "VALIDATION.INGREDIENTS_CATEGORIES_MAX")),
-  steps: z
-    .array(stepSchema)
-    .optional()
-    .superRefine(minArrayLength(RECIPE.PREPARATION_STEPS.MIN, "VALIDATION.PREPARATION_STEPS_MIN"))
-    .superRefine(maxArrayLength(RECIPE.PREPARATION_STEPS.MAX, "VALIDATION.PREPARATION_STEPS_MAX")),
-})
+function createIngredientItemSchema(primaryFormLang: AvailableLangs) {
+  return z.object({
+    name: createLocalizedStringSchema(
+      {
+        langPrimary: { required: true, forbiddenChars: null, min: 1, max: 10 },
+        langSecondary: { required: false, forbiddenChars: null, min: 1, max: 5 },
+      },
+      primaryFormLang
+    ),
+    amount: z
+      .preprocess(preprocessNumber, z.number().optional())
+      .superRefine(numberRequired())
+      .superRefine(minNumber(RECIPE.INGREDIENTS.ITEM.AMOUNT.MIN))
+      .superRefine(maxNumber(RECIPE.INGREDIENTS.ITEM.AMOUNT.MAX)),
+    unit: createLocalizedStringSchema(
+      {
+        langPrimary: { required: true, forbiddenChars: null, min: 1, max: 10 },
+        langSecondary: { required: false, forbiddenChars: null, min: 1, max: 5 },
+      },
+      primaryFormLang
+    ),
+    notes: createLocalizedStringSchema(
+      {
+        langPrimary: { required: false, forbiddenChars: null, min: 1, max: 10 },
+        langSecondary: { required: false, forbiddenChars: null, min: 1, max: 5 },
+      },
+      primaryFormLang
+    ),
+  })
+}
 
-export type RecipeFormData = z.infer<typeof recipeFormSchema>
+function createIngredientCategorySchema(primaryFormLang: AvailableLangs) {
+  return z.object({
+    title: createLocalizedStringSchema(
+      {
+        langPrimary: { required: false, forbiddenChars: null, min: 2, max: 10 },
+        langSecondary: { required: false, forbiddenChars: null, min: 2, max: 5 },
+      },
+      primaryFormLang
+    ),
+    items: z
+      .array(createIngredientItemSchema(primaryFormLang))
+      .optional()
+      .superRefine(minArrayLength(RECIPE.INGREDIENTS.ITEM.MIN, "VALIDATION.INGREDIENTS_ITEMS_MIN"))
+      .superRefine(maxArrayLength(RECIPE.INGREDIENTS.ITEM.MAX, "VALIDATION.INGREDIENTS_ITEMS_MAX")),
+  })
+}
+
+function createStepSchema(primaryFormLang: AvailableLangs) {
+  return z.object({
+    title: createLocalizedStringSchema(
+      {
+        langPrimary: { required: false, forbiddenChars: null, min: 2, max: 10 },
+        langSecondary: { required: false, forbiddenChars: null, min: 2, max: 5 },
+      },
+      primaryFormLang
+    ),
+    description: createLocalizedStringSchema(
+      {
+        langPrimary: { required: true, forbiddenChars: null, min: 2, max: 10 },
+        langSecondary: { required: false, forbiddenChars: null, min: 2, max: 5 },
+      },
+      primaryFormLang
+    ),
+  })
+}
+
+function createRecipeFormSchema(primaryFormLang: AvailableLangs) {
+  return z.object({
+    id: z.string().optional(),
+    title: createLocalizedStringSchema(
+      {
+        langPrimary: { required: true, forbiddenChars: null, min: 2, max: 10 },
+        langSecondary: { required: false, forbiddenChars: null, min: 2, max: 5 },
+      },
+      primaryFormLang
+    ),
+    description: createLocalizedStringSchema(
+      {
+        langPrimary: { required: false, forbiddenChars: null, min: 2, max: 10 },
+        langSecondary: { required: false, forbiddenChars: null, min: 2, max: 5 },
+      },
+      primaryFormLang
+    ),
+    details: detailsSchema,
+    ingredients: z
+      .array(createIngredientCategorySchema(primaryFormLang))
+      .optional()
+      .superRefine(minArrayLength(RECIPE.INGREDIENTS.CATEGORY.MIN, "VALIDATION.INGREDIENTS_CATEGORIES_MIN"))
+      .superRefine(maxArrayLength(RECIPE.INGREDIENTS.CATEGORY.MAX, "VALIDATION.INGREDIENTS_CATEGORIES_MAX")),
+    steps: z
+      .array(createStepSchema(primaryFormLang))
+      .optional()
+      .superRefine(minArrayLength(RECIPE.PREPARATION_STEPS.MIN, "VALIDATION.PREPARATION_STEPS_MIN"))
+      .superRefine(maxArrayLength(RECIPE.PREPARATION_STEPS.MAX, "VALIDATION.PREPARATION_STEPS_MAX")),
+  })
+}
+
+export type RecipeFormData = z.infer<ReturnType<typeof createRecipeFormSchema>>
 
 export function RecipeForm() {
   const { t } = useTranslation()
+  const [formLang, setformLang] = useState<AvailableLangs>("en")
+  const [primaryFormLang, setPrimaryFormLang] = useState<AvailableLangs>("en")
+
+  const recipeFormSchema = useMemo(() => createRecipeFormSchema(primaryFormLang), [primaryFormLang])
 
   const methods = useFormWithApi<RecipeFormData>({
     resolver: zodResolver(recipeFormSchema) as any, // as any to stop TS complaining about number().optional()
     mode: "onChange",
     defaultValues: {
-      title: "",
-      description: "",
+      title: {
+        en: "",
+        pl: "",
+      },
+      description: {
+        en: "",
+        pl: "",
+      },
       details: {
         author: "",
         servings: undefined,
@@ -140,11 +201,41 @@ export function RecipeForm() {
       },
       ingredients: [
         {
-          title: "",
-          items: [{ name: "", amount: undefined, unit: "", notes: undefined }],
+          title: {
+            en: "",
+            pl: "",
+          },
+          items: [
+            {
+              name: {
+                en: "",
+                pl: "",
+              },
+              amount: undefined,
+              unit: {
+                en: "",
+                pl: "",
+              },
+              notes: {
+                en: "",
+                pl: "",
+              },
+            },
+          ],
         },
       ],
-      steps: [{ title: "", description: "" }],
+      steps: [
+        {
+          title: {
+            en: "",
+            pl: "",
+          },
+          description: {
+            en: "",
+            pl: "",
+          },
+        },
+      ],
     },
   })
 
@@ -185,43 +276,116 @@ export function RecipeForm() {
   }
 
   return (
-    <FormProvider {...methods}>
-      <form noValidate onSubmit={handleSubmit(handleApiSubmit(onSubmit))} className="mx-auto max-w-5xl">
-        <RecipeLayout
-          header={
-            <div className="space-y-4 text-center">
-              <div className="flex flex-col gap-6">
-                <div className="space-y-3 text-center">
-                  <FormTextArea
-                    {...register("title")}
-                    required
-                    placeholder={t("recipe.title")}
-                    error={errors.title}
-                    className="text-center text-3xl font-bold"
-                  />
-                  <FormTextArea
-                    {...register("description")}
-                    placeholder={t("recipe.description")}
-                    error={errors.description}
-                    className="text-center text-(--text-secondary)"
-                  />
+    <>
+      {/* <RecipeTest/> */}
+      <div className="flex flex-col justify-center gap-4 p-2 text-center">
+        PRIMARY LANG
+        <Button
+          onClick={() => {
+            setPrimaryFormLang("en")
+          }}
+          variant={primaryFormLang === "en" ? "primary" : "secondary"}
+        >
+          EN
+        </Button>
+        <Button
+          onClick={() => {
+            setPrimaryFormLang("pl")
+          }}
+          variant={primaryFormLang === "pl" ? "primary" : "secondary"}
+        >
+          PL
+        </Button>
+      </div>
+
+      <div className="flex justify-center gap-4 p-2 text-center">
+        <Button
+          onClick={() => {
+            setformLang("en")
+          }}
+          variant={formLang === "en" ? "primary" : "secondary"}
+        >
+          EN
+        </Button>
+        <Button
+          onClick={() => {
+            setformLang("pl")
+          }}
+          variant={formLang === "pl" ? "primary" : "secondary"}
+        >
+          PL
+        </Button>
+      </div>
+
+      <FormProvider {...methods}>
+        <form noValidate onSubmit={handleSubmit(handleApiSubmit(onSubmit))} className="mx-auto max-w-5xl">
+          <RecipeLayout
+            header={
+              <div className="space-y-4 text-center">
+                <div className="flex flex-col gap-6">
+                  <div className="space-y-3 text-center">
+                    {formLang === "en" && (
+                      <FormTextArea
+                        {...register("title.en")}
+                        required
+                        placeholder={t("recipe.title")}
+                        error={errors?.title?.en}
+                        className="text-center text-3xl font-bold"
+                      />
+                    )}
+                    {formLang === "pl" && (
+                      <FormTextArea
+                        {...register("title.pl")}
+                        required
+                        placeholder={t("recipe.title")}
+                        error={errors?.title?.pl}
+                        className="text-center text-3xl font-bold"
+                      />
+                    )}
+
+                    {formLang === "en" && (
+                      <FormTextArea
+                        {...register("description.en")}
+                        placeholder={t("recipe.description")}
+                        error={errors.description?.en}
+                        className="text-center text-(--text-secondary)"
+                      />
+                    )}
+                    {formLang === "pl" && (
+                      <FormTextArea
+                        {...register("description.pl")}
+                        placeholder={t("recipe.description")}
+                        error={errors.description?.pl}
+                        className="text-center text-(--text-secondary)"
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          }
-          details={<RecipeDetailsCardForm register={register} errors={errors.details} />}
-          ingredients={<IngredientsSectionForm control={control} register={register} errors={errors.ingredients} />}
-          preparation={<PreparationSectionForm control={control} register={register} errors={errors.steps} />}
-          footer={
-            <div className="-mt-2 flex justify-center px-8 pb-4 sm:pb-8">
-              <RichButton type="submit" variant="gradientPrimary" className="w-40">
-                {t("recipe.publish_recipe")}
-              </RichButton>
-            </div>
-          }
-          variant="edit"
-        />
-      </form>
-    </FormProvider>
+            }
+            details={<RecipeDetailsCardForm register={register} errors={errors.details} />}
+            ingredients={
+              <IngredientsSectionForm
+                control={control}
+                register={register}
+                errors={errors.ingredients}
+                formLang={formLang}
+              />
+            }
+            preparation={
+              <PreparationSectionForm control={control} register={register} errors={errors.steps} formLang={formLang} />
+            }
+            footer={
+              <div className="-mt-2 flex justify-center px-8 pb-4 sm:pb-8">
+                <RichButton type="submit" variant="gradientPrimary" className="w-40">
+                  {t("recipe.publish_recipe")}
+                </RichButton>
+              </div>
+            }
+            variant="edit"
+          />
+        </form>
+      </FormProvider>
+    </>
   )
 }
