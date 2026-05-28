@@ -25,7 +25,8 @@ import {
 import { RECIPE } from "@/forms/core/constants"
 import { useTranslation } from "react-i18next"
 import { showToast } from "@/components/ui/Toasts"
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
+import recipe2lang from "@/pages/recipe2lang.json"
 
 export type AvailableLangs = "en" | "pl"
 
@@ -59,7 +60,6 @@ function createSingleLanguageSchema({ required = false, forbiddenChars = null, m
 function createLocalizedStringSchema(config: MultilangualObjectSchema, primaryLang: AvailableLangs) {
   return z.object({
     en: createSingleLanguageSchema(primaryLang === "en" ? config.langPrimary : config.langSecondary),
-
     pl: createSingleLanguageSchema(primaryLang === "pl" ? config.langPrimary : config.langSecondary),
   })
 }
@@ -79,8 +79,18 @@ function createIngredientItemSchema(primaryFormLang: AvailableLangs) {
   return z.object({
     name: createLocalizedStringSchema(
       {
-        langPrimary: { required: true, forbiddenChars: null, min: 1, max: 10 },
-        langSecondary: { required: false, forbiddenChars: null, min: 1, max: 5 },
+        langPrimary: {
+          required: true,
+          forbiddenChars: RECIPE.INGREDIENTS.ITEM.NAME.FORBIDDEN_CHARS,
+          min: RECIPE.INGREDIENTS.ITEM.NAME.MIN,
+          max: RECIPE.INGREDIENTS.ITEM.NAME.MAX,
+        },
+        langSecondary: {
+          required: false,
+          forbiddenChars: RECIPE.INGREDIENTS.ITEM.NAME.FORBIDDEN_CHARS,
+          min: RECIPE.INGREDIENTS.ITEM.NAME.MIN,
+          max: RECIPE.INGREDIENTS.ITEM.NAME.MAX,
+        },
       },
       primaryFormLang
     ),
@@ -91,15 +101,35 @@ function createIngredientItemSchema(primaryFormLang: AvailableLangs) {
       .superRefine(maxNumber(RECIPE.INGREDIENTS.ITEM.AMOUNT.MAX)),
     unit: createLocalizedStringSchema(
       {
-        langPrimary: { required: true, forbiddenChars: null, min: 1, max: 10 },
-        langSecondary: { required: false, forbiddenChars: null, min: 1, max: 5 },
+        langPrimary: {
+          required: true,
+          forbiddenChars: RECIPE.INGREDIENTS.ITEM.UNIT.FORBIDDEN_CHARS,
+          min: RECIPE.INGREDIENTS.ITEM.UNIT.MIN,
+          max: RECIPE.INGREDIENTS.ITEM.UNIT.MAX,
+        },
+        langSecondary: {
+          required: false,
+          forbiddenChars: RECIPE.INGREDIENTS.ITEM.UNIT.FORBIDDEN_CHARS,
+          min: RECIPE.INGREDIENTS.ITEM.UNIT.MIN,
+          max: RECIPE.INGREDIENTS.ITEM.UNIT.MAX,
+        },
       },
       primaryFormLang
     ),
     notes: createLocalizedStringSchema(
       {
-        langPrimary: { required: false, forbiddenChars: null, min: 1, max: 10 },
-        langSecondary: { required: false, forbiddenChars: null, min: 1, max: 5 },
+        langPrimary: {
+          required: false,
+          forbiddenChars: RECIPE.INGREDIENTS.ITEM.NOTES.FORBIDDEN_CHARS,
+          min: RECIPE.INGREDIENTS.ITEM.NOTES.MIN,
+          max: RECIPE.INGREDIENTS.ITEM.NOTES.MAX,
+        },
+        langSecondary: {
+          required: false,
+          forbiddenChars: RECIPE.INGREDIENTS.ITEM.NOTES.FORBIDDEN_CHARS,
+          min: RECIPE.INGREDIENTS.ITEM.NOTES.MIN,
+          max: RECIPE.INGREDIENTS.ITEM.NOTES.MAX,
+        },
       },
       primaryFormLang
     ),
@@ -110,8 +140,18 @@ function createIngredientCategorySchema(primaryFormLang: AvailableLangs) {
   return z.object({
     title: createLocalizedStringSchema(
       {
-        langPrimary: { required: false, forbiddenChars: null, min: 2, max: 10 },
-        langSecondary: { required: false, forbiddenChars: null, min: 2, max: 5 },
+        langPrimary: {
+          required: false,
+          forbiddenChars: RECIPE.INGREDIENTS.CATEGORY.TITLE.FORBIDDEN_CHARS,
+          min: RECIPE.INGREDIENTS.CATEGORY.TITLE.MIN,
+          max: RECIPE.INGREDIENTS.CATEGORY.TITLE.MAX,
+        },
+        langSecondary: {
+          required: false,
+          forbiddenChars: RECIPE.INGREDIENTS.CATEGORY.TITLE.FORBIDDEN_CHARS,
+          min: RECIPE.INGREDIENTS.CATEGORY.TITLE.MIN,
+          max: RECIPE.INGREDIENTS.CATEGORY.TITLE.MAX,
+        },
       },
       primaryFormLang
     ),
@@ -127,15 +167,35 @@ function createStepSchema(primaryFormLang: AvailableLangs) {
   return z.object({
     title: createLocalizedStringSchema(
       {
-        langPrimary: { required: false, forbiddenChars: null, min: 2, max: 10 },
-        langSecondary: { required: false, forbiddenChars: null, min: 2, max: 5 },
+        langPrimary: {
+          required: false,
+          forbiddenChars: RECIPE.PREPARATION_STEPS.TITLE.FORBIDDEN_CHARS,
+          min: RECIPE.PREPARATION_STEPS.TITLE.MIN,
+          max: RECIPE.PREPARATION_STEPS.TITLE.MAX,
+        },
+        langSecondary: {
+          required: false,
+          forbiddenChars: RECIPE.PREPARATION_STEPS.TITLE.FORBIDDEN_CHARS,
+          min: RECIPE.PREPARATION_STEPS.TITLE.MIN,
+          max: RECIPE.PREPARATION_STEPS.TITLE.MAX,
+        },
       },
       primaryFormLang
     ),
     description: createLocalizedStringSchema(
       {
-        langPrimary: { required: true, forbiddenChars: null, min: 2, max: 10 },
-        langSecondary: { required: false, forbiddenChars: null, min: 2, max: 5 },
+        langPrimary: {
+          required: true,
+          forbiddenChars: RECIPE.PREPARATION_STEPS.DESCRIPTION.FORBIDDEN_CHARS,
+          min: RECIPE.PREPARATION_STEPS.DESCRIPTION.MIN,
+          max: RECIPE.PREPARATION_STEPS.DESCRIPTION.MAX,
+        },
+        langSecondary: {
+          required: false,
+          forbiddenChars: RECIPE.PREPARATION_STEPS.DESCRIPTION.FORBIDDEN_CHARS,
+          min: RECIPE.PREPARATION_STEPS.DESCRIPTION.MIN,
+          max: RECIPE.PREPARATION_STEPS.DESCRIPTION.MAX,
+        },
       },
       primaryFormLang
     ),
@@ -147,15 +207,35 @@ function createRecipeFormSchema(primaryFormLang: AvailableLangs) {
     id: z.string().optional(),
     title: createLocalizedStringSchema(
       {
-        langPrimary: { required: true, forbiddenChars: null, min: 2, max: 10 },
-        langSecondary: { required: false, forbiddenChars: null, min: 2, max: 5 },
+        langPrimary: {
+          required: true,
+          forbiddenChars: RECIPE.TITLE.FORBIDDEN_CHARS,
+          min: RECIPE.TITLE.MIN,
+          max: RECIPE.TITLE.MAX,
+        },
+        langSecondary: {
+          required: false,
+          forbiddenChars: RECIPE.TITLE.FORBIDDEN_CHARS,
+          min: RECIPE.TITLE.MIN,
+          max: RECIPE.TITLE.MAX,
+        },
       },
       primaryFormLang
     ),
     description: createLocalizedStringSchema(
       {
-        langPrimary: { required: false, forbiddenChars: null, min: 2, max: 10 },
-        langSecondary: { required: false, forbiddenChars: null, min: 2, max: 5 },
+        langPrimary: {
+          required: false,
+          forbiddenChars: RECIPE.DESCRIPTION.FORBIDDEN_CHARS,
+          min: RECIPE.DESCRIPTION.MIN,
+          max: RECIPE.DESCRIPTION.MAX,
+        },
+        langSecondary: {
+          required: false,
+          forbiddenChars: RECIPE.DESCRIPTION.FORBIDDEN_CHARS,
+          min: RECIPE.DESCRIPTION.MIN,
+          max: RECIPE.DESCRIPTION.MAX,
+        },
       },
       primaryFormLang
     ),
@@ -174,6 +254,69 @@ function createRecipeFormSchema(primaryFormLang: AvailableLangs) {
 }
 
 export type RecipeFormData = z.infer<ReturnType<typeof createRecipeFormSchema>>
+
+function mapRecipeToForm(data: any): RecipeFormData {
+  return {
+    title: {
+      en: data.title?.en ?? "",
+      pl: data.title?.pl ?? "",
+    },
+
+    description: {
+      en: data.description?.en ?? "",
+      pl: data.description?.pl ?? "",
+    },
+
+    details: {
+      author: data.details?.author ?? "",
+      lastUpdated: data.details?.lastUpdated ?? new Date().toISOString(),
+      servings: data.details?.servings ?? undefined,
+    },
+
+    ingredients: (data.ingredients ?? [])
+      .map((cat: any) => ({
+        title: {
+          en: cat.title?.en ?? "",
+          pl: cat.title?.pl ?? "",
+        },
+        position: cat.position ?? 0,
+
+        items: (cat.items ?? [])
+          .map((item: any) => ({
+            name: {
+              en: item.name?.en ?? "",
+              pl: item.name?.pl ?? "",
+            },
+            amount: item.amount ?? undefined,
+            unit: {
+              en: item.unit?.en ?? "",
+              pl: item.unit?.pl ?? "",
+            },
+            notes: {
+              en: item.notes?.en ?? "",
+              pl: item.notes?.pl ?? "",
+            },
+            position: item.position ?? 0,
+          }))
+          .sort((a: any, b: any) => a.position - b.position), // Sort items
+      }))
+      .sort((a: any, b: any) => a.position - b.position), // Sort categories
+
+    steps: (data.steps ?? [])
+      .map((step: any) => ({
+        title: {
+          en: step.title?.en ?? "",
+          pl: step.title?.pl ?? "",
+        },
+        description: {
+          en: step.description?.en ?? "",
+          pl: step.description?.pl ?? "",
+        },
+        position: step.position ?? 0,
+      }))
+      .sort((a: any, b: any) => a.position - b.position), // Sort steps
+  }
+}
 
 export function RecipeForm() {
   const { t } = useTranslation()
@@ -245,7 +388,14 @@ export function RecipeForm() {
     handleSubmit,
     handleApiSubmit,
     formState: { errors },
+    reset,
   } = methods
+
+  useEffect(() => {
+    if (!recipe2lang) return
+    // console.log(JSON.stringify(recipe2lang, null, 2))
+    reset(mapRecipeToForm(recipe2lang))
+  }, [reset])
 
   const onSubmit = (data: RecipeFormData) => {
     // console.log(data)
@@ -267,7 +417,6 @@ export function RecipeForm() {
         })),
       })),
     }
-    // console.log(formattedData)
     console.log(JSON.stringify(formattedData, null, 2))
     // console.log(...formattedData.ingredients[0].items)
     // console.log(formattedData.details.servings)
@@ -277,7 +426,6 @@ export function RecipeForm() {
 
   return (
     <>
-      {/* <RecipeTest/> */}
       <div className="flex flex-col justify-center gap-4 p-2 text-center">
         PRIMARY LANG
         <Button
