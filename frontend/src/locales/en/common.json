@@ -70,6 +70,14 @@
     "rating": "Rating",
     "last_update": "Updated",
     "publish_recipe": "Publish recipe",
+    "locales": {
+      "primary_language": "Primary Language",
+      "english": "English",
+      "polish": "Polish",
+      "english_version": "English Version",
+      "polish_version": "Polish Version",
+      "required": "required"
+    },
     "ingredients": {
       "title": "Ingredients",
       "category": "Category",

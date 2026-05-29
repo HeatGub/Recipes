@@ -2,7 +2,8 @@ import type { FieldErrors, UseFormRegister } from "react-hook-form"
 import type { RecipeFormData } from "./RecipeForm"
 import { FormInput } from "@/components/ui/FormInput"
 import { FormNumberInput } from "@/components/ui/FormNumberInput"
-import { useFormContext } from "react-hook-form"
+import { Select } from "@/components/ui/Select"
+import { Controller, useFormContext } from "react-hook-form"
 import { RECIPE } from "@/forms/core/constants"
 import { useTranslation } from "react-i18next"
 
@@ -12,7 +13,7 @@ interface Props {
 }
 
 export function RecipeDetailsCardForm({ register, errors }: Props) {
-  const { watch, setValue, trigger } = useFormContext<RecipeFormData>()
+  const { watch, setValue, trigger, control } = useFormContext<RecipeFormData>()
   const servings = watch("details.servings") ?? 0
 
   const { t } = useTranslation()
@@ -23,7 +24,26 @@ export function RecipeDetailsCardForm({ register, errors }: Props) {
   }
 
   return (
-    <div className="flex w-full flex-wrap justify-between gap-4 rounded-xl bg-(--bg-secondary) p-4 md:flex-nowrap">
+    <div className="flex w-full flex-wrap justify-between gap-2 md:gap-4 rounded-xl bg-(--bg-secondary) p-4 md:flex-nowrap">
+
+      <div className="flex flex-1 flex-col items-center space-y-1 text-center">
+        <p className="text-sm text-(--text-muted)">{t("recipe.locales.primary_language")}</p>
+        <Controller
+          name="details.primaryLang"
+          control={control}
+          render={({ field }) => (
+            <Select
+              value={field.value}
+              onChange={field.onChange}
+              options={[
+                { label: t("recipe.locales.english"), value: "en" },
+                { label: t("recipe.locales.polish"), value: "pl" },
+              ]}
+            />
+          )}
+        />
+      </div>
+
       <div className="flex flex-1 flex-col items-center space-y-1">
         <p className="text-sm text-(--text-muted)">{t("recipe.author")}</p>
         <FormInput

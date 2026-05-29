@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/Button"
 import { RecipeLayout } from "@/components/layout/RecipeLayout"
 import { FormTextArea } from "@/components/ui/FormTextArea"
 import { z } from "zod"
-import { FormProvider } from "react-hook-form"
+import { FormProvider, useWatch } from "react-hook-form"
 import {
   minString,
   maxString,
@@ -66,6 +66,7 @@ function createLocalizedStringSchema(config: MultilangualObjectSchema, primaryLa
 
 export const detailsSchema = z.object({
   author: z.string().optional(),
+  primaryLang: z.string(),
   lastUpdated: z.string(),
   servings: z
     .preprocess(preprocessNumber, z.number().optional())
@@ -269,6 +270,7 @@ function mapRecipeToForm(data: any): RecipeFormData {
 
     details: {
       author: data.details?.author ?? "",
+      primaryLang: data.details?.primaryLang ?? "en",
       lastUpdated: data.details?.lastUpdated ?? new Date().toISOString(),
       servings: data.details?.servings ?? undefined,
     },
@@ -320,7 +322,7 @@ function mapRecipeToForm(data: any): RecipeFormData {
 
 export function RecipeForm() {
   const { t } = useTranslation()
-  const [formLang, setformLang] = useState<AvailableLangs>("en")
+  const [formLang, setFormLang] = useState<AvailableLangs>("en")
   const [primaryFormLang, setPrimaryFormLang] = useState<AvailableLangs>("en")
 
   const recipeFormSchema = useMemo(() => createRecipeFormSchema(primaryFormLang), [primaryFormLang])
@@ -339,6 +341,7 @@ export function RecipeForm() {
       },
       details: {
         author: "",
+        primaryLang: "en",
         servings: undefined,
         lastUpdated: new Date().toISOString(),
       },
@@ -391,6 +394,30 @@ export function RecipeForm() {
     reset,
   } = methods
 
+  const watchedPrimaryLang = useWatch({
+    control,
+    name: "details.primaryLang",
+  })
+
+  useEffect(() => {
+    if (watchedPrimaryLang === "en" || watchedPrimaryLang === "pl") {
+      setPrimaryFormLang(watchedPrimaryLang)
+    }
+  }, [watchedPrimaryLang])
+
+  // 
+  useEffect(() => {
+    if (!recipe2lang) return
+    const mappedData = mapRecipeToForm(recipe2lang)
+    reset(mappedData)
+    // console.log(JSON.stringify(recipe2lang, null, 2))
+    console.log(JSON.stringify(mappedData, null, 2))
+
+    if (mappedData.details?.primaryLang) {
+      setPrimaryFormLang(mappedData.details.primaryLang as AvailableLangs)
+    }
+  }, [reset])
+
   useEffect(() => {
     if (!recipe2lang) return
     // console.log(JSON.stringify(recipe2lang, null, 2))
@@ -418,6 +445,7 @@ export function RecipeForm() {
       })),
     }
     console.log(JSON.stringify(formattedData, null, 2))
+    console.log(JSON.stringify(formattedData.details.primaryLang, null, 2))
     // console.log(...formattedData.ingredients[0].items)
     // console.log(formattedData.details.servings)
     // console.log(formattedData.ingredients[0].items[0].amount)
@@ -426,51 +454,38 @@ export function RecipeForm() {
 
   return (
     <>
-      <div className="flex flex-col justify-center gap-4 p-2 text-center">
-        PRIMARY LANG
-        <Button
-          onClick={() => {
-            setPrimaryFormLang("en")
-          }}
-          variant={primaryFormLang === "en" ? "primary" : "secondary"}
-        >
-          EN
-        </Button>
-        <Button
-          onClick={() => {
-            setPrimaryFormLang("pl")
-          }}
-          variant={primaryFormLang === "pl" ? "primary" : "secondary"}
-        >
-          PL
-        </Button>
-      </div>
-
-      <div className="flex justify-center gap-4 p-2 text-center">
-        <Button
-          onClick={() => {
-            setformLang("en")
-          }}
-          variant={formLang === "en" ? "primary" : "secondary"}
-        >
-          EN
-        </Button>
-        <Button
-          onClick={() => {
-            setformLang("pl")
-          }}
-          variant={formLang === "pl" ? "primary" : "secondary"}
-        >
-          PL
-        </Button>
-      </div>
-
       <FormProvider {...methods}>
         <form noValidate onSubmit={handleSubmit(handleApiSubmit(onSubmit))} className="mx-auto max-w-5xl">
           <RecipeLayout
             header={
               <div className="space-y-4 text-center">
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col space-y-1">
+                  <div className="flex justify-center">
+                    <div className="inline-flex gap-3">
+                      <Button
+                        type="button"
+                        onClick={() => setFormLang("en")}
+                        variant={formLang === "en" ? "primary" : "secondary"}
+                        className="text-sm"
+                      >
+                        {t("recipe.locales.english_version")}
+                        {primaryFormLang === "en" && ` (${t("recipe.locales.required")})`}
+                      </Button>
+
+                      <Button
+                        type="button"
+                        onClick={() => setFormLang("pl")}
+                        variant={formLang === "pl" ? "primary" : "secondary"}
+                        className="text-sm"
+                      >
+                        {t("recipe.locales.polish_version")}
+                        {primaryFormLang === "pl" && ` (${t("recipe.locales.required")})`}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-6 pt-2">
                   <div className="space-y-3 text-center">
                     {formLang === "en" && (
                       <FormTextArea
