@@ -69,7 +69,9 @@
     "servings": "Servings",
     "rating": "Rating",
     "last_update": "Updated",
-    "publish_recipe": "Publish recipe",
+    "publish_recipe": "Publish Recipe",
+    "load_sample_data": "Load Sample Data",
+    "clear_form": "Clear Form",
     "locales": {
       "primary_language": "Primary Language",
       "english": "English",

@@ -69,7 +69,9 @@
     "servings": "Ilość porcji",
     "rating": "Wyśmienitość",
     "last_update": "Aktualizacja",
-    "publish_recipe": "Opublikuj przepis",
+    "publish_recipe": "Opublikuj Przepis",
+    "load_sample_data": "Załaduj Dane Testowe",
+    "clear_form": "Wyczyść Formularz",
     "locales": {
       "primary_language": "Język Podstawowy",
       "english": "Angielski",

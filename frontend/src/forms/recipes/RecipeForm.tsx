@@ -26,7 +26,7 @@ import { RECIPE } from "@/forms/core/constants"
 import { useTranslation } from "react-i18next"
 import { showToast } from "@/components/ui/Toasts"
 import { useState, useMemo, useEffect } from "react"
-import recipe2lang from "@/pages/recipe2lang.json"
+import recipePierogi from "@/pages/recipePierogi.json"
 
 export type AvailableLangs = "en" | "pl"
 
@@ -320,6 +320,60 @@ function mapRecipeToForm(data: any): RecipeFormData {
   }
 }
 
+const emptyFormValues = {
+  title: {
+    en: "",
+    pl: "",
+  },
+  description: {
+    en: "",
+    pl: "",
+  },
+  details: {
+    author: "",
+    primaryLang: "en",
+    servings: undefined,
+    lastUpdated: new Date().toISOString(),
+  },
+  ingredients: [
+    {
+      title: {
+        en: "",
+        pl: "",
+      },
+      items: [
+        {
+          name: {
+            en: "",
+            pl: "",
+          },
+          amount: undefined,
+          unit: {
+            en: "",
+            pl: "",
+          },
+          notes: {
+            en: "",
+            pl: "",
+          },
+        },
+      ],
+    },
+  ],
+  steps: [
+    {
+      title: {
+        en: "",
+        pl: "",
+      },
+      description: {
+        en: "",
+        pl: "",
+      },
+    },
+  ],
+}
+
 export function RecipeForm() {
   const { t } = useTranslation()
   const [formLang, setFormLang] = useState<AvailableLangs>("en")
@@ -330,59 +384,7 @@ export function RecipeForm() {
   const methods = useFormWithApi<RecipeFormData>({
     resolver: zodResolver(recipeFormSchema) as any, // as any to stop TS complaining about number().optional()
     mode: "onChange",
-    defaultValues: {
-      title: {
-        en: "",
-        pl: "",
-      },
-      description: {
-        en: "",
-        pl: "",
-      },
-      details: {
-        author: "",
-        primaryLang: "en",
-        servings: undefined,
-        lastUpdated: new Date().toISOString(),
-      },
-      ingredients: [
-        {
-          title: {
-            en: "",
-            pl: "",
-          },
-          items: [
-            {
-              name: {
-                en: "",
-                pl: "",
-              },
-              amount: undefined,
-              unit: {
-                en: "",
-                pl: "",
-              },
-              notes: {
-                en: "",
-                pl: "",
-              },
-            },
-          ],
-        },
-      ],
-      steps: [
-        {
-          title: {
-            en: "",
-            pl: "",
-          },
-          description: {
-            en: "",
-            pl: "",
-          },
-        },
-      ],
-    },
+    defaultValues: emptyFormValues,
   })
 
   const {
@@ -405,24 +407,20 @@ export function RecipeForm() {
     }
   }, [watchedPrimaryLang])
 
-  // 
-  useEffect(() => {
-    if (!recipe2lang) return
-    const mappedData = mapRecipeToForm(recipe2lang)
+  const handleLoadData = () => {
+    if (!recipePierogi) return
+    const mappedData = mapRecipeToForm(recipePierogi)
+
     reset(mappedData)
-    // console.log(JSON.stringify(recipe2lang, null, 2))
-    console.log(JSON.stringify(mappedData, null, 2))
 
     if (mappedData.details?.primaryLang) {
       setPrimaryFormLang(mappedData.details.primaryLang as AvailableLangs)
     }
-  }, [reset])
+  }
 
-  useEffect(() => {
-    if (!recipe2lang) return
-    // console.log(JSON.stringify(recipe2lang, null, 2))
-    reset(mapRecipeToForm(recipe2lang))
-  }, [reset])
+  const handleClearForm = () => {
+    reset(emptyFormValues)
+  }
 
   const onSubmit = (data: RecipeFormData) => {
     // console.log(data)
@@ -445,7 +443,7 @@ export function RecipeForm() {
       })),
     }
     console.log(JSON.stringify(formattedData, null, 2))
-    console.log(JSON.stringify(formattedData.details.primaryLang, null, 2))
+    // console.log(JSON.stringify(formattedData.details.primaryLang, null, 2))
     // console.log(...formattedData.ingredients[0].items)
     // console.log(formattedData.details.servings)
     // console.log(formattedData.ingredients[0].items[0].amount)
@@ -457,6 +455,7 @@ export function RecipeForm() {
       <FormProvider {...methods}>
         <form noValidate onSubmit={handleSubmit(handleApiSubmit(onSubmit))} className="mx-auto max-w-5xl">
           <RecipeLayout
+            variant="edit"
             header={
               <div className="space-y-4 text-center">
                 <div className="flex flex-col space-y-1">
@@ -465,7 +464,7 @@ export function RecipeForm() {
                       <Button
                         type="button"
                         onClick={() => setFormLang("en")}
-                        variant={formLang === "en" ? "primary" : "secondary"}
+                        variant={formLang === "en" ? "gradientPrimary" : "secondary"}
                         className="text-sm"
                       >
                         {t("recipe.locales.english_version")}
@@ -475,7 +474,7 @@ export function RecipeForm() {
                       <Button
                         type="button"
                         onClick={() => setFormLang("pl")}
-                        variant={formLang === "pl" ? "primary" : "secondary"}
+                        variant={formLang === "pl" ? "gradientPrimary" : "secondary"}
                         className="text-sm"
                       >
                         {t("recipe.locales.polish_version")}
@@ -539,13 +538,23 @@ export function RecipeForm() {
               <PreparationSectionForm control={control} register={register} errors={errors.steps} formLang={formLang} />
             }
             footer={
-              <div className="-mt-2 flex justify-center px-8 pb-4 sm:pb-8">
+              <div className="-mt-2 flex gap-4 justify-between pb-4 sm:pb-8 px-2 min-[420px]:px-4 sm:px-8 lg:px-16">
+
+                <div className="flex gap-4">
+                  <RichButton onClick={handleLoadData} type="button" variant="primary" className="text-sm">
+                    {t("recipe.load_sample_data")}
+                  </RichButton>
+
+                  <RichButton onClick={handleClearForm} type="button" variant="secondary" className="text-sm">
+                    {t("recipe.clear_form")}
+                  </RichButton>
+                </div>
+
                 <RichButton type="submit" variant="gradientPrimary" className="w-40">
                   {t("recipe.publish_recipe")}
                 </RichButton>
               </div>
             }
-            variant="edit"
           />
         </form>
       </FormProvider>

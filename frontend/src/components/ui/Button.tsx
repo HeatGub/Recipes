@@ -8,6 +8,7 @@ const VARIANT_STYLES = {
   warning: "bg-(--bg-warning) text-(--text-inverted)",
   danger: "bg-(--bg-danger) text-(--text-primary) hover:text-(--text-inverted) hover:shadow-[0_0_5px_var(--bg-danger)] disabled:hover:text-(--text-primary)",
   success:  "bg-(--accent-secondary) text-(--text-inverted)",
+  gradientPrimary: "gradient-primary-1 text-(--text-inverted)"
 } as const
 
 export type ButtonVariant = keyof typeof VARIANT_STYLES
