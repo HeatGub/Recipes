@@ -1,0 +1,232 @@
+{
+  "id": "123123",
+  "title": {
+    "en": "Classic Strawberry Pierogi",
+    "pl": "Klasyczne Pierogi z Truskawkami"
+  },
+  "description": {
+    "en": "A sweet summer favorite in Poland: soft, delicate dough pockets filled with juicy, fresh strawberries, served warm with cold sour cream and sugar.",
+    "pl": "Prawdziwy hit polskiego lata: miękkie, delikatne ciasto wypełnione soczystymi, świeżymi truskawkami, podawane na ciepło ze śmietaną i cukrem."
+  },
+  "details": {
+    "author": "Babcia Stasia",
+    "rating": { "value": 9, "votes": 142, "requesterVoted": false },
+    "primaryLang": "pl",
+    "lastUpdated": "2026-05-28T18:30:00.000Z",
+    "servings": 4
+  },
+  "ingredients": [
+    {
+      "title": {
+        "en": "The Dough",
+        "pl": "Ciasto"
+      },
+      "items": [
+        {
+          "name": {
+            "en": "Warm water",
+            "pl": "Ciepła woda"
+          },
+          "amount": 200,
+          "unit": {
+            "en": "ml",
+            "pl": "ml"
+          },
+          "notes": {
+            "en": "Warm",
+            "pl": "Ciepła"
+          },
+          "position": 2
+        },
+        {
+          "name": {
+            "en": "Flour",
+            "pl": "Mąka pszenna"
+          },
+          "amount": 400,
+          "unit": {
+            "en": "g",
+            "pl": "g"
+          },
+          "notes": {
+            "en": "Type 500",
+            "pl": "Typ 500"
+          },
+          "position": 1
+        },
+        {
+          "name": {
+            "en": "Butter",
+            "pl": "Masło"
+          },
+          "amount": 30,
+          "unit": {
+            "en": "g",
+            "pl": "g"
+          },
+          "notes": {
+            "en": "Melted",
+            "pl": "Roztopione"
+          },
+          "position": 3
+        }
+      ],
+      "position": 1
+    },
+    {
+      "title": {
+        "en": "The Filling",
+        "pl": "Farsz"
+      },
+      "items": [
+        {
+          "name": {
+            "en": "Strawberries",
+            "pl": "Truskawki"
+          },
+          "amount": 500,
+          "unit": {
+            "en": "g",
+            "pl": "g"
+          },
+          "notes": {
+            "en": "Fresh, hulled",
+            "pl": "Świeże, bez szypułek"
+          },
+          "position": 1
+        },
+        {
+          "name": {
+            "en": "Sugar",
+            "pl": "Cukier"
+          },
+          "amount": 2,
+          "unit": {
+            "en": "tbsp",
+            "pl": "łyżki"
+          },
+          "notes": {
+            "en": "For dusting inside",
+            "pl": "Do posypania w środku"
+          },
+          "position": 2
+        },
+        {
+          "name": {
+            "en": "Potato starch",
+            "pl": "Mąka ziemniaczana"
+          },
+          "amount": 1,
+          "unit": {
+            "en": "tsp",
+            "pl": "łyżeczka"
+          },
+          "notes": {
+            "en": "Binds the juices",
+            "pl": "Związuje soki"
+          },
+          "position": 3
+        }
+      ],
+      "position": 2
+    },
+    {
+      "title": {
+        "en": "Topping",
+        "pl": "Okrasa"
+      },
+      "items": [
+        {
+          "name": {
+            "en": "Sour cream",
+            "pl": "Śmietana"
+          },
+          "amount": 200,
+          "unit": {
+            "en": "g",
+            "pl": "g"
+          },
+          "notes": {
+            "en": "18% fat content",
+            "pl": "Kwaśna 18%"
+          },
+          "position": 1
+        },
+        {
+          "name": {
+            "en": "Sugar",
+            "pl": "Cukier"
+          },
+          "amount": 3,
+          "unit": {
+            "en": "tbsp",
+            "pl": "łyżki"
+          },
+          "notes": {
+            "en": "To sprinkle on top",
+            "pl": "Do posypania z wierzchu"
+          },
+          "position": 2
+        }
+      ],
+      "position": 3
+    }
+  ],
+  "steps": [
+    {
+      "title": {
+        "en": "Roll and Cut",
+        "pl": "Wałkowanie i Wycinanie"
+      },
+      "description": {
+        "en": "Divide your rested dough into two manageable halves. Lightly dust your kitchen counter or wooden pastry board with flour, then roll out the first half until it is evenly thin, roughly 2mm thick. Take a clean drinking glass or a round cookie cutter and firmly press out circular shapes as close together as possible to maximize your dough surface.",
+        "pl": "Podziel odpoczęte ciasto na dwie równe części. Posyp blat kuchenny lub stolicę niewielką ilością mąki, a następnie rozwałkuj pierwszą połowę na równomierny, cienki plack o grubości około 2mm. Używając czystej szklanki lub okrągłego wykrawacza, wycinaj kółka blisko siebie, aby maksymalnie wykorzystać powierzchnię ciasta."
+      },
+      "position": 3
+    },
+    {
+      "title": {
+        "en": "Boil",
+        "pl": "Gotowanie Pierogów"
+      },
+      "description": {
+        "en": "Bring a large pot filled with plenty of water to a rolling boil and add a generous pinch of salt. Gently drop the pierogi into the water one by one so they do not stick together. Give them a soft stir with a wooden spoon. Once they float up to the water's surface, reduce the heat slightly and let them boil gently for about 3 more minutes until the dough is fully cooked and tender.",
+        "pl": "Doprowadź duży garnek z dużą ilością wody do mocnego wrzenia i dodaj solidną szczyptę soli. Delikatnie wrzucaj pierogi do wody pojedynczo, aby zapobiec ich sklejaniu. Zamieszaj je lekko drewnianą łyżką. Gdy pierogi wypłyną na powierzchnię wody, zmniejsz nieco ogień i gotuj je spokojnie jeszcze przez około 3 minuty, aż ciasto będzie idealnie miękkie."
+      },
+      "position": 5
+    },
+    {
+      "title": {
+        "en": "Make Dough",
+        "pl": "Przygotowanie Ciasta"
+      },
+      "description": {
+        "en": "Sift the all-purpose flour onto a clean workspace or into a large mixing bowl. Slowly pour in the warm water combined with the melted butter while stirring with a fork. Once the ingredients start coming together, begin kneading the dough thoroughly with your hands for about 5-8 minutes until it turns perfectly smooth, soft, and elastic. Cover it with a clean cloth or bowl and let it rest for 20 minutes.",
+        "pl": "Przesiej mąkę pszenną na czysty blat lub do dużej miski. Stopniowo dolewaj ciepłą wodę połączoną z roztopionym masłem, mieszając całość widelcem. Gdy składniki zaczną się łączyć, zacznij wyrabiać ciasto dłońmi przez około 5-8 minut, aż stanie się idealnie gładkie, miękkie i elastyczne. Przykryj je czystą ściereczką lub miską i odstaw na 20 minut."
+      },
+      "position": 2
+    },
+    {
+      "title": {
+        "en": "Assemble",
+        "pl": "Lepienie Pierogów"
+      },
+      "description": {
+        "en": "Take a circular piece of dough and stretch it slightly in your hands. Place one large strawberry (or a few smaller pieces) in the absolute center. If you like, sprinkle a tiny pinch of sugar and potato starch directly onto the fruit. Fold the dough in half over the filling, press the edges firmly together, and pinch them from one side to the other to create a tight, leak-proof seal so no juice escapes.",
+        "pl": "Weź wycięty krążek ciasta i rozciągnij go delikatnie w dłoniach. Na samym środku ułóż jedną dużą truskawkę (lub kilka mniejszych kawałków). Jeśli chcesz, posyp owoc odrobiną cukru i mąki ziemniaczanej. Złóż krążek na pół, dociśnij mocno brzegi i dokładnie je zlep od jednego końca do drugiego, tworząc szczelny zgrzew, który utrzyma soki w środku."
+      },
+      "position": 4
+    },
+    {
+      "title": {
+        "en": "Prep Fruit",
+        "pl": "Przygotowanie Owoców"
+      },
+      "description": {
+        "en": "Thoroughly rinse the fresh strawberries under cold running water to remove any dirt, then drain them completely. Carefully remove the green hulls using a small knife. If the strawberries are small, leave them whole to keep the juices locked inside; if they are quite large, cut them into clean halves or quarters so they can easily fit inside your dough circles.",
+        "pl": "Dokładnie opłucz świeże truskawki pod zimną, bieżącą wodą, aby usunąć wszelkie zanieczyszczenia, a następnie dobrze je osusz. Ostrożnie usuń zielone szypułki. Jeśli truskawki są małe, zostaw je w całości, by zachować soki; jeśli są duże, pokrój je na połówki lub ćwiartki, aby bez problemu zmieściły się w krążkach ciasta."
+      },
+      "position": 1
+    }
+  ]
+}
