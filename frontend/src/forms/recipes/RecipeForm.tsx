@@ -37,7 +37,7 @@ type SingleLanguageSchemaArgs = {
   max: number
 }
 
-type MultilangualObjectSchema = {
+type MultilingualObjectSchema = {
   langPrimary: SingleLanguageSchemaArgs
   langSecondary: SingleLanguageSchemaArgs
 }
@@ -57,7 +57,7 @@ function createSingleLanguageSchema({ required = false, forbiddenChars = null, m
   return schema.superRefine(minString(min)).superRefine(maxString(max))
 }
 
-function createLocalizedStringSchema(config: MultilangualObjectSchema, primaryLang: AvailableLangs) {
+function createLocalizedStringSchema(config: MultilingualObjectSchema, primaryLang: AvailableLangs) {
   return z.object({
     en: createSingleLanguageSchema(primaryLang === "en" ? config.langPrimary : config.langSecondary),
     pl: createSingleLanguageSchema(primaryLang === "pl" ? config.langPrimary : config.langSecondary),

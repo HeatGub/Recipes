@@ -17,7 +17,7 @@ export function RecipeDetailsCard(details: RecipeDetails) {
 
       <div className="flex-1 min-w-25 flex flex-col items-center text-center space-y-1">
         <p className="text-(--text-muted) text-sm border-b border-(--border-muted) inline-block ">{t("recipe.servings")}</p>
-        <p className="font-medium">{details.baseServings}</p>
+        <p className="font-medium">{details.servings}</p>
       </div>
 
       <div className="flex-1 min-w-25 flex flex-col items-center text-center space-y-1">

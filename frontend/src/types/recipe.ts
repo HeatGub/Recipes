@@ -1,20 +1,28 @@
+// RECIPE VIEW SCHEMA, FORM SCHEMA IS DYNAMICALLY GENERATED ELSEWHERE
+
+export type LocalizedString = {
+  en: string
+  pl: string
+}
+
 export type IngredientItem = {
-  name: string
+  position: number
+  name: LocalizedString
   amount: number
-  unit: string
-  notes: string | null
+  unit: LocalizedString
+  notes: LocalizedString | null
 }
 
 export type IngredientCategory = {
   position: number
-  title: string | null
+  title: LocalizedString | null
   items: IngredientItem[]
 }
 
 export type Step = {
   position: number
-  title?: string
-  description: string
+  title?: LocalizedString
+  description: LocalizedString
 }
 
 export type Rating = {
@@ -25,15 +33,16 @@ export type Rating = {
 
 export type RecipeDetails = {
   author: string
-  baseServings: number
+  primaryLang: string
+  servings: number
   lastUpdated: string
   rating: Rating
 }
 
 export type Recipe = {
   id: string
-  title: string
-  description: string
+  title: LocalizedString
+  description: LocalizedString
   details: RecipeDetails
   ingredients: IngredientCategory[]
   steps: Step[]

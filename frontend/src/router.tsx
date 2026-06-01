@@ -5,9 +5,7 @@ import { ProtectedRoute } from "@/auth/ProtectedRoute"
 import { AccountSettings } from "@/pages/AccountSettings"
 import { NotFound } from "./pages/NotFound"
 import { RecipePage } from "./pages/RecipePage"
-// import recipe from "./pages/recipe.json"
-import recipeLongSteps from "./pages/recipeLongSteps.json"
-// import recipeManySteps from "./pages/recipeManySteps.json"
+import recipePierogi from "./pages/recipePierogi.json"
 import { RecipeForm } from "@/forms/recipes/RecipeForm"
 import { DEMO_MODE } from "@/constants"
 
@@ -45,7 +43,7 @@ export const router = selectedRouter([
           },
           {
             path: ":id",
-            element: <RecipePage recipe={recipeLongSteps} />,
+            element: <RecipePage recipe={recipePierogi} />,
           },
         ],
       },
