@@ -88,12 +88,29 @@ export function IngredientCategoryFields({
       </div>
 
       {/* Ingredient items */}
-      <div className="grid w-full grid-cols-[minmax(2.5rem,0.8fr)_minmax(2.5rem,1fr)_minmax(4.5rem,1.8fr)_2fr_min-content] gap-y-0.75 text-sm">
+      <div className="grid w-full grid-cols-[minmax(4.5rem,1.8fr)_minmax(2.5rem,0.7fr)_minmax(2.5rem,1fr)_2fr_min-content] gap-y-0.75 text-sm">
         {fields.map((item, itemIndex) => {
           const itemErrors = errors?.items?.[itemIndex]
 
           return (
             <div key={item.id} className="contents">
+              <FormInput
+                {...register(`ingredients.${catIndex}.items.${itemIndex}.name.en`)}
+                required
+                placeholder={t("recipe.ingredients.items.name")}
+                className="text-center font-medium"
+                wrapperClassName={`bg-(--bg-primary) px-0.5 py-0.75 ${formLang === "en" ? "block" : "hidden"}`}
+                attachError={false}
+              />
+              <FormInput
+                {...register(`ingredients.${catIndex}.items.${itemIndex}.name.pl`)}
+                required
+                placeholder={t("recipe.ingredients.items.name")}
+                className="text-center font-medium"
+                wrapperClassName={`bg-(--bg-primary) px-0.5 py-0.75 ${formLang === "pl" ? "block" : "hidden"}`}
+                attachError={false}
+              />
+
               <FormInput
                 {...register(`ingredients.${catIndex}.items.${itemIndex}.amount`, {
                   valueAsNumber: true,
@@ -121,23 +138,6 @@ export function IngredientCategoryFields({
                 required
                 placeholder={t("recipe.ingredients.items.unit")}
                 className="text-center italic"
-                wrapperClassName={`bg-(--bg-primary) px-0.5 py-0.75 ${formLang === "pl" ? "block" : "hidden"}`}
-                attachError={false}
-              />
-
-              <FormInput
-                {...register(`ingredients.${catIndex}.items.${itemIndex}.name.en`)}
-                required
-                placeholder={t("recipe.ingredients.items.name")}
-                className="text-center font-medium"
-                wrapperClassName={`bg-(--bg-primary) px-0.5 py-0.75 ${formLang === "en" ? "block" : "hidden"}`}
-                attachError={false}
-              />
-              <FormInput
-                {...register(`ingredients.${catIndex}.items.${itemIndex}.name.pl`)}
-                required
-                placeholder={t("recipe.ingredients.items.name")}
-                className="text-center font-medium"
                 wrapperClassName={`bg-(--bg-primary) px-0.5 py-0.75 ${formLang === "pl" ? "block" : "hidden"}`}
                 attachError={false}
               />
@@ -197,6 +197,16 @@ export function IngredientCategoryFields({
               {/* Errors row*/}
               <div className="contents text-center break-all sm:break-normal">
                 <div>
+                  <InputError
+                    className={`-mt-0.5 ${formLang === "en" ? "block" : "hidden"}`}
+                    error={itemErrors?.name?.en}
+                  />
+                  <InputError
+                    className={`-mt-0.5 ${formLang === "pl" ? "block" : "hidden"}`}
+                    error={itemErrors?.name?.pl}
+                  />
+                </div>
+                <div>
                   <InputError className="-mt-0.5" error={itemErrors?.amount} />
                 </div>
                 <div>
@@ -207,16 +217,6 @@ export function IngredientCategoryFields({
                   <InputError
                     className={`-mt-0.5 ${formLang === "pl" ? "block" : "hidden"}`}
                     error={itemErrors?.unit?.pl}
-                  />
-                </div>
-                <div>
-                  <InputError
-                    className={`-mt-0.5 ${formLang === "en" ? "block" : "hidden"}`}
-                    error={itemErrors?.name?.en}
-                  />
-                  <InputError
-                    className={`-mt-0.5 ${formLang === "pl" ? "block" : "hidden"}`}
-                    error={itemErrors?.name?.pl}
                   />
                 </div>
                 <div>

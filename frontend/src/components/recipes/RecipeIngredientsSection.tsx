@@ -23,12 +23,12 @@ export function RecipeIngredientsSection({ ingredients }: { ingredients: Ingredi
             {/* Items */}
             {category.items.map((item, index) => (
               <tr key={index} className="bg-(--bg-primary) text-center">
-                <td className="rounded-l-lg py-1 pr-1 pl-3">{item.amount}</td>
-                <td className="px-1 py-1 italic">{l(item.unit)}</td>
-                <td className="rounded-r-lg py-1 pr-2 pl-1 font-semibold">
+                <td className="rounded-l-lg py-1 pr-1 pl-2 font-semibold">
                   {l(item.name)}
                   {item.notes && <span className="block text-xs text-(--text-muted) italic">{l(item.notes)}</span>}
                 </td>
+                <td className="px-1 py-1 italic">{item.amount}</td>
+                <td className="rounded-r-lg py-1 pr-2 pl-1 font-semibold">{l(item.unit)}</td>
               </tr>
             ))}
           </tbody>

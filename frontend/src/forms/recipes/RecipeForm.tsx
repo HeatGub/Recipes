@@ -64,7 +64,7 @@ function createLocalizedStringSchema(config: MultilingualObjectSchema, primaryLa
   })
 }
 
-export const detailsSchema = z.object({
+const detailsSchema = z.object({
   author: z.string().optional(),
   primaryLang: z.string(),
   lastUpdated: z.string(),
@@ -415,7 +415,9 @@ export function RecipeForm() {
 
     if (mappedData.details?.primaryLang) {
       setPrimaryFormLang(mappedData.details.primaryLang as AvailableLangs)
+      setFormLang(mappedData.details.primaryLang === "en" ? "en" : "pl")
     }
+
   }
 
   const handleClearForm = () => {
@@ -460,27 +462,50 @@ export function RecipeForm() {
               <div className="space-y-4 text-center">
                 <div className="flex flex-col space-y-1">
                   <div className="flex justify-center">
-                    <div className="inline-flex gap-3">
-                      <Button
-                        type="button"
-                        onClick={() => setFormLang("en")}
-                        variant={formLang === "en" ? "gradientPrimary" : "secondary"}
-                        className="text-sm"
-                      >
-                        {t("recipe.locales.english_version")}
-                        {primaryFormLang === "en" && ` (${t("recipe.locales.required")})`}
-                      </Button>
+                    {/* RECIPE LANGUAGE SELECTOR */}
+                    {primaryFormLang === "en" && (
+                      <div className="inline-flex gap-3">
+                        <Button
+                          type="button"
+                          onClick={() => setFormLang("en")}
+                          variant={formLang === "en" ? "gradientPrimary" : "secondary"}
+                          className="text-sm"
+                        >
+                          {t("recipe.locales.english_version")}
+                          {` (${t("recipe.locales.required")})`}
+                        </Button>
 
-                      <Button
-                        type="button"
-                        onClick={() => setFormLang("pl")}
-                        variant={formLang === "pl" ? "gradientPrimary" : "secondary"}
-                        className="text-sm"
-                      >
-                        {t("recipe.locales.polish_version")}
-                        {primaryFormLang === "pl" && ` (${t("recipe.locales.required")})`}
-                      </Button>
-                    </div>
+                        <Button
+                          type="button"
+                          onClick={() => setFormLang("pl")}
+                          variant={formLang === "pl" ? "gradientPrimary" : "secondary"}
+                          className="text-sm"
+                        >
+                          {t("recipe.locales.polish_version")}
+                        </Button>
+                      </div>
+                    )}
+                    {primaryFormLang === "pl" && (
+                      <div className="inline-flex gap-3">
+                        <Button
+                          type="button"
+                          onClick={() => setFormLang("pl")}
+                          variant={formLang === "pl" ? "gradientPrimary" : "secondary"}
+                          className="text-sm"
+                        >
+                          {t("recipe.locales.polish_version")}
+                          {` (${t("recipe.locales.required")})`}
+                        </Button>
+                        <Button
+                          type="button"
+                          onClick={() => setFormLang("en")}
+                          variant={formLang === "en" ? "gradientPrimary" : "secondary"}
+                          className="text-sm"
+                        >
+                          {t("recipe.locales.english_version")}
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -538,8 +563,7 @@ export function RecipeForm() {
               <PreparationSectionForm control={control} register={register} errors={errors.steps} formLang={formLang} />
             }
             footer={
-              <div className="-mt-2 flex gap-4 justify-between pb-4 sm:pb-8 px-2 min-[420px]:px-4 sm:px-8 lg:px-16">
-
+              <div className="-mt-2 flex justify-between gap-4 px-2 pb-4 min-[420px]:px-4 sm:px-8 sm:pb-8 lg:px-16">
                 <div className="flex gap-4">
                   <RichButton onClick={handleLoadData} type="button" variant="primary" className="text-sm">
                     {t("recipe.load_sample_data")}
